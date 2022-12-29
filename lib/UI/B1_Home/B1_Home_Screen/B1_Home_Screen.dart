@@ -246,24 +246,39 @@ class _HomeState extends State<Home> {
                     _promoHorizontalList,
                     GetBuilder<HomeController>(
                       builder: (controller) {
-                        return HandlingDataView(
-                          statusRequest: controller.statusRequest4,
-                          widget: Container(
-                            height: 100,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller
-                                  .getusercatogerys?.userCategories!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CUstomitemCard(
-                                  image: controller.getusercatogerys
-                                      ?.userCategories![index].imgs,
-                                  title: controller.getusercatogerys
-                                      ?.userCategories![index].name,
-                                );
-                              },
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(start: 12.0),
+                              child: Text(
+                                'Catogeries',
+                                style: _txtStyle,
+                              ),
                             ),
-                          ),
+                            HandlingDataView(
+                              statusRequest: controller.statusRequest4,
+                              widget: Container(
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: controller
+                                      .getusercatogerys?.userCategories!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return CUstomitemCard(
+                                      image: controller.getusercatogerys
+                                          ?.userCategories![index].imgs,
+                                      title: controller.getusercatogerys
+                                          ?.userCategories![index].name,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
