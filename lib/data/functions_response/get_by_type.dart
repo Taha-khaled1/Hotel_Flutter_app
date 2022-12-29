@@ -3,11 +3,10 @@
 import 'package:hotelbooking/data/database/connectdatabase.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
-getSearchbytextRespon() async {
+getHotelByTypeRespon(String type) async {
   Curd curd = Curd();
   var respons = await curd.getrequest(
-    MangeAPi.searchBytext,
+    '${MangeAPi.getRoomsByType}=$type',
   );
-  print(respons);
   return respons;
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/ShardFunction/valid.dart';
 import 'package:hotelbooking/UI/search_screen/search_screen.dart';
-import 'package:hotelbooking/data/functions_response/get_cities%20copy.dart';
+import 'package:hotelbooking/data/functions_response/get_by_type.dart';
 import 'package:hotelbooking/main.dart';
 
 TextEditingController? searchText = TextEditingController();
