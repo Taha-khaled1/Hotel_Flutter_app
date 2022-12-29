@@ -13,6 +13,7 @@ import 'package:hotelbooking/UI/B1_Home/Hotel/HotelList.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/B1_Home/House/HouseList.dart';
+import 'package:hotelbooking/UI/B5_Profile/ListProfile/category.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/UI/pages/filter.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
@@ -243,6 +244,29 @@ class _HomeState extends State<Home> {
                     ),
                     const SizedBox(height: 8),
                     _promoHorizontalList,
+                    GetBuilder<HomeController>(
+                      builder: (controller) {
+                        return HandlingDataView(
+                          statusRequest: controller.statusRequest4,
+                          widget: Container(
+                            height: 100,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller
+                                  .getusercatogerys?.userCategories!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CUstomitemCard(
+                                  image: controller.getusercatogerys
+                                      ?.userCategories![index].imgs,
+                                  title: controller.getusercatogerys
+                                      ?.userCategories![index].name,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     TopReatingWidget(txtStyle: _txtStyle),
                     const SizedBox(height: 8),
                     TopBokingWidget(txtStyle: _txtStyle),
@@ -641,6 +665,83 @@ class ItemGrid extends StatelessWidget {
                 ],
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CUstomitemCard extends StatefulWidget {
+  String? image, title;
+
+  CUstomitemCard({
+    this.image,
+    this.title,
+  });
+
+  @override
+  State<CUstomitemCard> createState() => _CUstomitemCardState();
+}
+
+class _CUstomitemCardState extends State<CUstomitemCard> {
+  bool isSlected = true;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: 5.0, right: 5.0, top: 5.0, bottom: 10.0),
+        child: Container(
+          height: 85.0,
+          width: 165.0,
+          decoration: const BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          child: Material(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.2),
+                borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                image: DecorationImage(
+                  image: NetworkImage(
+                      '${MangeAPi.baseurl}/${widget.image!.split(',').first}'),
+                  fit: BoxFit.cover,
+                  opacity: isSlected ? 1 : 0.7,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFABABAB).withOpacity(0.2),
+                    blurRadius: 4.0,
+                    spreadRadius: 3.0,
+                  ),
+                ],
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                  color: Colors.black12.withOpacity(0.1),
+                ),
+                child: Center(
+                  child: Text(
+                    isSlected ? widget.title! : 'Slected',
+                    style: TextStyle(
+                      shadows: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.7),
+                            blurRadius: 10.0,
+                            spreadRadius: 2.0)
+                      ],
+                      color: Colors.white,
+                      fontFamily: "Sofia",
+                      fontWeight: FontWeight.w800,
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

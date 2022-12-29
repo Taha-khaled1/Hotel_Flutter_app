@@ -25,7 +25,7 @@ class _SearchInMapState extends State<SearchInMap> {
         label: Text('الذهاب الي الصفحه الرئيسيه'),
         onPressed: () {
           setState(() {
-            if (button1 == false) {
+            if (button1 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -36,7 +36,7 @@ class _SearchInMapState extends State<SearchInMap> {
                       child: child,
                     );
                   }));
-            } else if (button2 == false) {
+            } else if (button2 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -47,7 +47,7 @@ class _SearchInMapState extends State<SearchInMap> {
                       child: child,
                     );
                   }));
-            } else if (button3 == false) {
+            } else if (button3 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -58,7 +58,7 @@ class _SearchInMapState extends State<SearchInMap> {
                       child: child,
                     );
                   }));
-            } else if (button4 == false) {
+            } else if (button4 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -69,7 +69,7 @@ class _SearchInMapState extends State<SearchInMap> {
                       child: child,
                     );
                   }));
-            } else if (button5 == false) {
+            } else if (button5 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -80,7 +80,7 @@ class _SearchInMapState extends State<SearchInMap> {
                       child: child,
                     );
                   }));
-            } else if (button6 == false) {
+            } else if (button6 == true) {
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                   pageBuilder: (_, __, ___) => new BottomNavBar(),
                   transitionDuration: const Duration(milliseconds: 600),
@@ -129,7 +129,7 @@ class _SearchInMapState extends State<SearchInMap> {
                     apiKey: googleApikey,
                     mode: Mode.overlay,
                     types: [],
-                    strictbounds: false,
+                    strictbounds: true,
                     components: [Component(Component.country, 'np')],
                     //google_map_webservice package
                     onError: (err) {

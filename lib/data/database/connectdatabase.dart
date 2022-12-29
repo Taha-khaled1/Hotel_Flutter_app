@@ -71,6 +71,7 @@ class Curd {
           body: encode == true ? jsonEncode(data) : data,
           headers: myheaders2,
         );
+        print('====================================================');
         if (respos.statusCode == 200) {
           dynamic body = jsonDecode(respos.body);
           return body;

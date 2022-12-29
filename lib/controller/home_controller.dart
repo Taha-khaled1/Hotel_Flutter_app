@@ -5,8 +5,10 @@ import 'package:hotelbooking/data/functions_response/get_cities.dart';
 import 'package:hotelbooking/data/functions_response/get_top_boking.dart';
 import 'package:hotelbooking/data/functions_response/get_top_reating.dart';
 import 'package:hotelbooking/data/functions_response/get_types.dart';
+import 'package:hotelbooking/data/functions_response/main_selectiom_res.dart';
 import 'package:hotelbooking/models/cities_model.dart';
 import 'package:hotelbooking/models/get_top_reating_model.dart';
+import 'package:hotelbooking/models/minslection_models.dart';
 import 'package:hotelbooking/models/types_model.dart';
 
 class HomeController extends GetxController {
@@ -18,6 +20,23 @@ class HomeController extends GetxController {
   late StatusRequest statusRequest1;
   late StatusRequest statusRequest2;
   late StatusRequest statusRequest3;
+  GetUserCatogerys? getusercatogerys;
+  late StatusRequest statusRequest4;
+
+  getUserCatogerys() async {
+    statusRequest4 = StatusRequest.loading;
+    update();
+    var response = await getUserCatogeryRespon();
+    statusRequest4 = handlingData(response);
+    if (StatusRequest.success == statusRequest4) {
+      getusercatogerys = await GetUserCatogerys.fromJson(response);
+      print('getTopReatingModel');
+    } else {
+      print('erorr');
+    }
+    update();
+  }
+
   getdataTopreating() async {
     statusRequest = StatusRequest.loading;
     update();
@@ -77,6 +96,7 @@ class HomeController extends GetxController {
     getdataBoking();
     getCiteisdata();
     getTypesdata();
+    getUserCatogerys();
     super.onInit();
   }
 }
