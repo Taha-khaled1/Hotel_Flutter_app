@@ -26,6 +26,13 @@ class MangeAPi {
 
   static const String getfavouritePlaces =
       "$baseurl/api/users/getfavouritePlaces"; //id
+  static const String getminslection = "$baseurl/api/hotels/getCategories";
 
+  static const String addminslection = "$baseurl/api/users/addUserCategories";
+  static const String getusercato = "$baseurl/api/users/getUserCategories";
+
+  ///637cf32c33762baba63f1827";
+
+  ///637cf32c33762baba63f1827/?categories=متنزهات,ملاعب"; //id
   ///63a121b56cc98ab64c281828 : auth
 }
