@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/HotelList.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/main.dart';
 import '../../../../vars.dart' as v;
 import '../B1_Home_Screen.dart';
 
@@ -51,13 +52,14 @@ class RecomendedTrevatelWidget extends StatelessWidget {
                       txtHeader: controller.getTypesModel?.message![i].type,
                       txtDesc: controller.getTypesModel?.message![i].desc,
                       navigatorOntap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => new HotelList(
-                              name:
-                                  controller.getTypesModel?.message![i].type ??
-                                      'hotelName',
-                            ),
+                        sharedPreferences.setString(
+                          'type',
+                          controller.getTypesModel?.message![i].type ?? 'فندق',
+                        );
+                        Get.to(
+                          HotelList(
+                            name: controller.getTypesModel?.message![i].type ??
+                                'hotelName',
                           ),
                         );
                       }, //

@@ -1,8 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hotelbooking/DataSample/HotelListData.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/hotel_bt_type_controller.dart';
+import 'package:hotelbooking/models/models_type.dart';
+import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HotelList extends StatefulWidget {
@@ -31,12 +36,12 @@ class _HotelListState extends State<HotelList> {
   var imageNetwork = const NetworkImage(
       "https://github.com/flutter/website/blob/master/src/_includes/code/layout/lakes/images/lake.jpg?raw=true");
 
-  var imageLoaded = Container(
-      color: Colors.white,
-      child: ListView.builder(
-        itemBuilder: (ctx, index) => cardList(hotelDataDummy[index]),
-        itemCount: hotelDataDummy.length,
-      ));
+  // var imageLoaded = Container(
+  //     color: Colors.white,
+  //     child: ListView.builder(
+  //       itemBuilder: (ctx, index) => cardList(hotelDataDummy[index]),
+  //       itemCount: hotelDataDummy.length,
+  //     ));
 
   @override
   void initState() {
@@ -53,113 +58,134 @@ class _HotelListState extends State<HotelList> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(top: 95.0),
-              child: Container(
-                  color: Colors.white,
-                  child: loadImage ? loadImageAnimation : const cardGrid()))
-          // : Padding(
-          //     padding: const EdgeInsets.only(top: 95.0),
-          //     child: Container(color: Colors.white, child: imageLoaded),
-          //   ),
-          ,
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Container(
-              color: Colors.white,
-              height: 130.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Padding(
-                          padding: EdgeInsets.only(top: 35.0, left: 15.0),
-                          child: Icon(
-                            Icons.clear,
-                            size: 30.0,
-                          ))),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, top: 13.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "${widget.name}",
-                          style: const TextStyle(
-                              fontFamily: "Sofia",
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.w800),
+      body: GetBuilder<HotelBytypeController>(
+        init: HotelBytypeController(),
+        builder: (controller) {
+          return HandlingDataView(
+            statusRequest: controller.statusRequest,
+            widget: Stack(
+              children: <Widget>[
+                chosseCard
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 95.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: cardGrid(
+                              message: controller.helpModel1?.message!),
                         ),
-                        Row(
-                          children: <Widget>[
-                            InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (colorIconCard == true) {
-                                      colorIconCard = false;
-                                      colorIconCard2 = true;
-                                      chosseCard = false;
-                                    } else {
-                                      colorIconCard = true;
-                                      colorIconCard2 = false;
-                                      chosseCard = true;
-                                    }
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.calendar_view_day,
-                                  color: colorIconCard
-                                      ? Colors.black12
-                                      : Colors.deepPurpleAccent,
-                                )),
-                            const SizedBox(
-                              width: 14.0,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 95.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: Container(
+                            color: Colors.white,
+                            child: ListView.builder(
+                              itemBuilder: (ctx, index) => cardList(
+                                  controller.helpModel1?.message![index]),
+                              itemCount: controller.helpModel1?.message!.length,
                             ),
-                            InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (colorIconCard2 == true) {
-                                      colorIconCard2 = false;
-                                      colorIconCard = true;
-                                      chosseCard = true;
-                                    } else {
-                                      colorIconCard2 = true;
-                                      colorIconCard = false;
-                                      chosseCard = false;
-                                    }
-                                  });
-                                },
+                          ),
+                        ),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    color: Colors.white,
+                    height: 130.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Padding(
+                                padding: EdgeInsets.only(top: 35.0, left: 15.0),
                                 child: Icon(
-                                  Icons.dashboard,
-                                  color: colorIconCard2
-                                      ? Colors.black12
-                                      : Colors.deepPurpleAccent,
-                                )),
-                          ],
-                        )
+                                  Icons.clear,
+                                  size: 30.0,
+                                ))),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20.0, top: 13.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "${widget.name}",
+                                style: const TextStyle(
+                                    fontFamily: "Sofia",
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          if (colorIconCard == true) {
+                                            colorIconCard = false;
+                                            colorIconCard2 = true;
+                                            chosseCard = false;
+                                          } else {
+                                            colorIconCard = true;
+                                            colorIconCard2 = false;
+                                            chosseCard = true;
+                                          }
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.calendar_view_day,
+                                        color: colorIconCard
+                                            ? Colors.black12
+                                            : Colors.deepPurpleAccent,
+                                      )),
+                                  const SizedBox(
+                                    width: 14.0,
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          if (colorIconCard2 == true) {
+                                            colorIconCard2 = false;
+                                            colorIconCard = true;
+                                            chosseCard = true;
+                                          } else {
+                                            colorIconCard2 = true;
+                                            colorIconCard = false;
+                                            chosseCard = false;
+                                          }
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.dashboard,
+                                        color: colorIconCard2
+                                            ? Colors.black12
+                                            : Colors.deepPurpleAccent,
+                                      )),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 }
 
 class cardGrid extends StatelessWidget {
-  const cardGrid({Key? key}) : super(key: key);
-
+  const cardGrid({Key? key, this.message}) : super(key: key);
+  final List<MessageTowHouse>? message;
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
@@ -173,8 +199,8 @@ class cardGrid extends StatelessWidget {
       primary: false,
       children: List.generate(
         /// Get data in flashSaleItem.dart (ListItem folder)
-        hotelDataDummy.length,
-        (index) => itemGrid(hotelDataDummy[index]),
+        message?.length ?? 0,
+        (index) => itemGrid(message![index]),
       ),
     );
   }
@@ -182,7 +208,7 @@ class cardGrid extends StatelessWidget {
 
 /// Component Card item in gridView after done loading image
 class itemGrid extends StatelessWidget {
-  hotelListData hotelData;
+  final MessageTowHouse? hotelData;
   itemGrid(this.hotelData);
 
   @override
@@ -208,7 +234,7 @@ class itemGrid extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Hero(
-                      tag: "hero-flashsale-${hotelData.id}",
+                      tag: "hero-flashsale-${hotelData?.sId}",
                       child: Material(
                         child: InkWell(
                           onTap: () {
@@ -222,9 +248,9 @@ class itemGrid extends StatelessWidget {
                                       child: InkWell(
                                         child: Hero(
                                             tag:
-                                                "hero-flashsale-${hotelData.id}",
-                                            child: Image.asset(
-                                              hotelData.img!,
+                                                "hero-flashsale-${hotelData?.sId}",
+                                            child: Image.network(
+                                              '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
                                               width: 300.0,
                                               height: 400.0,
                                               alignment: Alignment.center,
@@ -241,8 +267,8 @@ class itemGrid extends StatelessWidget {
                                     const Duration(milliseconds: 500)));
                           },
                           child: SizedBox(
-                            child: Image.asset(
-                              hotelData.img!,
+                            child: Image.network(
+                              '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
                               fit: BoxFit.cover,
                               height: 140.0,
                               width: mediaQueryData.size.width / 2.1,
@@ -257,7 +283,7 @@ class itemGrid extends StatelessWidget {
                       child: Container(
                         width: mediaQueryData.size.width / 2.7,
                         child: Text(
-                          hotelData.name!,
+                          hotelData?.title ?? 'titel',
                           style: const TextStyle(
                               fontSize: 14.5,
                               fontWeight: FontWeight.w500,
@@ -268,7 +294,7 @@ class itemGrid extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, top: 5.0),
-                      child: Text("\$" + hotelData.price!,
+                      child: Text("\$ ${hotelData?.price ?? '0'}",
                           style: const TextStyle(
                               fontSize: 15.5,
                               color: Colors.black54,
@@ -280,12 +306,13 @@ class itemGrid extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           ratingbar(
-                            starRating: hotelData.rating,
+                            starRating:
+                                hotelData?.averageRating!.toDouble() ?? 0.0,
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),
                           Text(
-                            "(" + hotelData.rating.toString() + ")",
+                            '(${hotelData?.averageRating.toString()})',
                             style: const TextStyle(
                               color: Colors.black26,
                               fontFamily: "Gotik",
@@ -307,7 +334,7 @@ class itemGrid extends StatelessWidget {
                             color: Colors.black38,
                           ),
                           Text(
-                            hotelData.location!,
+                            hotelData?.city! ?? '',
                             style: const TextStyle(
                                 fontSize: 10.0,
                                 fontWeight: FontWeight.w500,
@@ -344,7 +371,7 @@ class cardList extends StatelessWidget {
     fontWeight: FontWeight.w600,
   );
 
-  hotelListData hotelData;
+  final MessageTowHouse? hotelData;
 
   cardList(this.hotelData);
   Widget build(BuildContext context) {
@@ -369,8 +396,15 @@ class cardList extends StatelessWidget {
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(10.0),
                   topLeft: Radius.circular(10.0)),
-              image: DecorationImage(
-                  image: AssetImage(hotelData.img!), fit: BoxFit.cover),
+              image: hotelData?.imgs == null || hotelData?.imgs == ""
+                  ? DecorationImage(
+                      image: NetworkImage(
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
+                  : DecorationImage(
+                      image: NetworkImage(
+                        '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                      ),
+                      fit: BoxFit.cover),
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 10.0, right: 10.0),
@@ -397,7 +431,7 @@ class cardList extends StatelessWidget {
                       Container(
                           width: 220.0,
                           child: Text(
-                            hotelData.name!,
+                            hotelData?.title ?? 'titel',
                             style: _txtStyleTitle,
                             overflow: TextOverflow.ellipsis,
                           )),
@@ -405,12 +439,13 @@ class cardList extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           ratingbar(
-                            starRating: hotelData.rating,
+                            starRating: double.parse(
+                                '${hotelData?.averageRating ?? '5'}'),
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),
                           Text(
-                            "(" + hotelData.rating.toString() + ")",
+                            '(${hotelData?.averageRating.toString()})',
                             style: _txtStyleSub,
                           )
                         ],
@@ -427,7 +462,7 @@ class cardList extends StatelessWidget {
                               color: Colors.black26,
                             ),
                             const Padding(padding: EdgeInsets.only(top: 3.0)),
-                            Text(hotelData.location!, style: _txtStyleSub)
+                            Text(hotelData?.city ?? '', style: _txtStyleSub)
                           ],
                         ),
                       )
@@ -441,7 +476,9 @@ class cardList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "\$" + hotelData.price!,
+                        hotelData?.price == null
+                            ? ''
+                            : '\$${hotelData?.price ?? ''}',
                         style: const TextStyle(
                             fontSize: 25.0,
                             color: Colors.deepPurpleAccent,
