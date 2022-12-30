@@ -12,6 +12,7 @@ updetUserRespons({
   String? phone,
   String? imgs,
   String? email,
+  String? city,
   File? isfile,
 }) async {
   Curd curd = Curd();
@@ -21,6 +22,7 @@ updetUserRespons({
           {
             'username': username,
             'country': country,
+            'city': city,
             'phone': phone,
             'email': sharedPreferences.getString('email'),
           },
@@ -30,6 +32,7 @@ updetUserRespons({
           {
             'username': username,
             'country': country,
+            'city': city,
             'phone': phone,
             'imgs[]': isfile.path,
             'email': sharedPreferences.getString('email'),

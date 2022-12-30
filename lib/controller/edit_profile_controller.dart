@@ -13,7 +13,7 @@ class EditProfileController extends GetxController {
   int y = 0;
   StatusRequest statusRequest = StatusRequest.none;
   final GlobalKey<FormState> formkeyedit = GlobalKey();
-  String? email, image, countery, phone, username;
+  String? email, image, countery, phone, username, city;
   late StatusRequest statusRequest1;
   GetInfoUserModel? infousetModel;
   getInfoProfile() async {
