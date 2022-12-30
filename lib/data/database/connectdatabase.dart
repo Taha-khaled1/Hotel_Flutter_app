@@ -47,7 +47,8 @@ class Curd {
     try {
       if (await checkInternet()) {
         Response respos = await http.post(Uri.parse(url),
-            body: encode == true ? jsonEncode(data) : data, headers: myheaders);
+            body: encode == true ? jsonEncode(data) : data,
+            headers: myheaders3);
         if (respos.statusCode == 200) {
           dynamic body = jsonDecode(respos.body);
 

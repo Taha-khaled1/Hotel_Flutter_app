@@ -334,7 +334,7 @@ class itemGrid extends StatelessWidget {
                             color: Colors.black38,
                           ),
                           Text(
-                            hotelData?.city! ?? '',
+                            hotelData?.city ?? '',
                             style: const TextStyle(
                                 fontSize: 10.0,
                                 fontWeight: FontWeight.w500,
