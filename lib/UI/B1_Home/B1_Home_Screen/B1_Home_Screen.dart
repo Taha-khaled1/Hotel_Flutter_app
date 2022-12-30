@@ -332,7 +332,7 @@ class cardLastActivity extends StatelessWidget {
                   spreadRadius: 1.0,
                 )
               ]),
-          child: Wrap(
+          child: Stack(
             children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,6 +429,9 @@ class cardLastActivity extends StatelessWidget {
                   ),
                 ],
               ),
+              // Container(
+              //   child: Text('data'),
+              // ),
             ],
           ),
         ),
@@ -574,16 +577,17 @@ class ItemGrid extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF656565).withOpacity(0.15),
-                  blurRadius: 4.0,
-                  spreadRadius: 1.0,
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF656565).withOpacity(0.15),
+                blurRadius: 4.0,
+                spreadRadius: 1.0,
 //           offset: Offset(4.0, 10.0)
-                )
-              ]),
+              ),
+            ],
+          ),
           child: Wrap(
             children: <Widget>[
               Column(
@@ -596,17 +600,26 @@ class ItemGrid extends StatelessWidget {
                       height: mediaQueryData.size.height / 5.8,
                       width: 200.0,
                       decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(7.0),
-                              topRight: Radius.circular(7.0)),
-                          image: DecorationImage(
-                              image: AssetImage(gridItem.img!),
-                              fit: BoxFit.cover)),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(7.0),
+                            topRight: Radius.circular(7.0)),
+                        image: DecorationImage(
+                          image: AssetImage(gridItem.img!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 5.0)),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: 5.0,
+                    ),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      right: 10.0,
+                    ),
                     child: Container(
                       width: 130.0,
                       child: Text(

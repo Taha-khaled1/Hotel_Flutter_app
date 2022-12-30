@@ -35,6 +35,7 @@ class MangeAPi {
   static const String getRoomsByType =
       "$baseurl/api/rooms/getRoomsByType/?type";
   static const String roomsFilter = "$baseurl/api/rooms/roomsFilter";
+  static const String offers = "$baseurl/api/rooms/offers";
 
   ///637cf32c33762baba63f1827";
 

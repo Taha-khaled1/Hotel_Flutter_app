@@ -11,3 +11,12 @@ getTopBoking() async {
   print(respons);
   return respons;
 }
+
+getOffersRooms() async {
+  Curd curd = Curd();
+  var respons = await curd.getrequest(
+    MangeAPi.offers,
+  );
+
+  return respons;
+}

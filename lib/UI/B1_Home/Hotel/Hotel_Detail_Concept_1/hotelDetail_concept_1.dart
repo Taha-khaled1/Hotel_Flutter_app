@@ -596,6 +596,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    bool isDis = controller.infoRoomModel?.room?.discount != null ||
+            controller.infoRoomModel?.room?.discount != 0
+        ? true
+        : false;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -686,16 +690,52 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 10.0, bottom: 10.0),
                     child: Container(
-                      child: Text(
-                        controller.infoRoomModel!.room!.price.toString(),
-                        style: const TextStyle(
-                            color: Color(0xFF8F73F2),
-                            fontSize: 25.5,
-                            fontFamily: "Popins",
-                            fontWeight: FontWeight.w800),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      child: isDis
+                          ? Row(
+                              children: [
+                                Text(
+                                  controller.infoRoomModel!.room!.price!
+                                      .toString(),
+                                  style: TextStyle(
+                                    color: Color(0xFF8F73F2),
+                                    fontSize: 20.5,
+                                    fontFamily: "Popins",
+                                    fontWeight: FontWeight.w800,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  ((50 / 100) *
+                                          controller.infoRoomModel!.room!.price!
+                                              .toDouble())
+                                      .toString(),
+                                  style: const TextStyle(
+                                    color: Color(0xFF8F73F2),
+                                    fontSize: 25.5,
+                                    fontFamily: "Popins",
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            )
+                          : Text(
+                              controller.infoRoomModel!.room!.price!.toString(),
+                              style: const TextStyle(
+                                color: Color(0xFF8F73F2),
+                                fontSize: 25.5,
+                                fontFamily: "Popins",
+                                fontWeight: FontWeight.w800,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                     ),
                   ),
                 ],
@@ -738,6 +778,46 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             )
           ],
         ),
+        if (isDis)
+          Positioned(
+            right: 30,
+            top: -50,
+            child: Transform.rotate(
+              angle: -35 * (3.14 / 180),
+              child: Container(
+                alignment: Alignment.center,
+                width: 35,
+                height: 230,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[Colors.teal, Colors.blue],
+                  ),
+
+                  //  color: Colors.amber,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Transform.rotate(
+                  angle: 80 * (3.14 / 180),
+                  child: Row(
+                    children: [
+                      Text(
+                        controller.infoRoomModel!.room!.discount.toString(),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        '%',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

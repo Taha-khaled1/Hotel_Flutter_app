@@ -90,6 +90,21 @@ class HomeController extends GetxController {
     update();
   }
 
+  late StatusRequest statusRequest5;
+  RoomsWithOffers? roomoffers;
+  getOffers() async {
+    statusRequest5 = StatusRequest.loading;
+    update();
+    var response = await getOffersRooms();
+    statusRequest5 = handlingData(response);
+    if (StatusRequest.success == statusRequest5) {
+      roomoffers = await RoomsWithOffers.fromJson(response);
+    } else {
+      print('erorr');
+    }
+    update();
+  }
+
   @override
   void onInit() {
     getdataTopreating();
