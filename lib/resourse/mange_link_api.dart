@@ -30,6 +30,8 @@ class MangeAPi {
 
   static const String addminslection = "$baseurl/api/users/addUserCategories";
   static const String getusercato = "$baseurl/api/users/getUserCategories";
+  static const String updatefavouritePlaces =
+      "$baseurl/api/users/updatefavouritePlaces";
   static const String getRoomsByType =
       "$baseurl/api/rooms/getRoomsByType/?type";
   static const String roomsFilter = "$baseurl/api/rooms/roomsFilter";

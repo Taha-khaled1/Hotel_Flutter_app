@@ -64,13 +64,14 @@ class Curd {
     }
   }
 
-  putrequest(String url, Map data, {bool? encode}) async {
+  putrequest(String url, Map data,
+      {bool? encode, Map<String, String>? headersss}) async {
     try {
       if (await checkInternet()) {
         Response respos = await http.put(
           Uri.parse(url),
           body: encode == true ? jsonEncode(data) : data,
-          headers: myheaders2,
+          headers: headersss ?? myheaders2,
         );
         print('====================================================');
         if (respos.statusCode == 200) {

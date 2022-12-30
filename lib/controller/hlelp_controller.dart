@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hotelbooking/ShardFunction/handling.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
-import 'package:hotelbooking/data/functions_response/get_help.dart';
+import 'package:hotelbooking/data/functions_response/get_help_and_fav.dart';
 import 'package:hotelbooking/models/help_models.dart';
 
 class HelpController extends GetxController {
