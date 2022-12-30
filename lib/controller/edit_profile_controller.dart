@@ -79,11 +79,30 @@ void showsnackBar(String masg) {
   Get.snackbar(
     "Status",
     masg,
-    messageText: Text(
-      masg,
-      style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+    titleText: Align(
+      alignment: Alignment.center,
+      child: Text(
+        'الحاله',
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.grey[300],
+        ),
+      ),
+    ),
+    borderRadius: 20,
+    isDismissible: true,
+    dismissDirection: DismissDirection.horizontal,
+    duration: Duration(seconds: 4),
+    forwardAnimationCurve: Curves.easeOutBack,
+    messageText: Align(
+      alignment: Alignment.center,
+      child: Text(
+        masg,
+        style: TextStyle(fontSize: 18, color: Colors.grey[300]),
+      ),
     ),
     snackPosition: SnackPosition.TOP,
-    backgroundColor: Colors.black,
+    colorText: Colors.white,
+    backgroundColor: Colors.teal,
   );
 }

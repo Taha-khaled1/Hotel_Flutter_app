@@ -82,7 +82,9 @@ class _HotelListState extends State<HotelList> {
                             color: Colors.white,
                             child: ListView.builder(
                               itemBuilder: (ctx, index) => cardList(
-                                  controller.helpModel1?.message![index]),
+                                controller.helpModel1?.message![index],
+                                controller,
+                              ),
                               itemCount: controller.helpModel1?.message!.length,
                             ),
                           ),
@@ -370,10 +372,10 @@ class cardList extends StatelessWidget {
     fontSize: 12.5,
     fontWeight: FontWeight.w600,
   );
-
+  final HotelBytypeController controller;
   final MessageTowHouse? hotelData;
 
-  cardList(this.hotelData);
+  cardList(this.hotelData, this.controller);
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
@@ -406,15 +408,31 @@ class cardList extends StatelessWidget {
                       ),
                       fit: BoxFit.cover),
             ),
-            child: const Padding(
-              padding: EdgeInsets.only(top: 10.0, right: 10.0),
-              child: CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.black12,
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                  )),
+            child: GetBuilder<HotelBytypeController>(
+              builder: (controller) {
+                return HandlingDataView(
+                  statusRequest: controller.statusRequest1,
+                  widget: Padding(
+                    padding: const EdgeInsets.only(top: 10.0, right: 10.0),
+                    child: CircleAvatar(
+                      radius: 20.0,
+                      backgroundColor: Colors.black12,
+                      child: IconButton(
+                        onPressed: () {
+                          controller.updateFavorit(
+                            hotelData?.sId.toString() ??
+                                '638e12d4387bd697991743a6',
+                          );
+                        },
+                        icon: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
             alignment: Alignment.topRight,
           ),
