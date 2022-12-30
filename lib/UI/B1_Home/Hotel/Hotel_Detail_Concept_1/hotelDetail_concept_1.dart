@@ -76,10 +76,12 @@ class _HotelDetailState extends State<HotelDetail> {
                         DescrptionWidget(controller: controller),
 
                         /// Location
-                        LocationHomeWidget(markers: _markers),
+                        LocationHomeWidget(
+                          markers: _markers,
+                        ),
 
                         /// Gallery
-                        GalleryWidget(width: _width),
+                        GalleryWidget(width: _width, controller: controller),
 
                         /// Ratting
                         ReatingRomWidget(controller: getInfoRoomController),
@@ -209,6 +211,7 @@ class _ReatingRomWidgetState extends State<ReatingRomWidget> {
                     height: 170,
                     child: ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget
                           .controller.infoRoomModel!.room!.feedbacks!.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -339,13 +342,16 @@ class GalleryWidget extends StatelessWidget {
   const GalleryWidget({
     Key? key,
     required double width,
+    required this.controller,
   })  : _width = width,
         super(key: key);
 
   final double _width;
-
+  final GetInfoRoomController controller;
   @override
   Widget build(BuildContext context) {
+    List<String> images =
+        controller.infoRoomModel?.room!.imgs!.split(',') ?? ''.split(',');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,102 +368,31 @@ class GalleryWidget extends StatelessWidget {
             textAlign: TextAlign.justify,
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  height: _width / 3,
-                  width: _width / 3.1,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "assets/image/room/room1.jpg",
-                          ),
-                          fit: BoxFit.cover)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 3.0, right: 3.0),
-                  child: Container(
-                    height: _width / 3,
-                    width: _width / 3.05,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              "assets/image/room/room2.jpg",
-                            ),
-                            fit: BoxFit.cover)),
-                  ),
-                ),
-                Container(
-                  height: _width / 3,
-                  width: _width / 3.1,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "assets/image/room/room3.jpg",
-                          ),
-                          fit: BoxFit.cover)),
-                ),
-              ],
+        SizedBox(
+          height: 400,
+          width: double.infinity,
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
             ),
-            Row(
-              children: <Widget>[
-                Container(
-                  height: _width / 3,
-                  width: _width / 3.1,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "assets/image/room/room4.jpg",
-                          ),
-                          fit: BoxFit.cover)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Container(
-                    height: _width / 3,
-                    width: _width / 3.05,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              "assets/image/room/room5.jpg",
-                            ),
-                            fit: BoxFit.cover)),
-                  ),
-                ),
-                Container(
-                  height: _width / 3,
-                  width: _width / 3.1,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "assets/image/room/room6.jpg",
-                          ),
-                          fit: BoxFit.cover)),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => gallery()));
-                    },
-                    child: Container(
-                      color: Colors.black54,
-                      child: const Center(
-                        child: Text("See More",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Sofia",
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.0)),
-                      ),
+            itemCount: images.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: _width / 3,
+                width: _width / 3.1,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      '${MangeAPi.baseurl}/${images[index]}',
                     ),
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ],
     );
@@ -668,18 +603,6 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
           height: 50.0,
           width: double.infinity,
           color: Colors.white,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            "App Name",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: "Gotik",
-              fontWeight: FontWeight.w700,
-              fontSize: (expandedHeight / 40) - (shrinkOffset / 40) + 18,
-            ),
-          ),
         ),
         Opacity(
           opacity: (1 - shrinkOffset / expandedHeight),
