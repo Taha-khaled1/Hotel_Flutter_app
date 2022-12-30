@@ -125,54 +125,6 @@ class _HomeState extends State<Home> {
       ),
     );
 
-    var _promoHorizontalList = Container(
-      color: Colors.white,
-      height: 215.0,
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 20.0, top: 10.0, bottom: 3.0, right: 20.0),
-            child: Text(
-              "Offers".tr,
-              style: const TextStyle(
-                fontFamily: "Sofia",
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10.0, left: 12, right: 12),
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                /// Call itemPopular Class
-                itemPopular(
-                  image: "assets/image/room/room1.jpg",
-                  title: "${"Discount".tr} 10%",
-                ),
-                const Padding(padding: EdgeInsets.only(left: 10.0)),
-                itemPopular(
-                  image: "assets/image/room/room2.jpg",
-                  title: "${"Discount".tr} 20%",
-                ),
-                const Padding(padding: EdgeInsets.only(left: 10.0)),
-                itemPopular(
-                  image: "assets/image/room/room3.jpg",
-                  title: "${"Discount".tr} 30%",
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-
     ///  Grid item in bottom of Category
     var _recommendedRooms = SingleChildScrollView(
       child: Container(
@@ -239,7 +191,17 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _promoHorizontalList,
+                    GetBuilder<HomeController>(
+                      init: HomeController(),
+                      initState: (_) {},
+                      builder: (_) {
+                        return HandlingDataView(
+                          statusRequest: _.statusRequest5,
+                          widget:
+                              OffersHouseWidget(roomsWithOffers: _.roomoffers),
+                        );
+                      },
+                    ),
                     GetBuilder<HomeController>(
                       builder: (controller) {
                         return Column(
@@ -290,6 +252,59 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class OffersHouseWidget extends StatelessWidget {
+  const OffersHouseWidget({
+    Key? key,
+    this.roomsWithOffers,
+  }) : super(key: key);
+  final OffersHouseModels? roomsWithOffers;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      height: 215.0,
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 20.0, top: 10.0, bottom: 3.0, right: 20.0),
+            child: Text(
+              "Offers".tr,
+              style: const TextStyle(
+                fontFamily: "Sofia",
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: 15.0,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(top: 10.0, left: 12, right: 12),
+              scrollDirection: Axis.horizontal,
+              itemCount: roomsWithOffers?.roomsWithOffers?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: itemPopular(
+                    image: roomsWithOffers?.roomsWithOffers?[index].imgs,
+                    title:
+                        "${roomsWithOffers?.roomsWithOffers?[index].discount}",
+                    id: roomsWithOffers?.roomsWithOffers?[index].sId,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

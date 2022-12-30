@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:hotelbooking/DataSample/HotelListData.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/Search.dart';
@@ -337,40 +338,154 @@ class _houseListState extends State<houseList> {
 
 ///Item Popular component class
 class itemPopular extends StatelessWidget {
-  String? image, title;
+  String? image, title, id;
 
-  itemPopular({this.image, this.title});
+  itemPopular({this.image, this.title, this.id});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 130.0,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-        image: DecorationImage(image: AssetImage(image!), fit: BoxFit.cover),
-      ),
-      child: Container(
+    return Stack(
+      children: [
+        Container(
+          width: 130.0,
+          height: 185,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-            color: Colors.black.withOpacity(0.3),
+            image: DecorationImage(
+              image: NetworkImage(
+                  '${MangeAPi.baseurl}/${image!.split(',').first}'),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 70.0, start: 10.0),
-            child: Text(
-              title!,
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: "Sofia",
-                fontSize: 19.5,
-                letterSpacing: 0.7,
-                fontWeight: FontWeight.w800,
+        ),
+        Positioned(
+          right: 10,
+          top: -40,
+          child: Transform.rotate(
+            angle: -35 * (3.14 / 180),
+            child: Container(
+              alignment: Alignment.center,
+              width: 30,
+              height: 180,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[Colors.teal, Colors.blue],
+                ),
+
+                //  color: Colors.amber,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Transform.rotate(
+                angle: 80 * (3.14 / 180),
+                child: Row(
+                  children: [
+                    Text(
+                      title ?? '0',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '%',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
-          )),
+          ),
+        ),
+      ],
     );
   }
 }
+// Container(
+//       alignment: Alignment.topRight,
+//       width: 130.0,
+// decoration: BoxDecoration(
+//   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+//   image: DecorationImage(
+//       image:
+//           NetworkImage('${MangeAPi.baseurl}/${image!.split(',').first}'),
+//       fit: BoxFit.cover),
+// ),
+//       child: Transform.rotate(
+//         angle: -35 * (3.14 / 180),
+//         child: Container(
+//           alignment: Alignment.center,
+//           width: 35,
+//           height: 150,
+//           decoration: BoxDecoration(
+//             gradient: LinearGradient(
+//               begin: Alignment.topCenter,
+//               end: Alignment.bottomCenter,
+//               colors: <Color>[Colors.teal, Colors.blue],
+//             ),
 
+//             //  color: Colors.amber,
+//             borderRadius: BorderRadius.circular(10),
+//           ),
+//           child: Transform.rotate(
+//             angle: 80 * (3.14 / 180),
+//             child: Row(
+//               children: [
+//                 Text(
+//                   '10',
+//                   style: TextStyle(fontSize: 15, color: Colors.white),
+//                   textAlign: TextAlign.center,
+//                 ),
+//                 Text(
+//                   '%',
+//                   style: TextStyle(fontSize: 15, color: Colors.white),
+//                   textAlign: TextAlign.center,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+// Positioned(
+//         right: 30,
+//         top: -50,
+//         child: Transform.rotate(
+//           angle: -35 * (3.14 / 180),
+//           child: Container(
+//             alignment: Alignment.center,
+//             width: 35,
+//             height: 230,
+//             decoration: BoxDecoration(
+//               gradient: LinearGradient(
+//                 begin: Alignment.topCenter,
+//                 end: Alignment.bottomCenter,
+//                 colors: <Color>[Colors.teal, Colors.blue],
+//               ),
+
+//               //  color: Colors.amber,
+//               borderRadius: BorderRadius.circular(10),
+//             ),
+//             child: Transform.rotate(
+//               angle: 80 * (3.14 / 180),
+//               child: Row(
+//                 children: [
+//                   Text(
+//                     '10',
+//                     style: TextStyle(fontSize: 18, color: Colors.white),
+//                     textAlign: TextAlign.center,
+//                   ),
+//                   Text(
+//                     '%',
+//                     style: TextStyle(fontSize: 18, color: Colors.white),
+//                     textAlign: TextAlign.center,
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
 class menuItemCard extends StatelessWidget {
   hotelListData item;
 

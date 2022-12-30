@@ -91,14 +91,14 @@ class HomeController extends GetxController {
   }
 
   late StatusRequest statusRequest5;
-  RoomsWithOffers? roomoffers;
+  OffersHouseModels? roomoffers;
   getOffers() async {
     statusRequest5 = StatusRequest.loading;
     update();
     var response = await getOffersRooms();
     statusRequest5 = handlingData(response);
     if (StatusRequest.success == statusRequest5) {
-      roomoffers = await RoomsWithOffers.fromJson(response);
+      roomoffers = await OffersHouseModels.fromJson(response);
     } else {
       print('erorr');
     }
@@ -107,6 +107,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    getOffers();
     getdataTopreating();
     getdataBoking();
     getCiteisdata();
