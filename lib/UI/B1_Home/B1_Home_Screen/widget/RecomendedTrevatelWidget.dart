@@ -56,6 +56,7 @@ class RecomendedTrevatelWidget extends StatelessWidget {
                           'type',
                           controller.getTypesModel?.message![i].type ?? 'فندق',
                         );
+
                         Get.to(
                           HotelList(
                             name: controller.getTypesModel?.message![i].type ??

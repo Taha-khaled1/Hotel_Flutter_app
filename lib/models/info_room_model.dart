@@ -249,3 +249,211 @@ class UserContactInfo {
     return data;
   }
 }
+
+class InfoHotelModel {
+  Message? message;
+  UserContactInfoHotel? userContactInfo;
+  List<HotelRooms>? hotelRooms;
+
+  InfoHotelModel({this.message, this.userContactInfo, this.hotelRooms});
+
+  InfoHotelModel.fromJson(Map<String, dynamic> json) {
+    message =
+        json['message'] != null ? new Message.fromJson(json['message']) : null;
+    userContactInfo = json['userContactInfo'] != null
+        ? new UserContactInfoHotel.fromJson(json['userContactInfo'])
+        : null;
+    if (json['HotelRooms'] != null) {
+      hotelRooms = <HotelRooms>[];
+      json['HotelRooms'].forEach((v) {
+        hotelRooms!.add(new HotelRooms.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.message != null) {
+      data['message'] = this.message!.toJson();
+    }
+    if (this.userContactInfo != null) {
+      data['userContactInfo'] = this.userContactInfo!.toJson();
+    }
+    if (this.hotelRooms != null) {
+      data['HotelRooms'] = this.hotelRooms!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Message {
+  String? sId;
+  String? userId;
+  String? name;
+  String? type;
+  String? city;
+  String? destanceFromCityCenter;
+  String? desc;
+  double? rating;
+  int? featured;
+  List<String>? category;
+  String? imgs;
+  AddressHotel? address;
+
+  Message(
+      {this.sId,
+      this.userId,
+      this.name,
+      this.type,
+      this.city,
+      this.destanceFromCityCenter,
+      this.desc,
+      this.rating,
+      this.featured,
+      this.category,
+      this.imgs,
+      this.address});
+
+  Message.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['userId'];
+    name = json['name'];
+    type = json['type'];
+    city = json['city'];
+    destanceFromCityCenter = json['destanceFromCityCenter'];
+    desc = json['desc'];
+    rating = json['rating'];
+    featured = json['featured'];
+    category = json['category'].cast<String>();
+    imgs = json['imgs'];
+    address = json['address'] != null
+        ? new AddressHotel.fromJson(json['address'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['userId'] = this.userId;
+    data['name'] = this.name;
+    data['type'] = this.type;
+    data['city'] = this.city;
+    data['destanceFromCityCenter'] = this.destanceFromCityCenter;
+    data['desc'] = this.desc;
+    data['rating'] = this.rating;
+    data['featured'] = this.featured;
+    data['category'] = this.category;
+    data['imgs'] = this.imgs;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
+    return data;
+  }
+}
+
+class AddressHotel {
+  String? placeId;
+  double? longitude;
+  double? latitude;
+  String? sId;
+
+  AddressHotel({this.placeId, this.longitude, this.latitude, this.sId});
+
+  AddressHotel.fromJson(Map<String, dynamic> json) {
+    placeId = json['placeId'];
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['placeId'] = this.placeId;
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class UserContactInfoHotel {
+  String? sId;
+  String? username;
+  String? email;
+  String? country;
+  String? city;
+  String? phone;
+
+  UserContactInfoHotel(
+      {this.sId,
+      this.username,
+      this.email,
+      this.country,
+      this.city,
+      this.phone});
+
+  UserContactInfoHotel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    username = json['username'];
+    email = json['email'];
+    country = json['country'];
+    city = json['city'];
+    phone = json['phone'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['username'] = this.username;
+    data['email'] = this.email;
+    data['country'] = this.country;
+    data['city'] = this.city;
+    data['phone'] = this.phone;
+    return data;
+  }
+}
+
+class HotelRooms {
+  String? sId;
+  String? title;
+  int? price;
+  String? desc;
+  String? city;
+  int? averageRating;
+  bool? featured;
+  String? imgs;
+
+  HotelRooms(
+      {this.sId,
+      this.title,
+      this.price,
+      this.desc,
+      this.city,
+      this.averageRating,
+      this.featured,
+      this.imgs});
+
+  HotelRooms.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    price = json['price'];
+    desc = json['desc'];
+    city = json['city'];
+    averageRating = json['averageRating'];
+    featured = json['featured'];
+    imgs = json['imgs'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['price'] = this.price;
+    data['desc'] = this.desc;
+    data['city'] = this.city;
+    data['averageRating'] = this.averageRating;
+    data['featured'] = this.featured;
+    data['imgs'] = this.imgs;
+    return data;
+  }
+}

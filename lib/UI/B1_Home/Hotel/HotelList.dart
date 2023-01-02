@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/DataSample/HotelListData.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
 import 'package:hotelbooking/controller/hotel_bt_type_controller.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/models_type.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:shimmer/shimmer.dart';
@@ -84,6 +88,7 @@ class _HotelListState extends State<HotelList> {
                               itemBuilder: (ctx, index) => cardList(
                                 controller.helpModel1?.message![index],
                                 controller,
+                                widget.name,
                               ),
                               itemCount: controller.helpModel1?.message!.length,
                             ),
@@ -374,144 +379,157 @@ class cardList extends StatelessWidget {
   );
   final HotelBytypeController controller;
   final MessageTowHouse? hotelData;
-
-  cardList(this.hotelData, this.controller);
+  final String typ;
+  cardList(this.hotelData, this.controller, this.typ);
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-      child: Container(
-        height: 250.0,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12.withOpacity(0.1),
-                  blurRadius: 3.0,
-                  spreadRadius: 1.0)
-            ]),
-        child: Column(children: [
-          Container(
-            height: 165.0,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0)),
-              image: hotelData?.imgs == null || hotelData?.imgs == ""
-                  ? DecorationImage(
-                      image: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
-                  : DecorationImage(
-                      image: NetworkImage(
-                        '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
-                      ),
-                      fit: BoxFit.cover),
-            ),
-            child: GetBuilder<HotelBytypeController>(
-              builder: (controller) {
-                return HandlingDataView(
-                  statusRequest: controller.statusRequest1,
-                  widget: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, right: 10.0),
-                    child: CircleAvatar(
-                      radius: 20.0,
-                      backgroundColor: Colors.black12,
-                      child: IconButton(
-                        onPressed: () {
-                          controller.updateFavorit(
-                            hotelData?.sId.toString() ??
-                                '638e12d4387bd697991743a6',
-                          );
-                        },
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
+    return InkWell(
+      onTap: () {
+        if (typ == 'فندق') {
+          print(hotelData!.sId);
+          sharedPreferences.setString('keyhot', hotelData!.sId.toString());
+          Get.to(hotelDetail2());
+        } else {
+          Get.delete<GetInfoRoomController>();
+          sharedPreferences.setString('keyroom', hotelData!.sId.toString());
+          Get.to(HotelDetail());
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+        child: Container(
+          height: 250.0,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 3.0,
+                    spreadRadius: 1.0)
+              ]),
+          child: Column(children: [
+            Container(
+              height: 165.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    topLeft: Radius.circular(10.0)),
+                image: hotelData?.imgs == null || hotelData?.imgs == ""
+                    ? DecorationImage(
+                        image: NetworkImage(
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
+                    : DecorationImage(
+                        image: NetworkImage(
+                          '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                        ),
+                        fit: BoxFit.cover),
+              ),
+              child: GetBuilder<HotelBytypeController>(
+                builder: (controller) {
+                  return HandlingDataView(
+                    statusRequest: controller.statusRequest1,
+                    widget: Padding(
+                      padding: const EdgeInsets.only(top: 10.0, right: 10.0),
+                      child: CircleAvatar(
+                        radius: 20.0,
+                        backgroundColor: Colors.black12,
+                        child: IconButton(
+                          onPressed: () {
+                            controller.updateFavorit(
+                              hotelData?.sId.toString() ??
+                                  '638e12d4387bd697991743a6',
+                            );
+                          },
+                          icon: Icon(
+                            Icons.favorite_border,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
+              alignment: Alignment.topRight,
             ),
-            alignment: Alignment.topRight,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                          width: 220.0,
-                          child: Text(
-                            hotelData?.title ?? 'titel',
-                            style: _txtStyleTitle,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      const Padding(padding: EdgeInsets.only(top: 5.0)),
-                      Row(
-                        children: <Widget>[
-                          ratingbar(
-                            starRating: double.parse(
-                                '${hotelData?.averageRating ?? '5'}'),
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 5.0)),
-                          Text(
-                            '(${hotelData?.averageRating.toString()})',
-                            style: _txtStyleSub,
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.9),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                            width: 220.0,
+                            child: Text(
+                              hotelData?.title ?? 'titel',
+                              style: _txtStyleTitle,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        const Padding(padding: EdgeInsets.only(top: 5.0)),
+                        Row(
                           children: <Widget>[
-                            const Icon(
-                              Icons.location_on,
-                              size: 16.0,
-                              color: Colors.black26,
+                            ratingbar(
+                              starRating: double.parse(
+                                  '${hotelData?.averageRating ?? '5'}'),
+                              color: Colors.deepPurpleAccent,
                             ),
-                            const Padding(padding: EdgeInsets.only(top: 3.0)),
-                            Text(hotelData?.city ?? '', style: _txtStyleSub)
+                            const Padding(padding: EdgeInsets.only(left: 5.0)),
+                            Text(
+                              '(${hotelData?.averageRating.toString()})',
+                              style: _txtStyleSub,
+                            )
                           ],
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.9),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.location_on,
+                                size: 16.0,
+                                color: Colors.black26,
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3.0)),
+                              Text(hotelData?.city ?? '', style: _txtStyleSub)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 13.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        hotelData?.price == null
-                            ? ''
-                            : '\$${hotelData?.price ?? ''}',
-                        style: const TextStyle(
-                            fontSize: 25.0,
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Gotik"),
-                      ),
-                      Text("per night",
-                          style: _txtStyleSub.copyWith(fontSize: 11.0))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 13.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          hotelData?.price == null
+                              ? ''
+                              : '\$${hotelData?.price ?? ''}',
+                          style: const TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.deepPurpleAccent,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Gotik"),
+                        ),
+                        Text("per night",
+                            style: _txtStyleSub.copyWith(fontSize: 11.0))
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ]),
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
+import 'package:hotelbooking/models/info_room_model.dart';
+import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:like_button/like_button.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/reviewsDetail2.dart';
@@ -8,15 +13,8 @@ import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/reviewsDeta
 import 'maps.dart';
 
 class hotelDetail2 extends StatefulWidget {
-  String? image, title, price, location, id;
   double? ratting;
-  hotelDetail2(
-      {this.image,
-      this.title,
-      this.price,
-      this.location,
-      this.id,
-      this.ratting});
+  hotelDetail2();
 
   @override
   _hotelDetail2State createState() => _hotelDetail2State();
@@ -41,38 +39,6 @@ class _hotelDetail2State extends State<hotelDetail2> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-
-    var _description = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Padding(
-          padding:
-              EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 10.0),
-          child: Text(
-            "Description",
-            style: TextStyle(
-                fontFamily: "Sofia",
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700),
-            textAlign: TextAlign.justify,
-          ),
-        ),
-        const Padding(
-          padding:
-              EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0, bottom: 50.0),
-          child: Text(
-            "Spend a unforgettable holiday in the enchanting surroundings of the town of Cisternino (reachable from the near airports of Bari and Brindisi). \n\nTrullo Edera offers a heaven of peace and tranquillity, set in an elevated position with a stunning view. It's the perfect place if you like nature. You can stay under an olive tree reading a good book, you can have a walk in the small country streets or go to the nearest beaches.",
-            style: TextStyle(
-                fontFamily: "Sofia",
-                color: Colors.black54,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400),
-            textAlign: TextAlign.justify,
-          ),
-        ),
-      ],
-    );
 
     var _ratting = Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -391,67 +357,128 @@ class _hotelDetail2State extends State<hotelDetail2> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: CustomScrollView(
-          scrollDirection: Axis.vertical,
-          slivers: <Widget>[
-            /// AppBar
-            SliverPersistentHeader(
-              delegate: MySliverAppBar(
-                  expandedHeight: _height - 30.0,
-                  img: widget.image,
-                  id: widget.id,
-                  title: widget.title,
-                  price: widget.price,
-                  location: widget.location,
-                  ratting: widget.ratting),
-              pinned: true,
-            ),
+        child: GetBuilder<GetInfoHotelController>(
+          init: GetInfoHotelController(),
+          initState: (cont) {},
+          builder: (cont) {
+            return HandlingDataView(
+              statusRequest: cont.statusRequest,
+              widget: CustomScrollView(
+                scrollDirection: Axis.vertical,
+                slivers: <Widget>[
+                  /// AppBar
+                  SliverPersistentHeader(
+                    delegate: MySliverAppBar(
+                        expandedHeight: _height - 30.0,
+                        datahot: cont.infoRoomModel),
+                    pinned: true,
+                  ),
 
-            SliverToBoxAdapter(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                  /// Description
-                  _description,
+                  SliverToBoxAdapter(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                        /// Description
+                        DescrabtionWidget(
+                            des: cont.infoRoomModel?.message?.desc),
 
-                  /// Ratting
-                  _ratting,
+                        /// Ratting
+                        _ratting,
 
-                  /// Location
-                  _location,
+                        /// Location
+                        _location,
 
-                  /// Reviews
-                  _reviews,
+                        /// Reviews
 
-                  /// Photo
-                  _photoVar,
+                        /// Photo
+                        _photoVar,
+                        Container(
+                          height: 210.0,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cont.infoRoomModel?.hotelRooms!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return relatedPost(
+                                cont.infoRoomModel?.hotelRooms![index].imgs ??
+                                    '',
+                                cont.infoRoomModel?.hotelRooms![index].title,
+                                cont.infoRoomModel?.hotelRooms![index].city,
+                                cont.infoRoomModel?.hotelRooms![index]
+                                    .averageRating
+                                    .toString(),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
 
-                  /// Button
-                  _button,
-                ])),
-          ],
+                        /// Button
+                        _button,
+                      ])),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
   }
 }
 
+class DescrabtionWidget extends StatelessWidget {
+  const DescrabtionWidget({
+    Key? key,
+    this.des,
+  }) : super(key: key);
+  final String? des;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Padding(
+          padding:
+              EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 10.0),
+          child: Text(
+            "Description",
+            style: TextStyle(
+                fontFamily: "Sofia",
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700),
+            textAlign: TextAlign.justify,
+          ),
+        ),
+        Padding(
+          padding:
+              EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0, bottom: 50.0),
+          child: Text(
+            des ?? '',
+            style: TextStyle(
+                fontFamily: "Sofia",
+                color: Colors.black54,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400),
+            textAlign: TextAlign.justify,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
+  InfoHotelModel? datahot;
 
-  String? img, id, title, price, location;
-
-  double? ratting;
-
-  MySliverAppBar(
-      {required this.expandedHeight,
-      this.img,
-      this.id,
-      this.title,
-      this.price,
-      this.location,
-      this.ratting});
+  MySliverAppBar({
+    this.datahot,
+    required this.expandedHeight,
+  });
 
   var _txtStyleTitle = const TextStyle(
     color: Colors.black54,
@@ -478,28 +505,22 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
           width: double.infinity,
           color: Colors.white,
         ),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            "App Name",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: "Gotik",
-              fontWeight: FontWeight.w700,
-              fontSize: (expandedHeight / 40) - (shrinkOffset / 40) + 18,
-            ),
-          ),
-        ),
         Opacity(
           opacity: (1 - shrinkOffset / expandedHeight),
           child: Hero(
-            tag: 'hero-tag-${id}',
+            tag: 'hero-tag-${datahot?.message?.sId}',
             child: new DecoratedBox(
               decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: new AssetImage(img!),
-                ),
+                image: datahot?.message?.imgs == null ||
+                        datahot?.message?.imgs == ""
+                    ? DecorationImage(
+                        image: NetworkImage(
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
+                    : DecorationImage(
+                        image: NetworkImage(
+                          '${MangeAPi.baseurl}/${datahot?.message?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                        ),
+                        fit: BoxFit.cover),
                 shape: BoxShape.rectangle,
               ),
               child: Container(
@@ -553,33 +574,11 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                   Container(
                                       width: 210.0,
                                       child: Text(
-                                        title!,
+                                        datahot?.message?.name ?? 'name',
                                         style: _txtStyleTitle.copyWith(
                                             fontSize: 27.0),
                                         overflow: TextOverflow.clip,
                                       )),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 13.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          price!,
-                                          style: const TextStyle(
-                                              fontSize: 25.0,
-                                              color: Colors.deepPurpleAccent,
-                                              fontWeight: FontWeight.w600,
-                                              fontFamily: "Gotik"),
-                                        ),
-                                        Text("/per night",
-                                            style: _txtStyleSub.copyWith(
-                                                fontSize: 11.0))
-                                      ],
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -595,36 +594,12 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          const Icon(
-                                            Icons.star,
-                                            color: Colors.deepPurpleAccent,
-                                            size: 22.0,
-                                          ),
-                                          const Icon(
-                                            Icons.star,
-                                            color: Colors.deepPurpleAccent,
-                                            size: 22.0,
-                                          ),
-                                          const Icon(
-                                            Icons.star,
-                                            color: Colors.deepPurpleAccent,
-                                            size: 22.0,
-                                          ),
-                                          const Icon(
-                                            Icons.star,
-                                            color: Colors.deepPurpleAccent,
-                                            size: 22.0,
-                                          ),
-                                          const Icon(
-                                            Icons.star_half,
-                                            color: Colors.deepPurpleAccent,
-                                            size: 22.0,
-                                          ),
-                                        ],
+                                      ratingbar(
+                                        size: 22,
+                                        starRating:
+                                            datahot?.message?.rating ?? 0.0,
+                                        color: Colors.deepPurpleAccent,
                                       ),
-                                      // ratingbar(starRating: ratting,color: Colors.deepPurpleAccent,),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 10.0),
@@ -640,7 +615,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                               color: Colors.black26,
                                             ),
                                             Text(
-                                              location!,
+                                              datahot?.message?.city ?? 'city',
                                               style: const TextStyle(
                                                   color: Colors.black26,
                                                   fontSize: 14.5,
@@ -774,93 +749,6 @@ Widget _photo(String image, id, BuildContext context) {
   );
 }
 
-Widget _relatedPost(String image, title, location, ratting) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          height: 110.0,
-          width: 180.0,
-          decoration: BoxDecoration(
-              image:
-                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-              color: Colors.black12,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 5.0,
-                    color: Colors.black12.withOpacity(0.1),
-                    spreadRadius: 2.0)
-              ]),
-        ),
-        const SizedBox(
-          height: 5.0,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-              fontFamily: "Sofia",
-              fontWeight: FontWeight.w600,
-              fontSize: 17.0,
-              color: Colors.black87),
-        ),
-        const SizedBox(
-          height: 2.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Icon(
-              Icons.location_on,
-              size: 18.0,
-              color: Colors.black12,
-            ),
-            Text(
-              location,
-              style: const TextStyle(
-                  fontFamily: "Sofia",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15.0,
-                  color: Colors.black26),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.star,
-              size: 18.0,
-              color: Colors.yellow,
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 3.0),
-              child: Text(
-                ratting,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "Sofia",
-                    fontSize: 13.0),
-              ),
-            ),
-
-            // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black38),),
-            const SizedBox(
-              width: 35.0,
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
 class reviewList extends StatelessWidget {
   String? image, name, time;
   reviewList({this.image, this.name, this.time});
@@ -946,4 +834,96 @@ class reviewList extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget relatedPost(
+    String? image, String? title, String? location, String? ratting) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          height: 110.0,
+          width: 180.0,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(image == null || image == ""
+                    ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                    : "${MangeAPi.baseurl}/${image.split(',').first}"),
+                fit: BoxFit.cover,
+              ),
+              color: Colors.black12,
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 5.0,
+                    color: Colors.black12.withOpacity(0.1),
+                    spreadRadius: 2.0)
+              ]),
+        ),
+        const SizedBox(
+          height: 5.0,
+        ),
+        Text(
+          title ?? 'titel',
+          style: const TextStyle(
+              fontFamily: "Sofia",
+              fontWeight: FontWeight.w600,
+              fontSize: 17.0,
+              color: Colors.black87),
+        ),
+        const SizedBox(
+          height: 2.0,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Icon(
+              Icons.location_on,
+              size: 18.0,
+              color: Colors.black12,
+            ),
+            Text(
+              location ?? 'Loction',
+              style: const TextStyle(
+                  fontFamily: "Sofia",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.0,
+                  color: Colors.black26),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.star,
+              size: 18.0,
+              color: Colors.yellow,
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 3.0),
+              child: Text(
+                ratting ?? '4',
+                style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "Sofia",
+                    fontSize: 13.0),
+              ),
+            ),
+
+            // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black45),),
+            const SizedBox(
+              width: 35.0,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

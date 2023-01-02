@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/DataSample/travelModelData.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/get_from_data_City_controller.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/get_data_from_city.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
@@ -50,30 +53,6 @@ class _destinationState extends State<destination> {
       ),
     );
 
-    var _slideImage = Container(
-      height: 222.0,
-      child: new Carousel(
-        boxFit: BoxFit.cover,
-        dotColor: Colors.white.withOpacity(0.8),
-        dotSize: 5.5,
-        dotSpacing: 16.0,
-        dotBgColor: Colors.transparent,
-        showIndicator: true,
-        overlayShadow: true,
-        overlayShadowColors: Colors.white.withOpacity(0.1),
-        overlayShadowSize: 0.9,
-        images: [
-          const AssetImage("assets/image/banner/banner4.jpg"),
-          const AssetImage("assets/image/banner/banner6.jpg"),
-          const AssetImage("assets/image/banner/banner10.jpg"),
-          const AssetImage("assets/image/banner/banner12.jpg"),
-        ],
-        onImageChange: (int, s) {},
-        onImageTap: (int) {},
-        radius: const Radius.circular(1.0),
-      ),
-    );
-
     var _description = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -112,6 +91,9 @@ class _destinationState extends State<destination> {
       body: GetBuilder<GetDataCityController>(
         init: GetDataCityController(),
         builder: (controller) {
+          List<String> phot =
+              controller.infocityModel?.city?.imgs!.split(',') ?? [''];
+
           return HandlingDataView(
             statusRequest: controller.statusRequest,
             widget: SingleChildScrollView(
@@ -119,7 +101,30 @@ class _destinationState extends State<destination> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ///Slider image in top
-                  _slideImage,
+                  Container(
+                    height: 222.0,
+                    child: new Carousel(
+                      boxFit: BoxFit.cover,
+                      dotColor: Colors.white.withOpacity(0.8),
+                      dotSize: 5.5,
+                      dotSpacing: 16.0,
+                      dotBgColor: Colors.transparent,
+                      showIndicator: true,
+                      overlayShadow: true,
+                      overlayShadowColors: Colors.white.withOpacity(0.1),
+                      overlayShadowSize: 0.9,
+                      images: List.generate(
+                        phot.length,
+                        (index) => Image.network(
+                          "${MangeAPi.baseurl}/${phot[index]}",
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      onImageChange: (int, s) {},
+                      onImageTap: (int) {},
+                      radius: const Radius.circular(1.0),
+                    ),
+                  ),
 
                   const SizedBox(
                     height: 20.0,
@@ -133,17 +138,68 @@ class _destinationState extends State<destination> {
                     catogery:
                         controller.infocityModel?.city!.categories ?? ['تراث'],
                   ),
+                  if (controller.infocityModel?.topDestination!.length != 0)
+                    TopDestinationWidget(controller: controller),
 
-                  /// Top Destination
-                  TopDestinationWidget(controller: controller),
-
-                  /// Recommended
-                  RecomendedWidget(controller: controller),
+                  if (controller.infocityModel?.places!.length != 0)
+                    RecomendedWidget(controller: controller),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (controller.infocityModel?.hotels!.length != 0)
+                    RecomendedHotelsWidget(controller: controller),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class RecomendedHotelsWidget extends StatelessWidget {
+  const RecomendedHotelsWidget({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+  final GetDataCityController controller;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.only(left: 22.0),
+            child: Text(
+              "Recommended Hotels",
+              style: TextStyle(
+                  fontFamily: "Sofia",
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: Container(
+              child: ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: controller.infocityModel?.hotels!.length,
+                itemBuilder: (ctx, index) {
+                  return cardListHotel(
+                      controller.infocityModel!.hotels![index]);
+                },
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+        ],
       ),
     );
   }
@@ -164,7 +220,7 @@ class RecomendedWidget extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(left: 22.0),
           child: Text(
-            "Recommended",
+            "Recommended Room",
             style: TextStyle(
                 fontFamily: "Sofia",
                 fontSize: 20.0,
@@ -296,6 +352,125 @@ class FutureWidget extends StatelessWidget {
   }
 }
 
+class cardListHotel extends StatelessWidget {
+  @override
+  var _txtStyleTitle = const TextStyle(
+    color: Colors.black87,
+    fontFamily: "Gotik",
+    fontSize: 17.0,
+    fontWeight: FontWeight.w800,
+  );
+
+  var _txtStyleSub = const TextStyle(
+    color: Colors.black26,
+    fontFamily: "Gotik",
+    fontSize: 12.5,
+    fontWeight: FontWeight.w600,
+  );
+
+  Hotels hotelData;
+
+  cardListHotel(this.hotelData);
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print(hotelData.sId);
+        sharedPreferences.setString('keyhot', hotelData.sId.toString());
+        Get.to(hotelDetail2());
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+        child: Container(
+          height: 250.0,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 3.0,
+                    spreadRadius: 1.0)
+              ]),
+          child: Column(children: [
+            Container(
+              height: 165.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    topLeft: Radius.circular(10.0)),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      hotelData.imgs == null || hotelData.imgs == ""
+                          ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                          : "${MangeAPi.baseurl}/${hotelData.imgs!.split(',').first}",
+                    ),
+                    fit: BoxFit.cover),
+              ),
+              alignment: Alignment.topRight,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                            width: 220.0,
+                            child: Text(
+                              hotelData.name ?? ' Hotel name',
+                              style: _txtStyleTitle,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        const Padding(padding: EdgeInsets.only(top: 5.0)),
+                        Row(
+                          children: <Widget>[
+                            ratingbar(
+                              starRating:
+                                  double.parse(hotelData.rating.toString()),
+                              color: Colors.blueAccent,
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 5.0)),
+                            Text(
+                              "(" + hotelData.rating.toString() + ")",
+                              style: _txtStyleSub,
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.9),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.location_on,
+                                size: 16.0,
+                                color: Colors.black26,
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3.0)),
+                              Text(hotelData.city ?? 'نابلس',
+                                  style: _txtStyleSub)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
 class cardList extends StatelessWidget {
   @override
   var _txtStyleTitle = const TextStyle(
@@ -316,111 +491,118 @@ class cardList extends StatelessWidget {
 
   cardList(this.hotelData);
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-      child: Container(
-        height: 250.0,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12.withOpacity(0.1),
-                  blurRadius: 3.0,
-                  spreadRadius: 1.0)
-            ]),
-        child: Column(children: [
-          Container(
-            height: 165.0,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0)),
-              image: DecorationImage(
-                  image: NetworkImage(
-                    hotelData.imgs == null || hotelData.imgs == ""
-                        ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
-                        : "${MangeAPi.baseurl}/${hotelData.imgs!.split(',').first}",
-                  ),
-                  fit: BoxFit.cover),
+    return InkWell(
+      onTap: () {
+        sharedPreferences.setString('keyroom', hotelData.sId.toString());
+        Get.to(HotelDetail());
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+        child: Container(
+          height: 250.0,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 3.0,
+                    spreadRadius: 1.0)
+              ]),
+          child: Column(children: [
+            Container(
+              height: 165.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    topLeft: Radius.circular(10.0)),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      hotelData.imgs == null || hotelData.imgs == ""
+                          ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                          : "${MangeAPi.baseurl}/${hotelData.imgs!.split(',').first}",
+                    ),
+                    fit: BoxFit.cover),
+              ),
+              alignment: Alignment.topRight,
             ),
-            alignment: Alignment.topRight,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                          width: 220.0,
-                          child: Text(
-                            hotelData.title ?? ' Hotel name',
-                            style: _txtStyleTitle,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      const Padding(padding: EdgeInsets.only(top: 5.0)),
-                      Row(
-                        children: <Widget>[
-                          ratingbar(
-                            starRating: double.parse(
-                                hotelData.averageRating.toString()),
-                            color: Colors.blueAccent,
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 5.0)),
-                          Text(
-                            "(" + hotelData.averageRating.toString() + ")",
-                            style: _txtStyleSub,
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.9),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                            width: 220.0,
+                            child: Text(
+                              hotelData.title ?? ' Hotel name',
+                              style: _txtStyleTitle,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        const Padding(padding: EdgeInsets.only(top: 5.0)),
+                        Row(
                           children: <Widget>[
-                            const Icon(
-                              Icons.location_on,
-                              size: 16.0,
-                              color: Colors.black26,
+                            ratingbar(
+                              starRating: double.parse(
+                                  hotelData.averageRating.toString()),
+                              color: Colors.blueAccent,
                             ),
-                            const Padding(padding: EdgeInsets.only(top: 3.0)),
-                            Text(hotelData.city ?? 'نابلس', style: _txtStyleSub)
+                            const Padding(padding: EdgeInsets.only(left: 5.0)),
+                            Text(
+                              "(" + hotelData.averageRating.toString() + ")",
+                              style: _txtStyleSub,
+                            )
                           ],
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.9),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.location_on,
+                                size: 16.0,
+                                color: Colors.black26,
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3.0)),
+                              Text(hotelData.city ?? 'نابلس',
+                                  style: _txtStyleSub)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 13.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "\$" + hotelData.price.toString(),
-                        style: const TextStyle(
-                            fontSize: 25.0,
-                            color: Colors.blueAccent,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Gotik"),
-                      ),
-                      Text("per night",
-                          style: _txtStyleSub.copyWith(fontSize: 11.0))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 13.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "\$" + hotelData.price.toString(),
+                          style: const TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Gotik"),
+                        ),
+                        Text("per night",
+                            style: _txtStyleSub.copyWith(fontSize: 11.0))
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ]),
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }
@@ -494,44 +676,6 @@ class TopDestinationCard extends StatelessWidget {
                     fontSize: 15.0,
                     color: Colors.black26),
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.star,
-                size: 18.0,
-                color: Colors.yellow,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 3.0),
-                child: Text(
-                  '5',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Sofia",
-                      fontSize: 13.0),
-                ),
-              ),
-              const SizedBox(
-                width: 35.0,
-              ),
-              Container(
-                height: 27.0,
-                width: 82.0,
-                decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: const Center(
-                  child: Text("Discount 15%",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 10.0)),
-                ),
-              )
             ],
           ),
         ],

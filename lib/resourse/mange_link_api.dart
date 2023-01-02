@@ -15,6 +15,7 @@ class MangeAPi {
   static const String updateUser = "$baseurl/api/users/updateUser"; //id user
   static const String getinfoRatingandBoking =
       "$baseurl/api/rooms/getRoom"; //id room
+
   static const String getdatabycities = "$baseurl/api/rooms/getCity"; //idcity
   static const String getInfoUser =
       "$baseurl/api/users/getUserInformation"; //id user
@@ -40,7 +41,8 @@ class MangeAPi {
   static const String offers = "$baseurl/api/rooms/offers";
   static const String addData = "$baseurl/api/rooms/availability"; //id
   ///637cf32c33762baba63f1827";
-
+  static const String getinfohotel =
+      "$baseurl/api/hotels/getHotel"; ////63b1dae6cdf4dc13bf830aae
   ///637cf32c33762baba63f1827/?categories=متنزهات,ملاعب"; //id
   ///63a121b56cc98ab64c281828 : auth
 }

@@ -12,6 +12,15 @@ getInfoRoomRespon(String idroom) async {
   return respons;
 }
 
+getInfoHotelRespon(String idhotel) async {
+  Curd curd = Curd();
+  var respons = await curd.getrequest(
+    '${MangeAPi.getinfohotel}/$idhotel',
+  );
+  print(respons);
+  return respons;
+}
+
 addDataRespon({String? data, String? placeid}) async {
   Curd curd = Curd();
   var respons = await curd.putrequest(

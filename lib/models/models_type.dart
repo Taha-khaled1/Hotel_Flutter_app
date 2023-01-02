@@ -44,7 +44,7 @@ class MessageHotelsType {
     name = json['name'] + json['title'];
     type = json['type'];
     desc = json['desc'];
-    rating = json['rating'];
+    rating = json['rating'].toString();
     featured = json['featured'];
     imgs = json['imgs'];
   }
@@ -95,7 +95,7 @@ class MessageTowHouse {
   int? price;
   String? desc;
   String? city;
-  int? averageRating;
+  double? averageRating;
   String? featured;
   String? imgs;
 

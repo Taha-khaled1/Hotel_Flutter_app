@@ -251,14 +251,7 @@ class cardList extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new hotelDetail2(
-                    title: hotelData.name,
-                    id: hotelData.id,
-                    image: hotelData.img,
-                    location: hotelData.location,
-                    price: hotelData.price,
-                    ratting: hotelData.rating,
-                  ),
+              pageBuilder: (_, __, ___) => new hotelDetail2(),
               transitionDuration: const Duration(milliseconds: 600),
               transitionsBuilder:
                   (_, Animation<double> animation, __, Widget child) {

@@ -426,29 +426,17 @@ class RelatedRoomsWidget extends StatelessWidget {
                                       if ((controller.startData!.isBefore(
                                                   DateTime.parse(x[0])) &&
                                               controller.endData!.isBefore(
-                                                  DateTime.parse(x[0]))) ||
+                                                  DateTime.parse(x[1]))) ||
                                           (controller.startData!.isAfter(
-                                                  DateTime.parse(x[1])) &&
+                                                  DateTime.parse(x[0])) &&
                                               controller.endData!.isAfter(
                                                   DateTime.parse(x[1])))) {
-                                        print(
-                                            'GOOOOOOOO PaymentWebView  22222 ');
-                                        sharedPreferences.setString(
-                                            'price',
-                                            controller
-                                                .infoRoomModel!.room!.price
-                                                .toString());
-                                        sharedPreferences.setString('data',
-                                            '${controller.startData},${controller.endData}');
-                                        sharedPreferences.setString(
-                                            'roomId',
-                                            controller.infoRoomModel!.room!.sId
-                                                .toString());
-                                        Get.to(PaymentWebView());
                                       } else {
+                                        controller.isDatatime == false;
                                         showsnackBar(
                                           'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
                                         );
+                                        return;
                                       }
                                     }
                                   } else {
@@ -460,11 +448,33 @@ class RelatedRoomsWidget extends StatelessWidget {
                                     sharedPreferences.setString('data',
                                         '${controller.startData},${controller.endData}');
                                     sharedPreferences.setString(
-                                        'roomId',
-                                        controller.infoRoomModel!.room!.sId
-                                            .toString());
+                                      'roomId',
+                                      controller.infoRoomModel!.room!.sId
+                                          .toString(),
+                                    );
                                     Get.to(PaymentWebView());
+                                    Get.delete<GetInfoRoomController>();
                                   }
+                                }
+
+                                if (controller.isDatatime) {
+                                  print('GOOOOOOOO PaymentWebView  22222 ');
+                                  sharedPreferences.setString(
+                                      'price',
+                                      controller.infoRoomModel!.room!.price
+                                          .toString());
+                                  sharedPreferences.setString('data',
+                                      '${controller.startData},${controller.endData}');
+                                  sharedPreferences.setString(
+                                      'roomId',
+                                      controller.infoRoomModel!.room!.sId
+                                          .toString());
+                                  Get.to(PaymentWebView());
+                                  Get.delete<GetInfoRoomController>();
+                                } else {
+                                  showsnackBar(
+                                    'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                  );
                                 }
                               },
                               child: Container(

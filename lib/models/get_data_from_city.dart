@@ -148,12 +148,12 @@ class Hotels {
   String? type;
   String? city;
   String? destanceFromCityCenter;
-  String? address;
   String? desc;
-  String? rating;
+  double? rating;
   int? featured;
   List<String>? category;
   String? imgs;
+  Address? address;
 
   Hotels(
       {this.sId,
@@ -161,12 +161,12 @@ class Hotels {
       this.type,
       this.city,
       this.destanceFromCityCenter,
-      this.address,
       this.desc,
       this.rating,
       this.featured,
       this.category,
-      this.imgs});
+      this.imgs,
+      this.address});
 
   Hotels.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -174,12 +174,13 @@ class Hotels {
     type = json['type'];
     city = json['city'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
-    address = json['address'];
     desc = json['desc'];
-    rating = json['rating'].toString();
+    rating = json['rating'];
     featured = json['featured'];
     category = json['category'].cast<String>();
     imgs = json['imgs'];
+    address =
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -189,12 +190,39 @@ class Hotels {
     data['type'] = this.type;
     data['city'] = this.city;
     data['destanceFromCityCenter'] = this.destanceFromCityCenter;
-    data['address'] = this.address;
     data['desc'] = this.desc;
     data['rating'] = this.rating;
     data['featured'] = this.featured;
     data['category'] = this.category;
     data['imgs'] = this.imgs;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
+    return data;
+  }
+}
+
+class Address {
+  String? placeId;
+  double? longitude;
+  double? latitude;
+  String? sId;
+
+  Address({this.placeId, this.longitude, this.latitude, this.sId});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    placeId = json['placeId'];
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['placeId'] = this.placeId;
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['_id'] = this.sId;
     return data;
   }
 }

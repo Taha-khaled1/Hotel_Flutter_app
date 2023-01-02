@@ -576,23 +576,23 @@ class ItemGrid extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new hotelDetail2(
-                    title: gridItem.title,
-                    id: gridItem.id,
-                    image: gridItem.img,
-                    location: gridItem.location,
-                    price: gridItem.price,
-                    ratting: gridItem.ratingValue,
-                  ),
-              transitionDuration: const Duration(milliseconds: 600),
-              transitionsBuilder:
-                  (_, Animation<double> animation, __, Widget child) {
-                return Opacity(
-                  opacity: animation.value,
-                  child: child,
-                );
-              }));
+          // Navigator.of(context).push(PageRouteBuilder(
+          //     pageBuilder: (_, __, ___) => new hotelDetail2(
+          //           title: gridItem.title,
+          //           id: gridItem.id,
+          //           image: gridItem.img,
+          //           location: gridItem.location,
+          //           price: gridItem.price,
+          //           ratting: gridItem.ratingValue,
+          //         ),
+          //     transitionDuration: const Duration(milliseconds: 600),
+          //     transitionsBuilder:
+          //         (_, Animation<double> animation, __, Widget child) {
+          //       return Opacity(
+          //         opacity: animation.value,
+          //         child: child,
+          //       );
+          //     }));
         },
         child: Container(
           decoration: BoxDecoration(
