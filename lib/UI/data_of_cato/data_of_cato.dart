@@ -20,77 +20,113 @@ class DataOfCato extends StatelessWidget {
         builder: (controller) {
           return HandlingDataView(
             statusRequest: controller.statusRequest,
-            widget: Column(
-              children: [
-                if (controller.helpModel?.nearestPlaces!.length != 0)
-                  Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                              top: 40.0,
-                              right: 20.0,
-                            ),
-                            child: Text(
-                              'Rooms',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                          ),
-                          Expanded(
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
+            widget: controller.helpModel?.nearestHotels != null
+                ? Column(
+                    children: [
+                      if (controller.helpModel!.nearestPlaces?.length != 0 &&
+                          controller.helpModel!.nearestPlaces?.length != null)
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              print(
+                                  controller.helpModel!.nearestPlaces?.length);
+                            },
+                            child: Container(
+                              color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 20.0,
+                                      top: 40.0,
+                                      right: 20.0,
+                                    ),
+                                    child: Text(
+                                      'Rooms',
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                      ),
+                                      itemCount: controller.helpModel
+                                              ?.nearestPlaces?.length ??
+                                          0,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return CardLastActivity(
+                                          rommsdata: controller
+                                              .helpModel?.nearestPlaces![index],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                              itemCount:
-                                  controller.helpModel?.nearestPlaces?.length ??
-                                      0,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CardLastActivity(
-                                  rommsdata: controller
-                                      .helpModel?.nearestPlaces![index],
-                                );
-                              },
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                if (controller.helpModel?.nearestHotels!.length != 0)
-                  Expanded(
+                        ),
+                      if (controller.helpModel!.nearestHotels?.length != 0 &&
+                          controller.helpModel!.nearestHotels?.length != null)
+                        Expanded(
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20.0,
+                                    top: 40.0,
+                                    right: 20.0,
+                                  ),
+                                  child: Text(
+                                    'Hotels',
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: CardGrid(
+                                      searchModel: controller.helpModel),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
+                : Center(
                     child: Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                              top: 40.0,
-                              right: 20.0,
-                            ),
-                            child: Text(
-                              'Hotels',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                          ),
-                          Expanded(
-                            child: CardGrid(searchModel: controller.helpModel),
+                      alignment: Alignment.center,
+                      width: 350,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.red, Colors.blue],
+                            begin: const FractionalOffset(0.0, 0.0),
+                            end: const FractionalOffset(0.5, 0.0),
+                            stops: [0.0, 1.0],
+                            tileMode: TileMode.clamp),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 4),
                           ),
                         ],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        'لا يوجد موقع حالي لهذا المستخدم الرجاء إدخال واحد',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
                   ),
-              ],
-            ),
           );
         },
       ),

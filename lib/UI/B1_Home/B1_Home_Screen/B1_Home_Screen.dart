@@ -734,7 +734,7 @@ class _CUstomitemCardState extends State<CUstomitemCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        sharedPreferences.setString('key', widget.id.toString());
+        sharedPreferences.setString('dataofcato', widget.title.toString());
         Get.to(DataOfCato());
       },
       child: Padding(

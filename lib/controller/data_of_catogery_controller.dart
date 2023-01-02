@@ -11,6 +11,7 @@ import 'package:hotelbooking/models/search_models.dart';
 class DataOfCatogeryController extends GetxController {
   DataofCatogeryModels? helpModel;
   late StatusRequest statusRequest;
+
   getdataSearch(String searchtext) async {
     statusRequest = StatusRequest.loading;
     update();

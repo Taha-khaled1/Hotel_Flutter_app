@@ -15,8 +15,10 @@ getTypesRespon() async {
 
 getDataOfcatoRespon(String cato) async {
   Curd curd = Curd();
+  print(
+      '${MangeAPi.nearestPlaces}?userId=${sharedPreferences.getString('id')}&category=$cato');
   var respons = await curd.getrequest(
-    '${MangeAPi.nearestPlaces}?userId=${sharedPreferences.getString('id')}&category=$cato;',
+    '${MangeAPi.nearestPlaces}?userId=${sharedPreferences.getString('id')}&category=$cato',
   );
   print(respons);
   return respons;
