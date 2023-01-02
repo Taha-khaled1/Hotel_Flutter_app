@@ -11,6 +11,7 @@ import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/widget/topReatingWidget.d
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/B1_Home/House/HouseList.dart';
+import 'package:hotelbooking/UI/data_of_cato/data_of_cato.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/UI/pages/filter.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
@@ -228,9 +229,15 @@ class _HomeState extends State<Home> {
                                       (BuildContext context, int index) {
                                     return CUstomitemCard(
                                       image: controller.getusercatogerys
-                                          ?.userCategories![index].imgs,
+                                              ?.userCategories![index].imgs ??
+                                          '',
                                       title: controller.getusercatogerys
-                                          ?.userCategories![index].name,
+                                              ?.userCategories![index].name ??
+                                          'name',
+                                      id: controller.getusercatogerys
+                                              ?.userCategories![index].sId
+                                              .toString() ??
+                                          '123',
                                     );
                                   },
                                 ),
@@ -709,11 +716,12 @@ class ItemGrid extends StatelessWidget {
 }
 
 class CUstomitemCard extends StatefulWidget {
-  String? image, title;
+  final String image, title, id;
 
   CUstomitemCard({
-    this.image,
-    this.title,
+    required this.image,
+    required this.title,
+    required this.id,
   });
 
   @override
@@ -725,7 +733,10 @@ class _CUstomitemCardState extends State<CUstomitemCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        sharedPreferences.setString('key', widget.id.toString());
+        Get.to(DataOfCato());
+      },
       child: Padding(
         padding: const EdgeInsets.only(
             left: 5.0, right: 5.0, top: 5.0, bottom: 10.0),
@@ -742,7 +753,7 @@ class _CUstomitemCardState extends State<CUstomitemCard> {
                 borderRadius: const BorderRadius.all(Radius.circular(15.0)),
                 image: DecorationImage(
                   image: NetworkImage(
-                      '${MangeAPi.baseurl}/${widget.image!.split(',').first}'),
+                      '${MangeAPi.baseurl}/${widget.image.split(',').first}'),
                   fit: BoxFit.cover,
                   opacity: isSlected ? 1 : 0.7,
                 ),
@@ -761,7 +772,7 @@ class _CUstomitemCardState extends State<CUstomitemCard> {
                 ),
                 child: Center(
                   child: Text(
-                    isSlected ? widget.title! : 'Slected',
+                    isSlected ? widget.title : 'Slected',
                     style: TextStyle(
                       shadows: [
                         BoxShadow(

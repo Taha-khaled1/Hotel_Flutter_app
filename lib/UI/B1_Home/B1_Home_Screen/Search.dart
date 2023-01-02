@@ -152,64 +152,6 @@ class _searchState extends State<search> {
         ],
       ));
 
-  var _popular = Padding(
-    padding: const EdgeInsets.only(top: 50.0),
-    child: Container(
-      height: 234.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0),
-            child: Text(
-              "Popular",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Gotik",
-                  fontSize: 16.0,
-                  color: Colors.black),
-            ),
-          ),
-          const Padding(padding: EdgeInsets.only(top: 10.0)),
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                const Padding(
-                    padding: EdgeInsets.only(
-                  left: 20.0,
-                )),
-                cardLastActivity(
-                  image: 'assets/image/images/search1.png',
-                  title: 'Amanda Hotel Sillicon Valey',
-                  Rating: "4.8",
-                  Salary: '\$ 500 ',
-                  sale: '200',
-                ),
-                cardLastActivity(
-                  image: 'assets/image/images/search2.png',
-                  title: 'Hotel de lahoya',
-                  Rating: "5.0",
-                  Salary: '\$ 1400 ',
-                  sale: '200',
-                ),
-                cardLastActivity(
-                  image: 'assets/image/images/search3.png',
-                  title: 'Star Hotel',
-                  Rating: "2.0",
-                  Salary: '\$ 1000 ',
-                  sale: '200',
-                ),
-                const Padding(padding: EdgeInsets.only(right: 10.0)),
-              ],
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
@@ -224,7 +166,7 @@ class _searchState extends State<search> {
                 /// Caliing a variable
                 _textHello,
                 _search,
-                _popular,
+
                 const Padding(padding: EdgeInsets.only(bottom: 30.0, top: 2.0))
               ],
             ),

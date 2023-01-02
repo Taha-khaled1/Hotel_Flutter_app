@@ -3,25 +3,26 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/data_of_catogery_controller.dart';
 import 'package:hotelbooking/controller/search_controller.dart';
 import 'package:hotelbooking/main.dart';
-import 'package:hotelbooking/models/search_models.dart';
+import 'package:hotelbooking/models/dataofcatogery_models.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+class DataOfCato extends StatelessWidget {
+  const DataOfCato({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<SearchController>(
-        init: SearchController(),
+      body: GetBuilder<DataOfCatogeryController>(
+        init: DataOfCatogeryController(),
         builder: (controller) {
           return HandlingDataView(
             statusRequest: controller.statusRequest,
             widget: Column(
               children: [
-                if (controller.helpModel?.rooms!.length != 0)
+                if (controller.helpModel?.nearestPlaces!.length != 0)
                   Expanded(
                     child: Container(
                       color: Colors.white,
@@ -48,11 +49,12 @@ class SearchScreen extends StatelessWidget {
                                 crossAxisCount: 3,
                               ),
                               itemCount:
-                                  controller.helpModel?.rooms?.length ?? 0,
+                                  controller.helpModel?.nearestPlaces?.length ??
+                                      0,
                               itemBuilder: (BuildContext context, int index) {
                                 return CardLastActivity(
-                                  rommsdata:
-                                      controller.helpModel?.rooms![index],
+                                  rommsdata: controller
+                                      .helpModel?.nearestPlaces![index],
                                 );
                               },
                             ),
@@ -61,7 +63,7 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (controller.helpModel?.hotels!.length != 0)
+                if (controller.helpModel?.nearestHotels!.length != 0)
                   Expanded(
                     child: Container(
                       color: Colors.white,
@@ -98,7 +100,7 @@ class SearchScreen extends StatelessWidget {
 
 //---------------------------------------------------------------------
 class CardLastActivity extends StatelessWidget {
-  Rooms? rommsdata;
+  NearestPlaces? rommsdata;
 
   CardLastActivity({this.rommsdata});
   @override
@@ -107,7 +109,7 @@ class CardLastActivity extends StatelessWidget {
       padding: const EdgeInsetsDirectional.only(top: 10.0, bottom: 8.0),
       child: InkWell(
         onTap: () {
-          Get.delete<SearchController>();
+          Get.delete<DataOfCatogeryController>();
           sharedPreferences.setString('keyroom', rommsdata!.sId.toString());
           Navigator.of(context).push(
             PageRouteBuilder(
@@ -242,7 +244,7 @@ class CardLastActivity extends StatelessWidget {
 
 class CardGrid extends StatelessWidget {
   const CardGrid({Key? key, required this.searchModel}) : super(key: key);
-  final SearchModel? searchModel;
+  final DataofCatogeryModels? searchModel;
 
   @override
   Widget build(BuildContext context) {
@@ -256,8 +258,8 @@ class CardGrid extends StatelessWidget {
       mainAxisSpacing: 0.0,
       primary: false,
       children: List.generate(
-        searchModel?.hotels?.length ?? 0,
-        (index) => itemGrid(searchModel?.hotels?[index]),
+        searchModel?.nearestHotels?.length ?? 0,
+        (index) => itemGrid(searchModel?.nearestHotels?[index]),
       ),
     );
   }
@@ -265,7 +267,7 @@ class CardGrid extends StatelessWidget {
 
 /// Component Card item in gridView after done loading image
 class itemGrid extends StatelessWidget {
-  Hotels? hotelData;
+  NearestHotels? hotelData;
   itemGrid(this.hotelData);
 
   @override
@@ -368,8 +370,8 @@ class itemGrid extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           ratingbar(
-                            starRating:
-                                double.parse(hotelData?.rating! ?? '5.0'),
+                            starRating: double.parse(
+                                hotelData?.rating!.toString() ?? '5.0'),
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),
