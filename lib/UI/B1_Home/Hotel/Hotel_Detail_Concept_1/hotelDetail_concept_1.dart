@@ -1,11 +1,15 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/payment_webview.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/reviewDetail1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/maps.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/info_room_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import '../../../../Library/Ratting_Bar/ratting.dart';
@@ -301,30 +305,236 @@ class RelatedRoomsWidget extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: InkWell(
             onTap: () {
-              Navigator.of(context).pop();
+              print('object');
+
+              Get.bottomSheet(
+                SizedBox(
+                  height: 400,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "يرجي اختيار التاريخ الحجز",
+                        style: TextStyle(
+                            color: Colors.grey[200],
+                            fontFamily: "Sofia",
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'تاريخ البدايه',
+                              style: TextStyle(
+                                  color: Colors.grey[200],
+                                  fontFamily: "Sofia",
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            DateTimePicker(
+                              type: DateTimePickerType.dateTimeSeparate,
+                              dateMask: 'd MMM, yyyy',
+                              initialValue: DateTime.now().toString(),
+                              firstDate: DateTime(2023),
+                              lastDate: DateTime(2100),
+                              icon: Icon(Icons.event),
+                              dateLabelText: 'Date',
+                              timeLabelText: "Hour",
+                              selectableDayPredicate: (date) {
+                                // Disable weekend days to select from the calendar
+                                if (date.weekday == 6 || date.weekday == 7) {
+                                  return false;
+                                }
+
+                                return true;
+                              },
+                              onChanged: (val) {
+                                print('onchan');
+                                controller.startData = DateTime.parse(val);
+                                ;
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'تاريخ النهايه',
+                              style: TextStyle(
+                                  color: Colors.grey[200],
+                                  fontFamily: "Sofia",
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            DateTimePicker(
+                              type: DateTimePickerType.dateTimeSeparate,
+                              dateMask: 'd MMM, yyyy',
+                              initialValue: DateTime.now().toString(),
+                              firstDate: DateTime(2023),
+                              lastDate: DateTime(2100),
+                              icon: Icon(Icons.event),
+                              dateLabelText: 'Date',
+                              timeLabelText: "Hour",
+                              selectableDayPredicate: (date) {
+                                // Disable weekend days to select from the calendar
+                                if (date.weekday == 6 || date.weekday == 7) {
+                                  return false;
+                                }
+
+                                return true;
+                              },
+                              onChanged: (val) {
+                                print('onchan');
+                                controller.endData = DateTime.parse(val);
+                              },
+                            ),
+                            SizedBox(
+                              height: 36,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (controller.startData == null ||
+                                    controller.endData == null) {
+                                  showsnackBar(
+                                    'يرجي تحديد تاريخ البدايه والنهايه',
+                                  );
+                                } else {
+                                  if (controller.infoRoomModel!.room!
+                                      .unavailableDates!.isNotEmpty) {
+                                    for (int i = 0;
+                                        i <
+                                            controller.infoRoomModel!.room!
+                                                .unavailableDates!.length;
+                                        i++) {
+                                      List<String> x = controller.infoRoomModel!
+                                          .room!.unavailableDates![i]
+                                          .split(',');
+                                      if ((controller.startData!.isBefore(
+                                                  DateTime.parse(x[0])) &&
+                                              controller.endData!.isBefore(
+                                                  DateTime.parse(x[0]))) ||
+                                          (controller.startData!.isAfter(
+                                                  DateTime.parse(x[1])) &&
+                                              controller.endData!.isAfter(
+                                                  DateTime.parse(x[1])))) {
+                                        print(
+                                            'GOOOOOOOO PaymentWebView  22222 ');
+                                        sharedPreferences.setString(
+                                            'price',
+                                            controller
+                                                .infoRoomModel!.room!.price
+                                                .toString());
+                                        sharedPreferences.setString('data',
+                                            '${controller.startData},${controller.endData}');
+                                        sharedPreferences.setString(
+                                            'roomId',
+                                            controller.infoRoomModel!.room!.sId
+                                                .toString());
+                                        Get.to(PaymentWebView());
+                                      } else {
+                                        showsnackBar(
+                                          'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                        );
+                                      }
+                                    }
+                                  } else {
+                                    print('GOOOOOOOO PaymentWebView');
+                                    sharedPreferences.setString(
+                                        'price',
+                                        controller.infoRoomModel!.room!.price
+                                            .toString());
+                                    sharedPreferences.setString('data',
+                                        '${controller.startData},${controller.endData}');
+                                    sharedPreferences.setString(
+                                        'roomId',
+                                        controller.infoRoomModel!.room!.sId
+                                            .toString());
+                                    Get.to(PaymentWebView());
+                                  }
+                                }
+                              },
+                              child: Container(
+                                height: 55.0,
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF8F73F2),
+                                      Colors.deepPurpleAccent,
+                                    ],
+                                    begin: FractionalOffset(0.0, 0.0),
+                                    end: FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "Book Now",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19.0,
+                                      fontFamily: "Sofia",
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                backgroundColor: Colors.teal,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(35),
+                    side: BorderSide(width: 5, color: Colors.white10)),
+                enableDrag: false,
+              );
             },
             child: Container(
               height: 55.0,
               width: double.infinity,
               decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF8F73F2),
-                        Colors.deepPurpleAccent,
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF8F73F2),
+                    Colors.deepPurpleAccent,
+                  ],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                ),
+              ),
               child: const Center(
                 child: Text(
                   "Book Now",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19.0,
-                      fontFamily: "Sofia",
-                      fontWeight: FontWeight.w600),
+                    color: Colors.white,
+                    fontSize: 19.0,
+                    fontFamily: "Sofia",
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
@@ -596,7 +806,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    bool isDis = controller.infoRoomModel?.room?.discount != null ||
+    bool isDis = controller.infoRoomModel?.room?.discount != null &&
             controller.infoRoomModel?.room?.discount != 0
         ? true
         : false;
@@ -674,12 +884,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                           color: Colors.black26,
                         ),
                         Text(
-                          controller.infoRoomModel!.room!.address.toString(),
+                          controller.infoRoomModel!.room!.city.toString(),
                           style: TextStyle(
-                              color: Colors.black26,
-                              fontSize: 14.5,
-                              fontFamily: "Popins",
-                              fontWeight: FontWeight.w800),
+                            color: Colors.black26,
+                            fontSize: 14.5,
+                            fontFamily: "Popins",
+                            fontWeight: FontWeight.w800,
+                          ),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -688,7 +899,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 20.0, top: 10.0, bottom: 10.0),
+                      left: 20.0,
+                      top: 10.0,
+                      bottom: 10.0,
+                    ),
                     child: Container(
                       child: isDis
                           ? Row(
@@ -710,9 +924,11 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                   width: 10,
                                 ),
                                 Text(
-                                  ((50 / 100) *
+                                  ((controller.infoRoomModel!.room!.discount! /
+                                              100) *
                                           controller.infoRoomModel!.room!.price!
                                               .toDouble())
+                                      .toString()
                                       .toString(),
                                   style: const TextStyle(
                                     color: Color(0xFF8F73F2),

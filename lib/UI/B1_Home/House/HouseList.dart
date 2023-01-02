@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/models/get_top_reating_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:hotelbooking/DataSample/HotelListData.dart';
@@ -55,47 +57,6 @@ class _houseListState extends State<houseList> {
 
   @override
   Widget build(BuildContext context) {
-    /// Item first above "Week Promotion" with image Promotion
-    var _promoHorizontalList = Container(
-      color: Colors.white,
-      height: 215.0,
-      padding: const EdgeInsets.only(bottom: 40.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, top: 10.0, bottom: 3.0, right: 20.0),
-              child: Text("Week Promotion", style: _customTextStyleBlack)),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10.0),
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                /// Call itemPopular Class
-                const Padding(padding: EdgeInsets.only(left: 20.0)),
-                itemPopular(
-                  image: "assets/image/room/room1.jpg",
-                  title: "Discount 10%",
-                ),
-                const Padding(padding: EdgeInsets.only(left: 10.0)),
-                itemPopular(
-                  image: "assets/image/room/room2.jpg",
-                  title: "Discount 20%",
-                ),
-                const Padding(padding: EdgeInsets.only(left: 10.0)),
-                itemPopular(
-                    image: "assets/image/room/room3.jpg",
-                    title: "Discount 30%"),
-                const Padding(padding: EdgeInsets.only(left: 5.0)),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-
     /// SubCategory item
     var _subCategory = Container(
       child: Column(
@@ -323,7 +284,7 @@ class _houseListState extends State<houseList> {
           child: Column(
             children: <Widget>[
               /// Get a variable
-              _promoHorizontalList,
+
               _subCategory,
               _itemDiscount,
               _itemPopular,
@@ -338,25 +299,105 @@ class _houseListState extends State<houseList> {
 
 ///Item Popular component class
 class itemPopular extends StatelessWidget {
-  String? image, title, id;
+  RoomsWithOffers? roomsWithOffers;
 
-  itemPopular({this.image, this.title, this.id});
+  itemPopular({this.roomsWithOffers});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: 130.0,
-          height: 185,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-            image: DecorationImage(
-              image: NetworkImage(
-                  '${MangeAPi.baseurl}/${image!.split(',').first}'),
-              fit: BoxFit.cover,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Material(
+              child: Container(
+                height: 100.0,
+                width: 140.0,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(7.0),
+                      topRight: Radius.circular(7.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(roomsWithOffers!.imgs == null ||
+                            roomsWithOffers!.imgs == ""
+                        ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                        : "${MangeAPi.baseurl}/${roomsWithOffers!.imgs!.split(',').first}"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Container(
+                width: 110.0,
+                child: Text(
+                  roomsWithOffers?.title ?? 'titel',
+                  style: const TextStyle(
+                      letterSpacing: 0.5,
+                      color: Colors.black54,
+                      fontFamily: "Sans",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13.0),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 2.0)),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 0.0),
+                  child: Text(
+                    roomsWithOffers?.price.toString() ?? '0.0',
+                    style: const TextStyle(
+                        color: Colors.black54,
+                        fontFamily: "Gotik",
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14.0),
+                  ),
+                ),
+                const Text(
+                  "/night",
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontFamily: "Gotik",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 10.0),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 15.0, top: 3.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      ratingbar(
+                        starRating: double.parse(
+                            roomsWithOffers?.averageRating.toString() ?? '2'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Text(
+                          roomsWithOffers?.averageRating.toString() ?? '0',
+                          style: const TextStyle(
+                              fontFamily: "Sans",
+                              color: Colors.black26,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         Positioned(
           right: 10,
@@ -382,7 +423,7 @@ class itemPopular extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      title ?? '0',
+                      roomsWithOffers?.discount.toString() ?? '0',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),

@@ -374,7 +374,8 @@ class itemGrid extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           ratingbar(
-                            starRating: hotelData?.rating!.toDouble() ?? 5.0,
+                            starRating:
+                                double.parse(hotelData?.rating! ?? '5.0'),
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),

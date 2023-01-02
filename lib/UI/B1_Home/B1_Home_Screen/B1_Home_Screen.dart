@@ -267,7 +267,7 @@ class OffersHouseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      height: 215.0,
+      height: 225.0,
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,10 +295,7 @@ class OffersHouseWidget extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: itemPopular(
-                    image: roomsWithOffers?.roomsWithOffers?[index].imgs,
-                    title:
-                        "${roomsWithOffers?.roomsWithOffers?[index].discount}",
-                    id: roomsWithOffers?.roomsWithOffers?[index].sId,
+                    roomsWithOffers: roomsWithOffers?.roomsWithOffers![index],
                   ),
                 );
               },

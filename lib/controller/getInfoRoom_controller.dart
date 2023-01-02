@@ -6,7 +6,8 @@ import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/info_room_model.dart';
 
 class GetInfoRoomController extends GetxController {
-  int y = 0;
+  DateTime? startData;
+  DateTime? endData;
   late StatusRequest statusRequest;
   InfoRoomModel? infoRoomModel;
   getdataTopreating(String id) async {

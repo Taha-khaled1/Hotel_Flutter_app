@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hotelbooking/UI/fliter_screen/fliter_screen.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/controller/filtter_controller.dart';
 import 'package:hotelbooking/models/cities_model.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
@@ -361,8 +363,12 @@ class _FilterState extends State<Filter> {
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder()),
                       onPressed: () async {
-                        Get.to(FilterScreen());
-                        controller.getdataFromFiltter();
+                        if (i == false && o == false && u == false) {
+                          showsnackBar(' يجب اختيار النوع ');
+                        } else {
+                          Get.to(FilterScreen());
+                          controller.getdataFromFiltter();
+                        }
                       },
                       child: const Text("Apply"),
                     ),

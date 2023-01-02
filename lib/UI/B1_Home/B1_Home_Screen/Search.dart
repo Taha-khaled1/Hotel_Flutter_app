@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/ShardFunction/valid.dart';
 import 'package:hotelbooking/UI/search_screen/search_screen.dart';
+import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/data/functions_response/get_by_type.dart';
 import 'package:hotelbooking/main.dart';
 
@@ -114,57 +115,6 @@ class _searchState extends State<search> {
                         blurRadius: 2.0,
                         spreadRadius: 0.0)
                   ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15.0),
-                        child: Icon(
-                          Icons.access_time,
-                          color: Colors.black26,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          "Now",
-                          style: txtButton,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Container(
-                    height: 50.0,
-                    width: 190.0,
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 2.0,
-                          spreadRadius: 0.0)
-                    ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        const Padding(
-                          padding: EdgeInsets.only(left: 15.0),
-                          child: Icon(
-                            Icons.location_on,
-                            color: Colors.black26,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Text(
-                            "Location",
-                            style: txtButton,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),
@@ -174,8 +124,7 @@ class _searchState extends State<search> {
             child: InkWell(
               onTap: () {
                 if (searchText?.text == null) {
-                  print(
-                      '----------------------------xxxxxxxxxxxxxxxxxxxxxx---------------------------------------');
+                  showsnackBar('يرجي ادخال قيمه');
                 } else {
                   print(
                       '----------------------------ooooooooooooooooooooooooooooooooooo---------------------------------------');

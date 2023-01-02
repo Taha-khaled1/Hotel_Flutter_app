@@ -41,7 +41,6 @@ class Room {
   int? maxPeople;
   String? desc;
   String? city;
-  String? address;
   int? destanceFromCityCenter;
   int? averageRating;
   List<String>? features;
@@ -49,10 +48,11 @@ class Room {
   int? bookingNumber;
   List<String>? unavailableDates;
   List<String>? category;
+  int? discount;
   List<Feedbacks>? feedbacks;
   List<String>? roomNumbers;
   String? imgs;
-  int? discount;
+  Address? address;
 
   Room(
       {this.sId,
@@ -62,7 +62,6 @@ class Room {
       this.maxPeople,
       this.desc,
       this.city,
-      this.address,
       this.destanceFromCityCenter,
       this.averageRating,
       this.features,
@@ -70,10 +69,11 @@ class Room {
       this.bookingNumber,
       this.unavailableDates,
       this.category,
+      this.discount,
       this.feedbacks,
       this.roomNumbers,
       this.imgs,
-      this.discount});
+      this.address});
 
   Room.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -83,7 +83,6 @@ class Room {
     maxPeople = json['maxPeople'];
     desc = json['desc'];
     city = json['city'];
-    address = json['address'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
     averageRating = json['averageRating'];
     features = json['features'].cast<String>();
@@ -91,6 +90,7 @@ class Room {
     bookingNumber = json['bookingNumber'];
     unavailableDates = json['unavailableDates'].cast<String>();
     category = json['category'].cast<String>();
+    discount = json['discount'];
     if (json['feedbacks'] != null) {
       feedbacks = <Feedbacks>[];
       json['feedbacks'].forEach((v) {
@@ -99,7 +99,8 @@ class Room {
     }
     roomNumbers = json['roomNumbers'].cast<String>();
     imgs = json['imgs'];
-    discount = json['discount'];
+    address =
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -111,7 +112,6 @@ class Room {
     data['maxPeople'] = this.maxPeople;
     data['desc'] = this.desc;
     data['city'] = this.city;
-    data['address'] = this.address;
     data['destanceFromCityCenter'] = this.destanceFromCityCenter;
     data['averageRating'] = this.averageRating;
     data['features'] = this.features;
@@ -119,34 +119,68 @@ class Room {
     data['bookingNumber'] = this.bookingNumber;
     data['unavailableDates'] = this.unavailableDates;
     data['category'] = this.category;
+    data['discount'] = this.discount;
     if (this.feedbacks != null) {
       data['feedbacks'] = this.feedbacks!.map((v) => v.toJson()).toList();
     }
     data['roomNumbers'] = this.roomNumbers;
     data['imgs'] = this.imgs;
-    data['discount'] = this.discount;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
     return data;
   }
 }
 
 class Feedbacks {
-  String? date;
-  String? review;
+  String? userId;
   int? rating;
+  String? review;
+  String? date;
+  String? sId;
 
-  Feedbacks({this.date, this.review, this.rating});
+  Feedbacks({this.userId, this.rating, this.review, this.date, this.sId});
 
   Feedbacks.fromJson(Map<String, dynamic> json) {
-    date = json['date'];
-    review = json['review'];
+    userId = json['userId'];
     rating = json['rating'];
+    review = json['review'];
+    date = json['date'];
+    sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    data['review'] = this.review;
+    data['userId'] = this.userId;
     data['rating'] = this.rating;
+    data['review'] = this.review;
+    data['date'] = this.date;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class Address {
+  String? placeId;
+  double? longitude;
+  double? latitude;
+  String? sId;
+
+  Address({this.placeId, this.longitude, this.latitude, this.sId});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    placeId = json['placeId'];
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['placeId'] = this.placeId;
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['_id'] = this.sId;
     return data;
   }
 }

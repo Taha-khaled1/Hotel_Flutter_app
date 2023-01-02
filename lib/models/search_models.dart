@@ -81,7 +81,7 @@ class Hotels {
   String? destanceFromCityCenter;
   String? address;
   String? desc;
-  int? rating;
+  String? rating;
   List<String>? category;
   String? imgs;
 
@@ -105,9 +105,9 @@ class Hotels {
     type = json['type'];
     city = json['city'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
-    address = json['address'];
+    address = json['address'].toString();
     desc = json['desc'];
-    rating = json['rating'];
+    rating = json['rating'].toString();
     category = json['category'].cast<String>();
     imgs = json['imgs'];
   }
