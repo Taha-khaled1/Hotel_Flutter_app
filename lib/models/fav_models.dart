@@ -30,11 +30,11 @@ class FavouritePlaces {
   int? maxPeople;
   String? desc;
   String? city;
-  String? address;
   int? destanceFromCityCenter;
   int? averageRating;
-  String? imgs;
   int? discount;
+  String? imgs;
+  Address? address;
 
   FavouritePlaces(
       {this.sId,
@@ -44,11 +44,11 @@ class FavouritePlaces {
       this.maxPeople,
       this.desc,
       this.city,
-      this.address,
       this.destanceFromCityCenter,
       this.averageRating,
+      this.discount,
       this.imgs,
-      this.discount});
+      this.address});
 
   FavouritePlaces.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -58,11 +58,12 @@ class FavouritePlaces {
     maxPeople = json['maxPeople'];
     desc = json['desc'];
     city = json['city'];
-    address = json['address'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
     averageRating = json['averageRating'];
-    imgs = json['imgs'];
     discount = json['discount'];
+    imgs = json['imgs'];
+    address =
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -74,11 +75,38 @@ class FavouritePlaces {
     data['maxPeople'] = this.maxPeople;
     data['desc'] = this.desc;
     data['city'] = this.city;
-    data['address'] = this.address;
     data['destanceFromCityCenter'] = this.destanceFromCityCenter;
     data['averageRating'] = this.averageRating;
-    data['imgs'] = this.imgs;
     data['discount'] = this.discount;
+    data['imgs'] = this.imgs;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
+    return data;
+  }
+}
+
+class Address {
+  String? placeId;
+  double? longitude;
+  double? latitude;
+  String? sId;
+
+  Address({this.placeId, this.longitude, this.latitude, this.sId});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    placeId = json['placeId'];
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['placeId'] = this.placeId;
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['_id'] = this.sId;
     return data;
   }
 }
