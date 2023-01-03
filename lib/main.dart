@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/editProfile.dart';
+import 'package:hotelbooking/UI/IntroApps/Login.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
 import 'package:hotelbooking/translation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: MainSelection(), //SplashScreen(),
+      home: Login(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
