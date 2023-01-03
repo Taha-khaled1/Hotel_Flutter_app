@@ -314,7 +314,7 @@ class itemGrid extends StatelessWidget {
                         children: <Widget>[
                           ratingbar(
                             starRating:
-                                hotelData?.averageRating!.toDouble() ?? 0.0,
+                                0.0, //hotelData?.averageRating!.toDouble() ?? 0
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),
@@ -474,8 +474,10 @@ class cardList extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             ratingbar(
-                              starRating: double.parse(
-                                  '${hotelData?.averageRating ?? '5'}'),
+                              starRating: hotelData?.averageRating != null &&
+                                      hotelData?.averageRating != "null"
+                                  ? double.parse('${hotelData?.averageRating}')
+                                  : double.parse('${hotelData?.Rating}'),
                               color: Colors.deepPurpleAccent,
                             ),
                             const Padding(padding: EdgeInsets.only(left: 5.0)),
@@ -511,7 +513,7 @@ class cardList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          hotelData?.price == null
+                          hotelData?.price == null || hotelData?.price == "null"
                               ? ''
                               : '\$${hotelData?.price ?? ''}',
                           style: const TextStyle(

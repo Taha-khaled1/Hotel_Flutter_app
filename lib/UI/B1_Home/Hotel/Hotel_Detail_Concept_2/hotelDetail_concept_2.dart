@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/info_room_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:like_button/like_button.dart';
@@ -270,47 +272,6 @@ class _hotelDetail2State extends State<hotelDetail2> {
       ],
     );
 
-    var _photoVar = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Padding(
-          padding:
-              EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0, bottom: 10.0),
-          child: Text(
-            "Photo",
-            style: TextStyle(
-                fontFamily: "Sofia",
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700),
-            textAlign: TextAlign.justify,
-          ),
-        ),
-        Container(
-          height: 150.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              const SizedBox(
-                width: 10.0,
-              ),
-              _photo("assets/image/room/room1.jpg", "2a31sd2ds", context),
-              _photo("assets/image/room/room2.jpg", "dsa231", context),
-              _photo("assets/image/room/room3.jpg", "321sda", context),
-              _photo("assets/image/room/room4.jpg", "321dsa", context),
-              _photo("assets/image/room/room5.jpg", "321dsa", context),
-              const SizedBox(
-                width: 10.0,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 40.0,
-        ),
-      ],
-    );
-
     var _button = Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,7 +353,7 @@ class _hotelDetail2State extends State<hotelDetail2> {
                         /// Reviews
 
                         /// Photo
-                        _photoVar,
+                        PhotoWidget(controller: cont),
                         Container(
                           height: 210.0,
                           child: ListView.builder(
@@ -401,14 +362,14 @@ class _hotelDetail2State extends State<hotelDetail2> {
                             itemCount: cont.infoRoomModel?.hotelRooms!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return relatedPost(
-                                cont.infoRoomModel?.hotelRooms![index].imgs ??
-                                    '',
-                                cont.infoRoomModel?.hotelRooms![index].title,
-                                cont.infoRoomModel?.hotelRooms![index].city,
-                                cont.infoRoomModel?.hotelRooms![index]
-                                    .averageRating
-                                    .toString(),
-                              );
+                                  cont.infoRoomModel?.hotelRooms![index].imgs ??
+                                      '',
+                                  cont.infoRoomModel?.hotelRooms![index].title,
+                                  cont.infoRoomModel?.hotelRooms![index].city,
+                                  cont.infoRoomModel?.hotelRooms![index]
+                                      .averageRating
+                                      .toString(),
+                                  cont.infoRoomModel?.hotelRooms![index].sId);
                             },
                           ),
                         ),
@@ -425,6 +386,49 @@ class _hotelDetail2State extends State<hotelDetail2> {
           },
         ),
       ),
+    );
+  }
+}
+
+class PhotoWidget extends StatelessWidget {
+  const PhotoWidget({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+  final GetInfoHotelController controller;
+  @override
+  Widget build(BuildContext context) {
+    List<String> ph =
+        controller.infoRoomModel?.message?.imgs!.split(',') ?? [''];
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Padding(
+          padding:
+              EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0, bottom: 10.0),
+          child: Text(
+            "Photo",
+            style: TextStyle(
+                fontFamily: "Sofia",
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700),
+            textAlign: TextAlign.justify,
+          ),
+        ),
+        Container(
+          height: 150.0,
+          child: ListView.builder(
+            itemCount: ph.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _photo(ph[index], "2a31sd2ds", context);
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 40.0,
+        ),
+      ],
     );
   }
 }
@@ -705,20 +709,6 @@ Widget _photo(String image, id, BuildContext context) {
                       color: Colors.black54,
                       child: Container(
                         padding: const EdgeInsets.all(30.0),
-                        child: InkWell(
-                          child: Hero(
-                              tag: "hero-grid-${id}",
-                              child: Image.asset(
-                                image,
-                                width: 300.0,
-                                height: 300.0,
-                                alignment: Alignment.center,
-                                fit: BoxFit.contain,
-                              )),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
                       ),
                     );
                   },
@@ -729,7 +719,8 @@ Widget _photo(String image, id, BuildContext context) {
               width: 130.0,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(image), fit: BoxFit.cover),
+                      image: NetworkImage('${MangeAPi.baseurl}/${image}'),
+                      fit: BoxFit.cover),
                   color: Colors.black12,
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   boxShadow: [
@@ -836,94 +827,100 @@ class reviewList extends StatelessWidget {
   }
 }
 
-Widget relatedPost(
-    String? image, String? title, String? location, String? ratting) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          height: 110.0,
-          width: 180.0,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(image == null || image == ""
-                    ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
-                    : "${MangeAPi.baseurl}/${image.split(',').first}"),
-                fit: BoxFit.cover,
+Widget relatedPost(String? image, String? title, String? location,
+    String? ratting, String? id) {
+  return InkWell(
+    onTap: () {
+      sharedPreferences.setString('keyroom', id.toString());
+      Get.off(HotelDetail());
+    },
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            height: 110.0,
+            width: 180.0,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(image == null || image == ""
+                      ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                      : "${MangeAPi.baseurl}/${image.split(',').first}"),
+                  fit: BoxFit.cover,
+                ),
+                color: Colors.black12,
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: 5.0,
+                      color: Colors.black12.withOpacity(0.1),
+                      spreadRadius: 2.0)
+                ]),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Text(
+            title ?? 'titel',
+            style: const TextStyle(
+                fontFamily: "Sofia",
+                fontWeight: FontWeight.w600,
+                fontSize: 17.0,
+                color: Colors.black87),
+          ),
+          const SizedBox(
+            height: 2.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Icon(
+                Icons.location_on,
+                size: 18.0,
+                color: Colors.black12,
               ),
-              color: Colors.black12,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 5.0,
-                    color: Colors.black12.withOpacity(0.1),
-                    spreadRadius: 2.0)
-              ]),
-        ),
-        const SizedBox(
-          height: 5.0,
-        ),
-        Text(
-          title ?? 'titel',
-          style: const TextStyle(
-              fontFamily: "Sofia",
-              fontWeight: FontWeight.w600,
-              fontSize: 17.0,
-              color: Colors.black87),
-        ),
-        const SizedBox(
-          height: 2.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Icon(
-              Icons.location_on,
-              size: 18.0,
-              color: Colors.black12,
-            ),
-            Text(
-              location ?? 'Loction',
-              style: const TextStyle(
-                  fontFamily: "Sofia",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15.0,
-                  color: Colors.black26),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.star,
-              size: 18.0,
-              color: Colors.yellow,
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 3.0),
-              child: Text(
-                ratting ?? '4',
+              Text(
+                location ?? 'Loction',
                 style: const TextStyle(
-                    fontWeight: FontWeight.w700,
                     fontFamily: "Sofia",
-                    fontSize: 13.0),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.0,
+                    color: Colors.black26),
               ),
-            ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Icon(
+                Icons.star,
+                size: 18.0,
+                color: Colors.yellow,
+              ),
 
-            // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black45),),
-            const SizedBox(
-              width: 35.0,
-            ),
-          ],
-        ),
-      ],
+              Padding(
+                padding: const EdgeInsets.only(top: 3.0),
+                child: Text(
+                  ratting ?? '4',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "Sofia",
+                      fontSize: 13.0),
+                ),
+              ),
+
+              // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black45),),
+              const SizedBox(
+                width: 35.0,
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

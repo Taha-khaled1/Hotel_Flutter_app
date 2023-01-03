@@ -288,12 +288,28 @@ class RelatedRoomsWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: controller.infoRoomModel?.relatedRooms!.length,
             itemBuilder: (BuildContext context, int index) {
-              return _relatedPost(
-                controller.infoRoomModel?.relatedRooms![index].imgs,
-                controller.infoRoomModel?.relatedRooms![index].title,
-                controller.infoRoomModel?.relatedRooms![index].city,
-                controller.infoRoomModel?.relatedRooms![index].averageRating
-                    .toString(),
+              return InkWell(
+                onTap: () {
+                  print('object');
+                  sharedPreferences.setString(
+                      'keyroom',
+                      controller.infoRoomModel?.relatedRooms?[index].sId
+                              .toString() ??
+                          '');
+                  Get.delete<GetInfoRoomController>();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => HotelDetail(),
+                    ),
+                  );
+                },
+                child: _relatedPost(
+                  controller.infoRoomModel?.relatedRooms![index].imgs,
+                  controller.infoRoomModel?.relatedRooms![index].title,
+                  controller.infoRoomModel?.relatedRooms![index].city,
+                  controller.infoRoomModel?.relatedRooms![index].averageRating
+                      .toString(),
+                ),
               );
             },
           ),

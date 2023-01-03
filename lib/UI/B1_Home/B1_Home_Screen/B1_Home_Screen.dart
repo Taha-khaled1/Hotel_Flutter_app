@@ -326,19 +326,7 @@ class cardLastActivity extends StatelessWidget {
         onTap: () {
           Get.delete<GetInfoRoomController>();
           sharedPreferences.setString('keyroom', searchesModel!.sId.toString());
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => HotelDetail(),
-              transitionDuration: const Duration(milliseconds: 600),
-              transitionsBuilder:
-                  (_, Animation<double> animation, __, Widget child) {
-                return Opacity(
-                  opacity: animation.value,
-                  child: child,
-                );
-              },
-            ),
-          );
+          Get.to(HotelDetail());
         },
         child: Container(
           decoration: BoxDecoration(

@@ -92,10 +92,11 @@ class MessageTowHouse {
   String? sId;
   String? type;
   String? title;
-  int? price;
+  String? price;
   String? desc;
   String? city;
-  double? averageRating;
+  String? averageRating;
+  String? Rating;
   String? featured;
   String? imgs;
 
@@ -110,16 +111,16 @@ class MessageTowHouse {
       this.imgs});
 
   MessageTowHouse.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['_id'].toString();
     title = json['title'] ?? '' + json['name'] ?? '';
-    price = json['price'];
-    desc = json['desc'];
-    city = json['city'];
-    type = json['type'];
-    averageRating = json['averageRating'] ?? 0 + json['rating'] ?? 0;
-    ;
+    price = json['price'].toString();
+    desc = json['desc'].toString();
+    city = json['city'].toString();
+    type = json['type'].toString();
+    averageRating = json['averageRating'].toString();
+    Rating = json['rating'].toString();
     featured = json['featured'].toString();
-    imgs = json['imgs'];
+    imgs = json['imgs'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +131,7 @@ class MessageTowHouse {
     data['desc'] = this.desc;
     data['city'] = this.city;
     data['type'] = this.type;
+    data['rating'] = this.Rating;
     data['averageRating'] = this.averageRating;
     data['featured'] = this.featured;
     data['imgs'] = this.imgs;

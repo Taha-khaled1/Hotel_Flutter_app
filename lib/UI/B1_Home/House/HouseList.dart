@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/get_top_reating_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:shimmer/shimmer.dart';
@@ -305,140 +308,147 @@ class itemPopular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Material(
-              child: Container(
-                height: 100.0,
-                width: 140.0,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(7.0),
-                      topRight: Radius.circular(7.0)),
-                  image: DecorationImage(
-                    image: NetworkImage(roomsWithOffers!.imgs == null ||
-                            roomsWithOffers!.imgs == ""
-                        ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
-                        : "${MangeAPi.baseurl}/${roomsWithOffers!.imgs!.split(',').first}"),
-                    fit: BoxFit.cover,
+    return InkWell(
+      onTap: () {
+        sharedPreferences.setString('keyroom', roomsWithOffers!.sId.toString());
+        Get.to(HotelDetail());
+      },
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Material(
+                child: Container(
+                  height: 100.0,
+                  width: 140.0,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(7.0),
+                        topRight: Radius.circular(7.0)),
+                    image: DecorationImage(
+                      image: NetworkImage(roomsWithOffers!.imgs == null ||
+                              roomsWithOffers!.imgs == ""
+                          ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                          : "${MangeAPi.baseurl}/${roomsWithOffers!.imgs!.split(',').first}"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Container(
-                width: 110.0,
-                child: Text(
-                  roomsWithOffers?.title ?? 'titel',
-                  style: const TextStyle(
-                      letterSpacing: 0.5,
-                      color: Colors.black54,
-                      fontFamily: "Sans",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13.0),
-                  overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Container(
+                  width: 110.0,
+                  child: Text(
+                    roomsWithOffers?.title ?? 'titel',
+                    style: const TextStyle(
+                        letterSpacing: 0.5,
+                        color: Colors.black54,
+                        fontFamily: "Sans",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.0),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 2.0)),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 0.0),
-                  child: Text(
-                    roomsWithOffers?.price.toString() ?? '0.0',
-                    style: const TextStyle(
+              const Padding(padding: EdgeInsets.only(top: 2.0)),
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 0.0),
+                    child: Text(
+                      roomsWithOffers?.price.toString() ?? '0.0',
+                      style: const TextStyle(
+                          color: Colors.black54,
+                          fontFamily: "Gotik",
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14.0),
+                    ),
+                  ),
+                  const Text(
+                    "/night",
+                    style: TextStyle(
                         color: Colors.black54,
                         fontFamily: "Gotik",
-                        fontWeight: FontWeight.w800,
-                        fontSize: 14.0),
-                  ),
-                ),
-                const Text(
-                  "/night",
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontFamily: "Gotik",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 10.0),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 15.0, top: 3.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      ratingbar(
-                        starRating: double.parse(
-                            roomsWithOffers?.averageRating.toString() ?? '2'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Text(
-                          roomsWithOffers?.averageRating.toString() ?? '0',
-                          style: const TextStyle(
-                              fontFamily: "Sans",
-                              color: Colors.black26,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0),
-                        ),
-                      )
-                    ],
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10.0),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        Positioned(
-          right: 10,
-          top: -40,
-          child: Transform.rotate(
-            angle: -35 * (3.14 / 180),
-            child: Container(
-              alignment: Alignment.center,
-              width: 30,
-              height: 180,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: <Color>[Colors.teal, Colors.blue],
-                ),
-
-                //  color: Colors.amber,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Transform.rotate(
-                angle: 80 * (3.14 / 180),
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 10.0, right: 15.0, top: 3.0),
                 child: Row(
-                  children: [
-                    Text(
-                      roomsWithOffers?.discount.toString() ?? '0',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      '%',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        ratingbar(
+                          starRating: double.parse(
+                              roomsWithOffers?.averageRating.toString() ?? '2'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Text(
+                            roomsWithOffers?.averageRating.toString() ?? '0',
+                            style: const TextStyle(
+                                fontFamily: "Sans",
+                                color: Colors.black26,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0),
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
               ),
+            ],
+          ),
+          Positioned(
+            right: 10,
+            top: -40,
+            child: Transform.rotate(
+              angle: -35 * (3.14 / 180),
+              child: Container(
+                alignment: Alignment.center,
+                width: 30,
+                height: 180,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[Colors.teal, Colors.blue],
+                  ),
+
+                  //  color: Colors.amber,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Transform.rotate(
+                  angle: 80 * (3.14 / 180),
+                  child: Row(
+                    children: [
+                      Text(
+                        roomsWithOffers?.discount.toString() ?? '0',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        '%',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
