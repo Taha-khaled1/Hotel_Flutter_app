@@ -55,7 +55,6 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Simple Example')),
       body: WebViewWidget(controller: controller),
     );
   }

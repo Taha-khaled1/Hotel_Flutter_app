@@ -41,10 +41,10 @@ class _HotelDetailState extends State<HotelDetail> {
     super.initState();
   }
 
+  final GetInfoRoomController getInfoRoomController =
+      Get.put(GetInfoRoomController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final GetInfoRoomController getInfoRoomController =
-        Get.put(GetInfoRoomController());
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
 
@@ -191,10 +191,7 @@ class _ReatingRomWidgetState extends State<ReatingRomWidget> {
                             StarRating(
                               size: 25.0,
                               starCount: 5,
-                              rating: double.tryParse(widget.controller
-                                      .infoRoomModel!.room!.averageRating
-                                      .toString()) ??
-                                  5.0,
+                              rating: 5,
                               color: Colors.yellow,
                               borderColor: Colors.yellow,
                               onRatingChanged: (double rating) {},
@@ -263,7 +260,7 @@ class RelatedRoomsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 const Text(
-                  "Related Post",
+                  "Related Room",
                   style: TextStyle(
                       fontFamily: "Sofia",
                       fontSize: 20.0,
@@ -428,6 +425,7 @@ class RelatedRoomsWidget extends StatelessWidget {
                                   showsnackBar(
                                     'يرجي تحديد تاريخ البدايه والنهايه',
                                   );
+                                  return;
                                 } else {
                                   if (controller.infoRoomModel!.room!
                                       .unavailableDates!.isNotEmpty) {
@@ -491,6 +489,7 @@ class RelatedRoomsWidget extends StatelessWidget {
                                   showsnackBar(
                                     'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
                                   );
+                                  return;
                                 }
                               },
                               child: Container(
@@ -616,6 +615,7 @@ class GalleryWidget extends StatelessWidget {
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
+                margin: EdgeInsets.symmetric(horizontal: 7),
                 height: _width / 3,
                 width: _width / 3.1,
                 decoration: BoxDecoration(
@@ -950,11 +950,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                   width: 10,
                                 ),
                                 Text(
-                                  ((controller.infoRoomModel!.room!.discount! /
-                                              100) *
+                                  ((controller.infoRoomModel!.room!.price! -
+                                              controller.infoRoomModel!.room!
+                                                      .discount! /
+                                                  100) *
                                           controller.infoRoomModel!.room!.price!
                                               .toDouble())
-                                      .toString()
+                                      .toInt()
                                       .toString(),
                                   style: const TextStyle(
                                     color: Color(0xFF8F73F2),

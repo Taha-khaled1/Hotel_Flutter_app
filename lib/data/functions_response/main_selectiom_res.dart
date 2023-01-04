@@ -27,6 +27,7 @@ aDDCatogeryRespon(String catogorys) async {
 
 getUserCatogeryRespon() async {
   Curd curd = Curd();
+  print('${MangeAPi.getusercato}/${sharedPreferences.getString('id')}');
   var respons = await curd.getrequest(
     '${MangeAPi.getusercato}/${sharedPreferences.getString('id')}',
   );

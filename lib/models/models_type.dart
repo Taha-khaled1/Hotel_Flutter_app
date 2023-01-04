@@ -114,13 +114,13 @@ class MessageTowHouse {
     sId = json['_id'].toString();
     title = json['title'] ?? '' + json['name'] ?? '';
     price = json['price'].toString();
-    desc = json['desc'].toString();
-    city = json['city'].toString();
+    desc = json['desc'];
+    city = json['city'];
     type = json['type'].toString();
     averageRating = json['averageRating'].toString();
     Rating = json['rating'].toString();
     featured = json['featured'].toString();
-    imgs = json['imgs'].toString();
+    imgs = json['imgs'];
   }
 
   Map<String, dynamic> toJson() {

@@ -8,6 +8,7 @@ import 'package:hotelbooking/controller/search_controller.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/dataofcatogery_models.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
+import 'package:lottie/lottie.dart';
 
 class DataOfCato extends StatelessWidget {
   const DataOfCato({super.key});
@@ -15,6 +16,7 @@ class DataOfCato extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: GetBuilder<DataOfCatogeryController>(
         init: DataOfCatogeryController(),
         builder: (controller) {
@@ -106,25 +108,9 @@ class DataOfCato extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.center,
                       width: 350,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.red, Colors.blue],
-                            begin: const FractionalOffset(0.0, 0.0),
-                            end: const FractionalOffset(0.5, 0.0),
-                            stops: [0.0, 1.0],
-                            tileMode: TileMode.clamp),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'لا يوجد موقع حالي لهذا المستخدم الرجاء إدخال واحد',
-                        style: TextStyle(fontSize: 18),
-                      ),
+                      height: 450,
+                      child: Lottie.asset(
+                          'assets/images/106964-shake-a-empty-box.json'),
                     ),
                   ),
           );

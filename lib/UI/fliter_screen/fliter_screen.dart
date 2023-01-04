@@ -4,6 +4,7 @@ import 'package:hotelbooking/UI/B1_Home/Hotel/HotelList.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/filtter_controller.dart';
 import 'package:hotelbooking/models/models_type.dart';
+import 'package:lottie/lottie.dart';
 
 class FilterScreen extends StatelessWidget {
   const FilterScreen({super.key});
@@ -17,7 +18,13 @@ class FilterScreen extends StatelessWidget {
             statusRequest: controller.statusRequest,
             widget: controller.count == 0
                 ? Center(
-                    child: Text('لايوجد بيانات لهذا البحث'),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 350,
+                      height: 450,
+                      child: Lottie.asset(
+                          'assets/images/106964-shake-a-empty-box.json'),
+                    ),
                   )
                 : Column(
                     children: [
@@ -56,7 +63,7 @@ class cardGrid extends StatelessWidget {
       children: List.generate(
         /// Get data in flashSaleItem.dart (ListItem folder)
         message?.length ?? 0,
-        (index) => itemGrid(message![index]),
+        (index) => itemGrid(message![index], 'منزل'),
       ),
     );
   }

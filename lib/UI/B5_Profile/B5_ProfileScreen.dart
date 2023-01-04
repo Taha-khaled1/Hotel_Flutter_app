@@ -57,17 +57,21 @@ class _profileState extends State<profile> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              'adasd/sadasd',
-                              errorBuilder: (context, error, stackTrace) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
+                            child: sharedPreferences.getString('img') != null
+                                ? Image.network(
+                                    sharedPreferences.getString('img')!,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.asset(
+                                          'assets/images/imagenot.jpg',
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Image.asset(
                                     'assets/images/imagenot.jpg',
                                   ),
-                                );
-                              },
-                            ),
                           ),
                         ),
                         Padding(

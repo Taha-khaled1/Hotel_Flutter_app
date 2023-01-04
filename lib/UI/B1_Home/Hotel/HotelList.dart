@@ -40,13 +40,6 @@ class _HotelListState extends State<HotelList> {
   var imageNetwork = const NetworkImage(
       "https://github.com/flutter/website/blob/master/src/_includes/code/layout/lakes/images/lake.jpg?raw=true");
 
-  // var imageLoaded = Container(
-  //     color: Colors.white,
-  //     child: ListView.builder(
-  //       itemBuilder: (ctx, index) => cardList(hotelDataDummy[index]),
-  //       itemCount: hotelDataDummy.length,
-  //     ));
-
   @override
   void initState() {
     Timer(const Duration(seconds: 3), () {
@@ -75,7 +68,9 @@ class _HotelListState extends State<HotelList> {
                         child: Container(
                           color: Colors.white,
                           child: cardGrid(
-                              message: controller.helpModel1?.message!),
+                            message: controller.helpModel1?.message!,
+                            typ: widget.name,
+                          ),
                         ),
                       )
                     : Padding(
@@ -105,15 +100,17 @@ class _HotelListState extends State<HotelList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Padding(
-                                padding: EdgeInsets.only(top: 35.0, left: 15.0),
-                                child: Icon(
-                                  Icons.clear,
-                                  size: 30.0,
-                                ))),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 35.0, left: 15.0),
+                            child: Icon(
+                              Icons.clear,
+                              size: 30.0,
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20.0, right: 20.0, top: 13.0),
@@ -191,8 +188,9 @@ class _HotelListState extends State<HotelList> {
 }
 
 class cardGrid extends StatelessWidget {
-  const cardGrid({Key? key, this.message}) : super(key: key);
+  const cardGrid({Key? key, this.message, required this.typ}) : super(key: key);
   final List<MessageTowHouse>? message;
+  final String typ;
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
@@ -207,7 +205,7 @@ class cardGrid extends StatelessWidget {
       children: List.generate(
         /// Get data in flashSaleItem.dart (ListItem folder)
         message?.length ?? 0,
-        (index) => itemGrid(message![index]),
+        (index) => itemGrid(message![index], typ),
       ),
     );
   }
@@ -216,7 +214,8 @@ class cardGrid extends StatelessWidget {
 /// Component Card item in gridView after done loading image
 class itemGrid extends StatelessWidget {
   final MessageTowHouse? hotelData;
-  itemGrid(this.hotelData);
+  final String typ;
+  itemGrid(this.hotelData, this.typ);
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +227,19 @@ class itemGrid extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             InkWell(
-              onTap: () {},
+              onTap: () {
+                if (typ == 'فندق') {
+                  print(hotelData!.sId);
+                  sharedPreferences.setString(
+                      'keyhot', hotelData!.sId.toString());
+                  Get.to(hotelDetail2());
+                } else {
+                  Get.delete<GetInfoRoomController>();
+                  sharedPreferences.setString(
+                      'keyroom', hotelData!.sId.toString());
+                  Get.to(HotelDetail());
+                }
+              },
               child: Container(
                 decoration: BoxDecoration(color: Colors.white, boxShadow: [
                   BoxShadow(
@@ -257,7 +268,11 @@ class itemGrid extends StatelessWidget {
                                             tag:
                                                 "hero-flashsale-${hotelData?.sId}",
                                             child: Image.network(
-                                              '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                                              hotelData?.imgs == null ||
+                                                      hotelData?.imgs == "" ||
+                                                      hotelData?.imgs == 'null'
+                                                  ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'
+                                                  : '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first}',
                                               width: 300.0,
                                               height: 400.0,
                                               alignment: Alignment.center,
@@ -275,7 +290,11 @@ class itemGrid extends StatelessWidget {
                           },
                           child: SizedBox(
                             child: Image.network(
-                              '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                              hotelData?.imgs == null ||
+                                      hotelData?.imgs == "" ||
+                                      hotelData?.imgs == 'null'
+                                  ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'
+                                  : '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
                               fit: BoxFit.cover,
                               height: 140.0,
                               width: mediaQueryData.size.width / 2.1,
@@ -299,33 +318,72 @@ class itemGrid extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0, top: 5.0),
-                      child: Text("\$ ${hotelData?.price ?? '0'}",
-                          style: const TextStyle(
-                              fontSize: 15.5,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w800,
-                              fontFamily: "Sans")),
-                    ),
+                    typ == 'فندق'
+                        ? SizedBox()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 5.0),
+                                child: Text("\$ ${hotelData?.price ?? '0'}",
+                                    style: const TextStyle(
+                                        fontSize: 15.5,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w800,
+                                        fontFamily: "Sans")),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              SizedBox(
+                                child: GetBuilder<HotelBytypeController>(
+                                  builder: (controller) {
+                                    return HandlingDataView(
+                                      statusRequest: controller.statusRequest1,
+                                      widget: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10.0, right: 10.0),
+                                        child: CircleAvatar(
+                                          radius: 20.0,
+                                          backgroundColor: Colors.black12,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              controller.updateFavorit(
+                                                hotelData?.sId.toString() ??
+                                                    '638e12d4387bd697991743a6',
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, top: 5.0),
                       child: Row(
                         children: <Widget>[
                           ratingbar(
-                            starRating:
-                                0.0, //hotelData?.averageRating!.toDouble() ?? 0
+                            starRating: hotelData?.averageRating != null &&
+                                    hotelData?.averageRating != "null"
+                                ? double.parse('${hotelData?.averageRating}')
+                                : double.parse('${hotelData?.Rating}'),
                             color: Colors.deepPurpleAccent,
                           ),
                           const Padding(padding: EdgeInsets.only(left: 5.0)),
                           Text(
-                            '(${hotelData?.averageRating.toString()})',
-                            style: const TextStyle(
-                              color: Colors.black26,
-                              fontFamily: "Gotik",
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            hotelData?.averageRating != null &&
+                                    hotelData?.averageRating != "null"
+                                ? '(${hotelData?.averageRating})'
+                                : '(${hotelData?.Rating})',
                           )
                         ],
                       ),
@@ -415,7 +473,9 @@ class cardList extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10.0),
                     topLeft: Radius.circular(10.0)),
-                image: hotelData?.imgs == null || hotelData?.imgs == ""
+                image: hotelData?.imgs == null ||
+                        hotelData?.imgs == "" ||
+                        hotelData?.imgs == 'null'
                     ? DecorationImage(
                         image: NetworkImage(
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
@@ -431,22 +491,24 @@ class cardList extends StatelessWidget {
                     statusRequest: controller.statusRequest1,
                     widget: Padding(
                       padding: const EdgeInsets.only(top: 10.0, right: 10.0),
-                      child: CircleAvatar(
-                        radius: 20.0,
-                        backgroundColor: Colors.black12,
-                        child: IconButton(
-                          onPressed: () {
-                            controller.updateFavorit(
-                              hotelData?.sId.toString() ??
-                                  '638e12d4387bd697991743a6',
-                            );
-                          },
-                          icon: Icon(
-                            Icons.favorite_border,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      child: typ == 'فندق'
+                          ? SizedBox()
+                          : CircleAvatar(
+                              radius: 20.0,
+                              backgroundColor: Colors.black12,
+                              child: IconButton(
+                                onPressed: () {
+                                  controller.updateFavorit(
+                                    hotelData?.sId.toString() ??
+                                        '638e12d4387bd697991743a6',
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                     ),
                   );
                 },
@@ -482,7 +544,10 @@ class cardList extends StatelessWidget {
                             ),
                             const Padding(padding: EdgeInsets.only(left: 5.0)),
                             Text(
-                              '(${hotelData?.averageRating.toString()})',
+                              hotelData?.averageRating != null &&
+                                      hotelData?.averageRating != "null"
+                                  ? '(${hotelData?.averageRating})'
+                                  : '(${hotelData?.Rating})',
                               style: _txtStyleSub,
                             )
                           ],

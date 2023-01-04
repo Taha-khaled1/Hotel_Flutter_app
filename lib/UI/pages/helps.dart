@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/hlelp_controller.dart';
+import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:quickalert/quickalert.dart';
 
 import '../../my_widgets.dart';
@@ -78,28 +79,6 @@ class _HelpsState extends State<Helps> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 350,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 4),
-                        )
-                      ],
-                    ),
-                    child: const Text(
-                      "صفحة المساعده",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -109,26 +88,58 @@ class _HelpsState extends State<Helps> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 12),
                       itemBuilder: (context, int i) {
-                        return ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12),
-                          title: Text(controller.helpModel?.topics?[i].topic ??
-                              'topic'),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black26,
-                            size: 15.0,
+                        return Align(
+                          alignment: Alignment.topRight,
+                          child: ExpansionTile(
+                            title: Text(
+                              controller.helpModel?.topics?[i].topic ?? 'topic',
+                              style:
+                                  TextStyle(fontSize: 21, color: Colors.black),
+                            ),
+                            children: List.generate(
+                              controller.helpModel?.topics?[i].helpQuestions!
+                                      .length ??
+                                  0,
+                              (index) => Align(
+                                alignment: Alignment.topRight,
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                      radius: 6,
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        QuickAlert.show(
+                                          context: context,
+                                          type: QuickAlertType.info,
+                                          title: controller
+                                              .helpModel
+                                              ?.topics?[i]
+                                              .helpQuestions![index]
+                                              .question,
+                                          text: controller.helpModel?.topics?[i]
+                                              .helpQuestions![index].answer,
+                                        );
+                                      },
+                                      child: Text(
+                                        controller
+                                                .helpModel
+                                                ?.topics?[i]
+                                                .helpQuestions![index]
+                                                .question ??
+                                            'Question',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.teal,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                          onTap: () async {
-                            QuickAlert.show(
-                              context: context,
-                              type: QuickAlertType.info,
-                              title: controller.helpModel?.topics?[i]
-                                  .helpQuestions![0].question,
-                              text: controller.helpModel?.topics?[i]
-                                  .helpQuestions![0].answer,
-                            );
-                          },
                         );
                       },
                       separatorBuilder: (context, int i) {
