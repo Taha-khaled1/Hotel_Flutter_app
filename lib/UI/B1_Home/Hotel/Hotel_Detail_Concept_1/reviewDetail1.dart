@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hotelbooking/Library/Expanded/ExpandedDetailRatting.dart';
 import 'package:hotelbooking/Library/Expanded/ExpandedDetailReviews.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/models/info_room_model.dart';
 
 import '../../../../Library/Ratting_Bar/ratting.dart';
 
 class reviewDetail1 extends StatefulWidget {
-  reviewDetail1({Key? key}) : super(key: key);
-
+  reviewDetail1({Key? key, required this.feedbacks}) : super(key: key);
+  final List<Feedbacks>? feedbacks;
   @override
   _reviewDetail1State createState() => _reviewDetail1State();
 }
@@ -42,301 +43,58 @@ class _reviewDetail1State extends State<reviewDetail1> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _appBar,
-      body: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+          const Padding(
+            padding: EdgeInsets.only(top: 10.0, left: 20.0),
+            child: Text(
+              "Review",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.0,
+                  fontFamily: "Popins",
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0, left: 20.0),
+            child: Row(
               children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0, left: 20.0),
-                  child: Text(
-                    "Review",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontFamily: "Popins",
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, left: 20.0),
-                  child: Row(
-                    children: <Widget>[
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            ratingbar(
-                              size: 25.0,
-                              starCount: 5,
-                              color: Colors.yellow,
-                            ),
-                            const SizedBox(width: 5.0),
-                            const Text('8 Reviews')
-                          ]),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                ListTile(
-                  leading: Container(
-                    height: 45.0,
-                    width: 45.0,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                                AssetImage("assets/image/profile/profile1.jpg"),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                  ),
-                  title: Row(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       ratingbar(
-                        size: 20.0,
-                        starCount: starCount,
+                        size: 25.0,
+                        starCount: 5,
                         color: Colors.yellow,
                       ),
-                      const SizedBox(width: 8.0),
-                      const Text(
-                        "18 November 2019",
-                        style: TextStyle(fontSize: 12.0),
-                      )
-                    ],
-                  ),
-                  subtitle: ExpansionTileReview(
-                    title: Text(
-                      "Item delivered in good condition. I will recommend to other buyer.",
-                      style: _detailText,
-                    ),
-                    children: [
-                      const SizedBox(height: 10.0),
-                      Text(
-                        "Very Recommended item i love it very love it",
-                        style: _detailText,
-                      ),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        "Item delivered in good condition. I will recommend to other buyer.",
-                        style: _detailText,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                _buildRating("18 Nov 2018",
-                    "Item delivered in good condition. I will recommend to other buyer.",
-                    (rating) {
-                  setState(() {
-                    this.rating = rating;
-                  });
-                }, "assets/image/profile/profile1.jpg"),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                _buildRating("18 Nov 2018",
-                    "Item delivered in good condition. I will recommend to other buyer.",
-                    (rating) {
-                  setState(() {
-                    this.rating = rating;
-                  });
-                }, "assets/image/profile/profile3.jpg"),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                _buildRating("18 Nov 2018",
-                    "Item delivered in good condition. I will recommend to other buyer.",
-                    (rating) {
-                  setState(() {
-                    this.rating = rating;
-                  });
-                }, "assets/image/profile/profile4.jpg"),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                _buildRating("18 Nov 2018",
-                    "Item delivered in good condition. I will recommend to other buyer.",
-                    (rating) {
-                  setState(() {
-                    this.rating = rating;
-                  });
-                }, "assets/image/profile/profile5.jpg"),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                  child: _line(),
-                ),
-                _buildRating("18 Nov 2018",
-                    "Item delivered in good condition. I will recommend to other buyer.",
-                    (rating) {
-                  setState(() {
-                    this.rating = rating;
-                  });
-                }, "assets/image/profile/profile6.jpg"),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                _line(),
-                Column(
-                  children: <Widget>[
-                    ExpansionTileCustomRatting(
-                      title: _buildRating("18 Nov 2018",
-                          "Item delivered in good condition. I will recommend to other buyer.",
-                          (rating) {
-                        setState(() {
-                          this.rating = rating;
-                        });
-                      }, "assets/image/profile/profile1.jpg"),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15.0, bottom: 7.0),
-                          child: _line(),
-                        ),
-                        _buildRating("18 Nov 2018",
-                            "Item delivered in good condition. I will recommend to other buyer.",
-                            (rating) {
-                          setState(() {
-                            this.rating = rating;
-                          });
-                        }, "assets/image/profile/profile1.jpg"),
-                      ],
-                    ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(bottom: 40.0)),
+                      const SizedBox(width: 5.0),
+                      const Text('8 Reviews')
+                    ]),
               ],
             ),
           ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.feedbacks?.length ?? 0,
+              itemBuilder: (BuildContext context, int index) {
+                return _buildRating(
+                    widget.feedbacks?[index].date ?? '123',
+                    widget.feedbacks?[index].review ?? 'rev',
+                    widget.feedbacks?[index].rating?.toDouble() ?? 5,
+                    'assets/image/profile/profile1.jpg');
+              },
+            ),
+          )
         ],
       ),
     );
   }
 
   Widget _buildRating(
-      String date, String details, Function changeRating, String image) {
+      String date, String details, double rating, String image) {
     return ListTile(
       leading: Container(
         height: 45.0,
@@ -349,10 +107,10 @@ class _reviewDetail1State extends State<reviewDetail1> {
         children: <Widget>[
           StarRating(
             size: 20.0,
-            rating: 3.5,
+            rating: rating,
             starCount: 5,
             color: Colors.yellow,
-            onRatingChanged: changeRating as void Function(double),
+            onRatingChanged: (rating) {},
             borderColor: Colors.yellow,
           ),
           const SizedBox(width: 8.0),
@@ -364,16 +122,9 @@ class _reviewDetail1State extends State<reviewDetail1> {
       ),
       subtitle: Text(
         details,
-        style: _detailText,
+        style:
+            const TextStyle(fontFamily: "Sofia", fontWeight: FontWeight.w300),
       ),
     );
   }
-}
-
-Widget _line() {
-  return Container(
-    height: 0.9,
-    width: double.infinity,
-    color: Colors.black12,
-  );
 }

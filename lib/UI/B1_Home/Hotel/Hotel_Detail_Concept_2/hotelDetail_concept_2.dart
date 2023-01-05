@@ -42,128 +42,6 @@ class _hotelDetail2State extends State<hotelDetail2> {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
 
-    var _ratting = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
-          child: Text(
-            "Ratting",
-            style: TextStyle(
-                fontFamily: "Sofia",
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700),
-            textAlign: TextAlign.justify,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: Row(
-            children: <Widget>[
-              const Text(
-                "Location",
-                style: TextStyle(
-                    fontFamily: "Sofia",
-                    color: Colors.black54,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                width: 20.0,
-              ),
-              new LinearPercentIndicator(
-                width: _width - 135,
-                lineHeight: 9.0,
-                percent: 0.9,
-                progressColor: const Color(0xFF8F73F2),
-                animation: true,
-                backgroundColor: const Color(0xFFDADBDF),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 13.0),
-          child: Row(
-            children: <Widget>[
-              const Text(
-                "Cleaning",
-                style: TextStyle(
-                    fontFamily: "Sofia",
-                    color: Colors.black54,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                width: 17.0,
-              ),
-              new LinearPercentIndicator(
-                width: _width - 135,
-                lineHeight: 9.0,
-                percent: 0.75,
-                progressColor: const Color(0xFF8F73F2),
-                animation: true,
-                backgroundColor: const Color(0xFFDADBDF),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 13.0),
-          child: Row(
-            children: <Widget>[
-              const Text(
-                "Service",
-                style: TextStyle(
-                    fontFamily: "Sofia",
-                    color: Colors.black54,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                width: 28.0,
-              ),
-              new LinearPercentIndicator(
-                width: _width - 135,
-                lineHeight: 9.0,
-                percent: 0.8,
-                progressColor: const Color(0xFF8F73F2),
-                animation: true,
-                backgroundColor: const Color(0xFFDADBDF),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 13.0),
-          child: Row(
-            children: <Widget>[
-              const Text(
-                "Price",
-                style: TextStyle(
-                    fontFamily: "Sofia",
-                    color: Colors.black54,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                width: 45.0,
-              ),
-              new LinearPercentIndicator(
-                width: _width - 135,
-                lineHeight: 9.0,
-                percent: 0.95,
-                progressColor: const Color(0xFF8F73F2),
-                animation: true,
-                backgroundColor: const Color(0xFFDADBDF),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-
     var _location = Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,50 +149,6 @@ class _hotelDetail2State extends State<hotelDetail2> {
         ),
       ],
     );
-
-    var _button = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              height: 55.0,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF8F73F2),
-                        Colors.deepPurpleAccent,
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)),
-              child: const Center(
-                child: Text(
-                  "Book Now",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19.0,
-                      fontFamily: "Sofia",
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 30.0,
-        ),
-      ],
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -336,16 +170,49 @@ class _hotelDetail2State extends State<hotelDetail2> {
                   ),
 
                   SliverToBoxAdapter(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        /// Description
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ExpansionTile(
+                          title: Text(
+                            'انظر الي معلومات البائع',
+                            style: TextStyle(
+                                fontFamily: "Sofia",
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          children: [
+                            ListTile(
+                              // leading: Image.network(cont
+                              //                 .infoRoomModel?.userContactInfo?. ==
+                              //             null ||
+                              //         cont.infoRoomModel?.userContactInfo?.img == ""
+                              //     ? 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'
+                              //     : cont.infoRoomModel?.userContactInfo?.img!
+                              //             .split(',')
+                              //             .first ??
+                              //         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'),
+                              title: Text(
+                                cont.infoRoomModel?.userContactInfo?.username ??
+                                    'username',
+                                style: TextStyle(
+                                    fontFamily: "Sofia",
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              subtitle: Text(
+                                  cont.infoRoomModel?.userContactInfo?.email ??
+                                      'email'),
+                              trailing: Text(
+                                  cont.infoRoomModel?.userContactInfo?.phone ??
+                                      'ph'),
+                            ),
+                          ],
+                        ),
+
                         DescrabtionWidget(
                             des: cont.infoRoomModel?.message?.desc),
-
-                        /// Ratting
-                        _ratting,
 
                         /// Location
                         _location,
@@ -376,10 +243,9 @@ class _hotelDetail2State extends State<hotelDetail2> {
                         SizedBox(
                           height: 15,
                         ),
-
-                        /// Button
-                        _button,
-                      ])),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             );
@@ -419,6 +285,7 @@ class PhotoWidget extends StatelessWidget {
         Container(
           height: 150.0,
           child: ListView.builder(
+            scrollDirection: Axis.horizontal,
             itemCount: ph.length,
             itemBuilder: (BuildContext context, int index) {
               return _photo(ph[index], "2a31sd2ds", context);
@@ -633,10 +500,9 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                       ),
                                     ],
                                   ),
-                                  const LikeButton(),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

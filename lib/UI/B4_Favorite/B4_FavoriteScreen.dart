@@ -149,7 +149,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 children: [
                                   const Text(""),
                                   IconButton(
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                      controller.updateFavorit(
+                                        controller.infocityModel
+                                                ?.favouritePlaces![i].sId ??
+                                            '638e12d4387bd697991743a6',
+                                      );
+                                    },
                                     icon: const Icon(Icons.favorite,
                                         color: Colors.pink),
                                   ),

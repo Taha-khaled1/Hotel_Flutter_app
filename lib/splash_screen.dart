@@ -12,7 +12,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   void _navigator() {
     Navigator.of(context).pushReplacement(PageRouteBuilder(
         pageBuilder: (_, __, ___) => onBoarding(),
@@ -47,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Padding(
             padding: EdgeInsets.only(bottom: 60.0),
             child: Text(
-              "App Name",
+              "TravelMate",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 44.0,
@@ -59,6 +58,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-
 }
-

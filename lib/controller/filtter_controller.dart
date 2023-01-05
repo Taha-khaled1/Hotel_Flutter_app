@@ -40,20 +40,44 @@ class FiltterController extends GetxController {
   late StatusRequest statusRequest2;
   CitisModel? getCitesModel;
   getCiteisdata() async {
-    statusRequest2 = StatusRequest.loading;
-    update();
-    var response = await getCitesRespon();
-    statusRequest2 = handlingData(response);
-    if (StatusRequest.success == statusRequest2) {
-      getCitesModel = await CitisModel.fromJson(response);
-    } else {
-      print('erorr');
+    try {
+      statusRequest2 = StatusRequest.loading;
+      update();
+      var response = await getCitesRespon();
+      statusRequest2 = handlingData(response);
+      if (StatusRequest.success == statusRequest2) {
+        getCitesModel = await CitisModel.fromJson(response);
+      } else {
+        print('erorr');
+      }
+      update();
+    } catch (e) {
+      print(e);
     }
-    update();
+  }
+
+  late StatusRequest statusRequest3;
+  DataforFiltterModel? dataforFiltterModel;
+  getDatadata() async {
+    try {
+      statusRequest3 = StatusRequest.loading;
+      update();
+      var response = await getDataForfiltterRespon();
+      statusRequest3 = handlingData(response);
+      if (StatusRequest.success == statusRequest3) {
+        dataforFiltterModel = await DataforFiltterModel.fromJson(response);
+      } else {
+        print('erorr');
+      }
+      update();
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   void onInit() {
+    getDatadata();
     getCiteisdata();
     super.onInit();
   }

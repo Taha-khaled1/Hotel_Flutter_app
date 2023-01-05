@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hotelbooking/ShardFunction/handling.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
+import 'package:hotelbooking/UI/Bottom_Nav_Bar/bottomNavBar.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
 import 'package:hotelbooking/data/functions_response/LoginFunc.dart';
 import 'package:hotelbooking/main.dart';
@@ -12,6 +15,10 @@ class LoginController extends GetxController {
   LoginController(this.context);
   final GlobalKey<FormState> formkeysigin = GlobalKey();
   late String emaillog, passwordlog;
+  Rxn<User> _user = Rxn<User>();
+  String? get user => _user.value?.email;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   StatusRequest statusRequest = StatusRequest.none;
   login() async {
     if (formkeysigin.currentState!.validate()) {
@@ -36,7 +43,7 @@ class LoginController extends GetxController {
             sharedPreferences.setString(
                 'isOwner', respon['isOwner'].toString());
             sharedPreferences.setString('step', '2');
-            Get.offAll(MainSelection());
+            signInWithEmailAndPassword();
             print('Sucss $respon');
           } else {
             statusRequest = StatusRequest.none;
@@ -51,9 +58,26 @@ class LoginController extends GetxController {
     }
   }
 
+  void signInWithEmailAndPassword() async {
+    final box = GetStorage();
+    //  String name1=box.read('name')??"";
+    String email1 = box.read('email') ?? "";
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: emaillog, password: passwordlog);
+      Get.offAll(MainSelection());
+    } catch (e) {
+      print(e.toString());
+      Get.snackbar("Erorr login account", e.toString(),
+          colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   late FToast fToast;
   @override
   void onInit() {
+    _user.bindStream(_auth.authStateChanges());
     fToast = FToast();
     fToast.init(context);
     super.onInit();

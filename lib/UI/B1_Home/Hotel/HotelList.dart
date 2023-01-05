@@ -587,7 +587,11 @@ class cardList extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               fontFamily: "Gotik"),
                         ),
-                        Text("per night",
+                        Text(
+                            hotelData?.price == null ||
+                                    hotelData?.price == "null"
+                                ? ''
+                                : "per night",
                             style: _txtStyleSub.copyWith(fontSize: 11.0))
                       ],
                     ),

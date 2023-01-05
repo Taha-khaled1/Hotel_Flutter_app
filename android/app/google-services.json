@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "967250366260",
-    "project_id": "hotelbooking-28c66",
-    "storage_bucket": "hotelbooking-28c66.appspot.com"
+    "project_number": "496130422328",
+    "project_id": "travelmeet-5ea8d",
+    "storage_bucket": "travelmeet-5ea8d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:967250366260:android:a7274c85ce31fccd159f61",
+        "mobilesdk_app_id": "1:496130422328:android:8ef796cc376b8790ad58cd",
         "android_client_info": {
           "package_name": "com.mhma.hotelbooking"
         }
       },
       "oauth_client": [
         {
-          "client_id": "967250366260-t27oktr4skafv9bi0b9aja97uiqi05ci.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mhma.hotelbooking",
-            "certificate_hash": "ef7378e6fe54dab5eeec0223341198a8e1b6a73c"
-          }
-        },
-        {
-          "client_id": "967250366260-4hlb75q2060676brffh6b4qb6o597ojs.apps.googleusercontent.com",
+          "client_id": "496130422328-iteb4pr89e4adogu0c3dde6fgb2i1jgu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCDFeXTQljMGBKIURRY9VF4DHQW6EcLglg"
+          "current_key": "AIzaSyCavODFxPBiKaurISZ9xt2LTpREBpbASrY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "967250366260-4hlb75q2060676brffh6b4qb6o597ojs.apps.googleusercontent.com",
+              "client_id": "496130422328-iteb4pr89e4adogu0c3dde6fgb2i1jgu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

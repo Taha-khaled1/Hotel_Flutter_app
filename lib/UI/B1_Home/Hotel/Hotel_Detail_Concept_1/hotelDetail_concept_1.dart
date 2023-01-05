@@ -42,7 +42,7 @@ class _HotelDetailState extends State<HotelDetail> {
   }
 
   final GetInfoRoomController getInfoRoomController =
-      Get.put(GetInfoRoomController(), permanent: true);
+      Get.put(GetInfoRoomController());
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -165,9 +165,13 @@ class _ReatingRomWidgetState extends State<ReatingRomWidget> {
                                         fontSize: 14.0),
                                   )),
                               onTap: () {
-                                Navigator.of(context).push(PageRouteBuilder(
-                                    pageBuilder: (_, __, ___) =>
-                                        reviewDetail1()));
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) => reviewDetail1(
+                                        feedbacks: widget.controller
+                                            .infoRoomModel?.room?.feedbacks!),
+                                  ),
+                                );
                               },
                             ),
                             const Padding(
@@ -257,23 +261,17 @@ class RelatedRoomsWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const Text(
-                  "Related Room",
-                  style: TextStyle(
-                      fontFamily: "Sofia",
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w700),
-                ),
-                const Text(
-                  "See all",
-                  style: TextStyle(
-                      fontFamily: "Sofia",
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w300),
-                ),
-              ]),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              const Text(
+                "Related Room",
+                style: TextStyle(
+                    fontFamily: "Sofia",
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 10.0,
@@ -748,6 +746,8 @@ class DescrptionWidget extends StatelessWidget {
               ),
               subtitle: Text(
                   controller.infoRoomModel?.userContactInfo?.email ?? 'email'),
+              trailing: Text(
+                  controller.infoRoomModel?.userContactInfo?.phone ?? 'ph'),
             ),
           ],
         ),
