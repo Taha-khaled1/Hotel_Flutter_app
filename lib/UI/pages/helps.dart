@@ -209,18 +209,21 @@ class CustomSearchHintDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     List<Topics> xsug =
         xc.where((element) => element.topic!.contains(query)).toList();
-    return ListView.builder(
-      itemCount: query == '' ? xc.length : xsug.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          onTap: () {
-            dialog(helpQuestions: xc[index].helpQuestions);
-          },
-          title: Text(query == ''
-              ? xc[index].topic ?? 'nodata'
-              : xsug[index].topic ?? 'nodata'),
-        );
-      },
+    return Align(
+      alignment: Alignment.topRight,
+      child: ListView.builder(
+        itemCount: query == '' ? xc.length : xsug.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            onTap: () {
+              dialog(helpQuestions: xc[index].helpQuestions);
+            },
+            title: Text(query == ''
+                ? xc[index].topic ?? 'nodata'
+                : xsug[index].topic ?? 'nodata'),
+          );
+        },
+      ),
     );
   }
 
