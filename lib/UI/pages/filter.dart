@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:hotelbooking/UI/fliter_screen/fliter_screen.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/controller/filtter_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/models/cities_model.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -20,7 +23,7 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   var sliderValue = 1.0;
-  SfRangeValues _values = const SfRangeValues(100, 600);
+  SfRangeValues _values = const SfRangeValues(1, 200);
   bool q = false,
       w = false,
       e = false,
@@ -63,8 +66,8 @@ class _FilterState extends State<Filter> {
                 widget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Filter",
+                    Text(
+                      LangVarible.filter.tr,
                       style: TextStyle(fontSize: 20),
                     ),
                     const SizedBox(height: 18),
@@ -85,10 +88,8 @@ class _FilterState extends State<Filter> {
                               ),
                             ),
                             child: SfRangeSlider(
-                              min: controller.dataforFiltterModel?.prices![1] ??
-                                  1,
-                              max: controller.dataforFiltterModel?.prices![0] ??
-                                  200,
+                              min: 1,
+                              max: 200,
                               labelPlacement: LabelPlacement.betweenTicks,
                               edgeLabelPlacement: EdgeLabelPlacement.auto,
                               shouldAlwaysShowTooltip: true,
@@ -123,24 +124,25 @@ class _FilterState extends State<Filter> {
                         return HandlingDataView(
                           statusRequest: controller.statusRequest2,
                           widget: SizedBox(
-                              width: 450,
-                              height: 55,
-                              child: DropdownButton<String>(
-                                hint: Text('يرجي اختيار مدينه'),
-                                value: controller.city,
-                                items: controller.getCitesModel?.message!
-                                    .map((Message value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.name,
-                                    child: Text(value.name ?? 'name'),
-                                  );
-                                }).toList(),
-                                onChanged: (vlue) {
-                                  setState(() {
-                                    controller.city = vlue!;
-                                  });
-                                },
-                              )),
+                            width: 450,
+                            height: 55,
+                            child: DropdownButton<String>(
+                              hint: Text('يرجي اختيار مدينه'),
+                              value: controller.city,
+                              items: controller.getCitesModel?.message!
+                                  .map((Message value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.name,
+                                  child: Text(value.name ?? 'name'),
+                                );
+                              }).toList(),
+                              onChanged: (vlue) {
+                                setState(() {
+                                  controller.city = vlue!;
+                                });
+                              },
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -154,33 +156,22 @@ class _FilterState extends State<Filter> {
                             "popular",
                             style: TextStyle(fontSize: 16),
                           ),
-                          // Row(
-                          //   children: [
-                          //     CheckboxListTile(
-                          //       controlAffinity:
-                          //           ListTileControlAffinity.leading,
-                          //       value: q,
-                          //       title: const Text("free breakfast"),
-                          //       onChanged: (val) {
-                          //         setState(() {
-                          //           q = val!;
-                          //         });
-                          //       },
-                          //     ),
-                          //     const SizedBox(width: 30),
-                          //     CheckboxListTile(
-                          //       controlAffinity:
-                          //           ListTileControlAffinity.leading,
-                          //       value: w,
-                          //       title: const Text("free barking"),
-                          //       onChanged: (val) {
-                          //         setState(() {
-                          //           w = val!;
-                          //         });
-                          //       },
-                          //     ),
-                          //   ],
-                          // ),
+                          Wrap(
+                            children: [
+                              if (controller
+                                      .dataforFiltterModel?.features?.length !=
+                                  0)
+                                for (int i = 0;
+                                    i <
+                                        controller.dataforFiltterModel!
+                                            .features!.length;
+                                    i++)
+                                  CheckCustom(
+                                    tit: controller
+                                        .dataforFiltterModel!.features![0],
+                                  )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -190,7 +181,7 @@ class _FilterState extends State<Filter> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Distance from city center",
+                          Text(LangVarible.distance_from_city_center.tr,
                               style: TextStyle(fontSize: 16)),
                           const SizedBox(height: 40),
                           SfSliderTheme(
@@ -241,9 +232,9 @@ class _FilterState extends State<Filter> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
+                          Padding(
                             padding: EdgeInsetsDirectional.only(start: 8),
-                            child: Text("Type of Accommodation",
+                            child: Text(LangVarible.type_of_accommodation.tr,
                                 style: TextStyle(fontSize: 16)),
                           ),
                           ListTileSwitch(
@@ -326,7 +317,7 @@ class _FilterState extends State<Filter> {
                             controller.getdataFromFiltter();
                           }
                         },
-                        child: const Text("Apply"),
+                        child: Text(LangVarible.search.tr),
                       ),
                     ),
                     const SizedBox(
@@ -337,6 +328,36 @@ class _FilterState extends State<Filter> {
               ),
             ),
           );
+        },
+      ),
+    );
+  }
+}
+
+class CheckCustom extends StatefulWidget {
+  const CheckCustom({
+    Key? key,
+    required this.tit,
+  }) : super(key: key);
+  final String tit;
+  @override
+  State<CheckCustom> createState() => _CheckCustomState();
+}
+
+class _CheckCustomState extends State<CheckCustom> {
+  bool x = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: CheckboxListTile(
+        title: Text(widget.tit),
+        value: x,
+        onChanged: (value) {
+          setState(() {
+            x = value!;
+          });
         },
       ),
     );

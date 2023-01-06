@@ -5,6 +5,7 @@ import 'package:hotelbooking/ShardFunction/valid.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/components/customtextfild.dart';
 import 'package:hotelbooking/controller/auth_controller/signup_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:http/http.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Animation/LoginAnimation.dart';
 import 'package:hotelbooking/Library/intro_views_flutter-2.4.0/lib/UI/page.dart';
@@ -150,7 +151,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                         onsaved: (p0) {
                                           return controller.email = p0!;
                                         },
-                                        titel: 'Email',
+                                        titel: LangVarible.email.tr,
                                       ),
                                       CustomTextfeild(
                                         valid: (p0) {
@@ -180,7 +181,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                         onsaved: (p0) {
                                           return controller.country = p0!;
                                         },
-                                        titel: 'Country',
+                                        titel: LangVarible.country.tr,
                                       ),
                                       CustomTextfeild(
                                         valid: (p0) {
@@ -200,7 +201,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                         onsaved: (p0) {
                                           return controller.phone = p0!;
                                         },
-                                        titel: 'Phone',
+                                        titel: LangVarible.phone.tr,
                                       ),
                                     ],
                                   ),
@@ -273,9 +274,9 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(50),
                                   color: const Color(0xFF8DA2BF),
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
-                                    "Signup",
+                                    LangVarible.sign_up.tr,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Sofia",

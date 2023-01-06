@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/HotelList.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 import '../../../../vars.dart' as v;
 import '../B1_Home_Screen.dart';
@@ -30,7 +31,7 @@ class RecomendedTrevatelWidget extends StatelessWidget {
             padding:
                 const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
             child: Text(
-              "Types".tr,
+              LangVarible.Types.tr,
               style: _txtStyle,
             ),
           ),

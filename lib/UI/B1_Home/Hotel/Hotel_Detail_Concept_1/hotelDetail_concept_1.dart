@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/payment_webview.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/reviewDetail1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/maps.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/info_room_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
@@ -74,7 +76,7 @@ class _HotelDetailState extends State<HotelDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         /// For icon row
-                        IconsAllWidget(),
+                        IconsAllWidget(controller: controller),
 
                         /// Desc
                         DescrptionWidget(controller: controller),
@@ -277,7 +279,7 @@ class RelatedRoomsWidget extends StatelessWidget {
           height: 10.0,
         ),
         Container(
-          height: 210.0,
+          height: 225.0,
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -304,6 +306,7 @@ class RelatedRoomsWidget extends StatelessWidget {
                   controller.infoRoomModel?.relatedRooms![index].city,
                   controller.infoRoomModel?.relatedRooms![index].averageRating
                       .toString(),
+                  controller.infoRoomModel?.relatedRooms![index].price,
                 ),
               );
             },
@@ -507,9 +510,9 @@ class RelatedRoomsWidget extends StatelessWidget {
                                     tileMode: TileMode.clamp,
                                   ),
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
-                                    "Book Now",
+                                    LangVarible.booking_hotels.tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 19.0,
@@ -549,9 +552,9 @@ class RelatedRoomsWidget extends StatelessWidget {
                   tileMode: TileMode.clamp,
                 ),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  "Book Now",
+                  LangVarible.Bookings.tr,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 19.0,
@@ -612,16 +615,48 @@ class GalleryWidget extends StatelessWidget {
             ),
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 7),
-                height: _width / 3,
-                width: _width / 3.1,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      '${MangeAPi.baseurl}/${images[index]}',
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Hero(
+                  tag: "hero-flashsale-${index}",
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) {
+                              return new Material(
+                                color: Colors.black54,
+                                child: Container(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: InkWell(
+                                    child: Hero(
+                                        tag: "hero-flashsale-${index}",
+                                        child: Image.network(
+                                          '${MangeAPi.baseurl}/${images[index]}',
+                                          width: 300.0,
+                                          height: 400.0,
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                        )),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 500)));
+                      },
+                      child: SizedBox(
+                        child: Image.network(
+                          '${MangeAPi.baseurl}/${images[index]}',
+                          fit: BoxFit.cover,
+                          height: 140.0,
+                        ),
+                      ),
                     ),
-                    fit: BoxFit.cover,
                   ),
                 ),
               );
@@ -784,8 +819,9 @@ class DescrptionWidget extends StatelessWidget {
 class IconsAllWidget extends StatelessWidget {
   const IconsAllWidget({
     Key? key,
+    required this.controller,
   }) : super(key: key);
-
+  final GetInfoRoomController controller;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1107,7 +1143,7 @@ Widget _photo(String image) {
 }
 
 Widget _relatedPost(
-    String? image, String? title, String? location, String? ratting) {
+    String? image, String? title, String? location, String? ratting, price) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(
@@ -1148,6 +1184,29 @@ Widget _relatedPost(
           height: 2.0,
         ),
         Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 0.0),
+              child: Text(
+                price!.toString(),
+                style: const TextStyle(
+                    color: Colors.black54,
+                    fontFamily: "Gotik",
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14.0),
+              ),
+            ),
+            const Text(
+              "/night",
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontFamily: "Gotik",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 10.0),
+            ),
+          ],
+        ),
+        Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -1167,30 +1226,21 @@ Widget _relatedPost(
           ],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Icon(
-              Icons.star,
-              size: 18.0,
-              color: Colors.yellow,
+            ratingbar(
+              starRating: double.parse(ratting!),
             ),
-
             Padding(
-              padding: const EdgeInsets.only(top: 3.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Text(
-                ratting ?? '4',
+                ratting.toString(),
                 style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "Sofia",
-                    fontSize: 13.0),
+                    fontFamily: "Sans",
+                    color: Colors.black26,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.0),
               ),
-            ),
-
-            // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black45),),
-            const SizedBox(
-              width: 35.0,
-            ),
+            )
           ],
         ),
       ],

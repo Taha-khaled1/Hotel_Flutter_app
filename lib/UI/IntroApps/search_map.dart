@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:hotelbooking/UI/Bottom_Nav_Bar/bottomNavBar.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 
 class SearchInMap extends StatefulWidget {
   @override
@@ -72,7 +74,7 @@ class _SearchInMapState extends State<SearchInMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('الذهاب الي الصفحه الرئيسيه'),
+        label: Text(LangVarible.home.tr),
         onPressed: () {
           setState(() {
             if (button1 == true) {

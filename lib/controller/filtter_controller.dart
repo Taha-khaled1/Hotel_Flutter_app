@@ -8,10 +8,11 @@ import 'package:hotelbooking/models/models_type.dart';
 
 class FiltterController extends GetxController {
   HouseTypeModels? helpModel;
+  String? future;
   int count = 0;
   String? city;
-  int maxprice = 1000;
-  int minprice = 10;
+  int maxprice = 200;
+  int minprice = 1;
   List<String> x = ["مسابح", "wifi"];
   String type = "فندق";
   int distance = 6;

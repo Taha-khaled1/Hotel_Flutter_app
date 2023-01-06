@@ -5,6 +5,7 @@ import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/widget/card_city.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/UI/pages/cities.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import '../../../../vars.dart' as v;
 
 class CitesWidget extends StatelessWidget {
@@ -38,7 +39,7 @@ class CitesWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Cities".tr,
+                          LangVarible.Cities.tr,
                           style: _txtStyle,
                         ),
                         InkWell(
@@ -48,7 +49,7 @@ class CitesWidget extends StatelessWidget {
                                 ));
                           },
                           child: Text(
-                            "See Moree",
+                            LangVarible.see_all.tr,
                             style: _txtStyle.copyWith(
                                 color: Colors.black26, fontSize: 13.5),
                           ),

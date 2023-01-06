@@ -8,6 +8,7 @@ import 'package:hotelbooking/controller/search_controller.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/search_models.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
+import 'package:lottie/lottie.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -86,6 +87,17 @@ class SearchScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                if (controller.helpModel?.hotels!.length == 0 &&
+                    controller.helpModel?.rooms!.length == 0)
+                  Center(
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 350,
+                      height: 450,
+                      child: Lottie.asset(
+                          'assets/images/106964-shake-a-empty-box.json'),
                     ),
                   ),
               ],

@@ -8,7 +8,7 @@ class LangVarible {
   static const String Ratings = 'Ratings';
   static const String Bookings = 'Bookings';
   static const String Types = 'Types';
-  static const String Cities = 'Cities';
+  static const String Cities = 'cities';
   static const String press_again_to_exit = 'press_again_to_exit';
   static const String menu = 'menu';
   static const String home = 'home';

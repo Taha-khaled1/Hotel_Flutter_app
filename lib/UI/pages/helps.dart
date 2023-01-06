@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/hlelp_controller.dart';
+import 'package:hotelbooking/models/help_models.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -16,8 +18,6 @@ class Helps extends StatefulWidget {
 
 class _HelpsState extends State<Helps> {
   TextEditingController _txtsearch = TextEditingController();
-
-  HelpsController helpsController = Get.put(HelpsController());
 
   @override
   void initState() {
@@ -62,11 +62,29 @@ class _HelpsState extends State<Helps> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
+                            onTap: () {
+                              showSearch(
+                                context: context,
+                                delegate: CustomSearchHintDelegate(
+                                  xc: controller.helpModel!.topics!,
+                                  hintText: 'ادخل محتوي البحث',
+                                ),
+                              );
+                            },
                             controller: _txtsearch,
+                            onChanged: (value) {},
                             decoration: InputDecoration(
-                              hintText: "{",
+                              hintText: "Search",
                               prefixIcon: IconButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  showSearch(
+                                    context: context,
+                                    delegate: CustomSearchHintDelegate(
+                                      xc: controller.helpModel!.topics!,
+                                      hintText: 'ادخل محتوي البحث',
+                                    ),
+                                  );
+                                },
                                 icon: const Icon(Icons.search_outlined),
                               ),
                             ),
@@ -163,27 +181,105 @@ class _HelpsState extends State<Helps> {
   }
 }
 
-class HelpsController extends GetxController {
-  Future<List?>? getData() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return [
-      {
-        "id": "1",
-        "name": "How do I cancel my rooms reservation? ",
-        "desc": "A cross platform plugin for displaying local notifications.",
+class CustomSearchHintDelegate extends SearchDelegate<String> {
+  CustomSearchHintDelegate({
+    required this.xc,
+    required String hintText,
+  }) : super(
+          searchFieldLabel: hintText,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+  final List<Topics> xc;
+  @override
+  Widget buildLeading(BuildContext context) => IconButton(
+        onPressed: () {
+          Get.back();
+        },
+        icon: Icon(Icons.close),
+      );
+
+  // @override
+  // PreferredSizeWidget buildBottom(BuildContext context) {
+  //   return const PreferredSize(
+  //       preferredSize: Size.fromHeight(56.0), child: Text('bottom'));
+  // }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<Topics> xsug =
+        xc.where((element) => element.topic!.contains(query)).toList();
+    return ListView.builder(
+      itemCount: query == '' ? xc.length : xsug.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          onTap: () {
+            dialog(helpQuestions: xc[index].helpQuestions);
+          },
+          title: Text(query == ''
+              ? xc[index].topic ?? 'nodata'
+              : xsug[index].topic ?? 'nodata'),
+        );
       },
-      {
-        "id": "2",
-        "name": "What methods of payment does rooms accept? ",
-        "desc":
-            "Schedule a notification to be shown daily at a specified time.",
-      },
-      {
-        "id": "3",
-        "name": "When am I charged for a reservation? ",
-        "desc":
-            "Ability to handle when a user has tapped on a notification, when the app is in the foreground, background or is terminated.",
-      },
-    ];
+    );
   }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const Text('النتائج');
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return List.generate(
+        xc.length, (index) => Text(xc[index].topic ?? 'nodata'));
+  }
+}
+
+void dialog({List<HelpQuestions>? helpQuestions}) {
+  Get.defaultDialog(
+    title: "الاسئله",
+    middleText: "",
+    content: Container(
+      height: 250,
+      width: 400,
+      child: ListView.builder(
+        itemCount: helpQuestions?.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Align(
+            alignment: Alignment.topRight,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.black,
+                  radius: 6,
+                ),
+                TextButton(
+                  onPressed: () {
+                    QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.info,
+                      title: helpQuestions![index].question,
+                      text: helpQuestions[index].answer,
+                    );
+                  },
+                  child: Text(
+                    helpQuestions![index].question ?? 'Question',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
+    backgroundColor: Colors.teal,
+    titleStyle: TextStyle(color: Colors.white),
+    middleTextStyle: TextStyle(color: Colors.white),
+    radius: 30,
+  );
 }

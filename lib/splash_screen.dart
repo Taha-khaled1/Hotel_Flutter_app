@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hotelbooking/UI/languege_screen/languege_screen.dart';
 
 import 'UI/IntroApps/OnBoarding.dart';
+import 'langs/languge_varible.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -43,11 +45,11 @@ class _SplashScreenState extends State<SplashScreen> {
             image: DecorationImage(
                 image: AssetImage("assets/image/splashScreen/splashScreen.png"),
                 fit: BoxFit.cover)),
-        child: const Center(
+        child: Center(
           child: Padding(
             padding: EdgeInsets.only(bottom: 60.0),
             child: Text(
-              "TravelMate",
+              LangVarible.app_name.tr,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 44.0,

@@ -7,6 +7,7 @@ import 'package:hotelbooking/components/customtextfild.dart';
 import 'package:hotelbooking/controller/auth_controller/login_controler.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Animation/LoginAnimation.dart';
 import 'package:hotelbooking/UI/IntroApps/forgetPass.dart';
+import '../../langs/languge_varible.dart';
 import 'SignUp.dart';
 
 class Login extends StatefulWidget {
@@ -132,7 +133,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                         onsaved: (p0) {
                                           return controller.emaillog = p0!;
                                         },
-                                        titel: 'Email',
+                                        titel: LangVarible.email.tr,
                                       ),
                                       CustomTextfeild(
                                         valid: (p0) {
@@ -173,8 +174,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                                   );
                                                 }));
                                       },
-                                      child: const Text(
-                                        "Create Account",
+                                      child: Text(
+                                        LangVarible.sign_up.tr,
                                         style: TextStyle(
                                             color: Colors.black38,
                                             fontFamily: "Sofia",
@@ -249,9 +250,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(50),
                                       color: const Color(0xFF8DA2BF),
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text(
-                                        "Login",
+                                        LangVarible.login.tr,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Sofia",

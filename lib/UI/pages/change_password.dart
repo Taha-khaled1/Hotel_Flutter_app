@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:http/http.dart';
 import 'package:quickalert/quickalert.dart';
@@ -85,16 +86,16 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsetsDirectional.only(start: 12),
-                    child: Text("Old password"),
+                    child: Text(LangVarible.old_password.tr),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: oldPassController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                        hintText: "enter old password ..."),
+                    decoration:
+                        InputDecoration(hintText: LangVarible.old_password.tr),
                   ),
                 ],
               ),
@@ -105,16 +106,16 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsetsDirectional.only(start: 12),
-                    child: Text("New password"),
+                    child: Text(LangVarible.new_password.tr),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
                     obscureText: true,
                     controller: passController,
-                    decoration: const InputDecoration(
-                        hintText: "enter new password ..."),
+                    decoration:
+                        InputDecoration(hintText: LangVarible.new_password.tr),
                   ),
                 ],
               ),
@@ -125,9 +126,9 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsetsDirectional.only(start: 12),
-                    child: Text("Confirm password"),
+                    child: Text(LangVarible.confirm_password.tr),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(

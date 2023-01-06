@@ -5,6 +5,7 @@ import 'package:hotelbooking/UI/IntroApps/Login.dart';
 import 'package:hotelbooking/UI/pages/change_password.dart';
 import 'package:hotelbooking/UI/pages/helps.dart';
 import 'package:hotelbooking/UI/pages/invite_friend.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 import 'ListProfile/CallCenter.dart';
 
@@ -116,7 +117,7 @@ class _profileState extends State<profile> {
                               new notificationAppbar()));
                     },
                     child: category(
-                      txt: "Notification",
+                      txt: LangVarible.notification.tr,
                       image: "assets/image/icon/notification.png",
                       padding: 20.0,
                     ),
@@ -126,7 +127,7 @@ class _profileState extends State<profile> {
                       Get.to(() => const Helps());
                     },
                     child: category(
-                      txt: "FAQs",
+                      txt: LangVarible.FAQs.tr,
                       image: "assets/image/icon/coupon.png",
                       padding: 20.0,
                     ),
@@ -136,7 +137,7 @@ class _profileState extends State<profile> {
                       Get.to(() => const InviteFriend());
                     },
                     child: category(
-                      txt: "Invite friend",
+                      txt: LangVarible.invite_friends.tr,
                       image: "assets/image/icon/card.png",
                       padding: 20.0,
                     ),
@@ -147,7 +148,7 @@ class _profileState extends State<profile> {
                           pageBuilder: (_, __, ___) => new callCenter()));
                     },
                     child: category(
-                      txt: "Call Center",
+                      txt: LangVarible.call_center.tr,
                       image: "assets/image/icon/callCenter.png",
                       padding: 20.0,
                     ),
@@ -156,10 +157,10 @@ class _profileState extends State<profile> {
                     contentPadding:
                         const EdgeInsetsDirectional.only(start: 30, end: 22),
                     leading: const Icon(Icons.change_circle_outlined),
-                    title: const Padding(
+                    title: Padding(
                       padding: EdgeInsetsDirectional.only(start: 20),
                       child: Text(
-                        "Change password",
+                        LangVarible.change_password.tr,
                         style: TextStyle(
                           fontSize: 14.5,
                           color: Colors.black54,
@@ -181,10 +182,10 @@ class _profileState extends State<profile> {
                     contentPadding:
                         const EdgeInsetsDirectional.only(start: 32, end: 22),
                     leading: const Icon(Icons.logout),
-                    title: const Padding(
+                    title: Padding(
                       padding: EdgeInsetsDirectional.only(start: 18),
                       child: Text(
-                        "Logout",
+                        LangVarible.logout.tr,
                         style: TextStyle(
                           fontSize: 14.5,
                           color: Colors.black54,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/models/cities_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
@@ -26,7 +27,8 @@ class _CitiesState extends State<Cities> {
             color: Colors.grey[800],
           ),
         ),
-        title: Text("Cities", style: TextStyle(color: Colors.grey[800])),
+        title: Text(LangVarible.Cities.tr,
+            style: TextStyle(color: Colors.grey[800])),
       ),
       body: ListView.separated(
         shrinkWrap: true,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/controller/fav_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/my_widgets.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
@@ -27,7 +28,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         backgroundColor: const Color(0xfffafafa),
         elevation: 0,
         title: Text(
-          "My favorites".tr,
+          LangVarible.favourites.tr,
           style: TextStyle(
             color: Colors.grey[800],
             fontSize: 20,

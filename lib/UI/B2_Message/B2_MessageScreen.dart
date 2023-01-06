@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/UI/Chate_update/users.dart';
-import 'package:hotelbooking/UI/chat/chat2/home_chat.dart';
-import 'package:hotelbooking/UI/chat/home_caht.dart';
 import 'AppBar_ItemScreen/inboxAppbar.dart';
 import 'AppBar_ItemScreen/notificationAppbar.dart';
 import 'message.dart';

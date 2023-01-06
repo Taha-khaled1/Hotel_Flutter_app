@@ -49,6 +49,10 @@ class HotelBytypeController extends GetxController {
     update();
   }
 
+  upda() {
+    update();
+  }
+
   @override
   void onInit() {
     getdataSearch(sharedPreferences.getString('type') ?? 'فندق');

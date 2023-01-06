@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hotelbooking/UI/IntroApps/SignUp.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 
 import 'Login.dart';
 
@@ -115,8 +117,8 @@ class _introVideoState extends State<introVideo> with TickerProviderStateMixin {
                                         height: 85.0,
                                       ),
                                       const SizedBox(width: 22),
-                                      const Text(
-                                        "App Name",
+                                      Text(
+                                        LangVarible.app_name.tr,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 42,
@@ -177,7 +179,7 @@ class _introVideoState extends State<introVideo> with TickerProviderStateMixin {
                                           _Playanimation();
                                         },
                                         child: ButtonCustom(
-                                          txt: "Sign Up",
+                                          txt: LangVarible.sign_up.tr,
                                           gradient1: const Color(0xFF647DEE),
                                           gradient2: const Color(0xFF7F53AC),
                                           border: Colors.transparent,
@@ -241,7 +243,7 @@ class _introVideoState extends State<introVideo> with TickerProviderStateMixin {
                                       _Playanimation();
                                     },
                                     child: ButtonCustom(
-                                      txt: "Sign In",
+                                      txt: LangVarible.login.tr,
                                       gradient1: Colors.transparent,
                                       gradient2: Colors.transparent,
                                       border: const Color(0xFF7F53AC),

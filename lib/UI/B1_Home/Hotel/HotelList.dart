@@ -334,7 +334,7 @@ class itemGrid extends StatelessWidget {
                                         fontFamily: "Sans")),
                               ),
                               SizedBox(
-                                width: 60,
+                                width: 100,
                               ),
                               SizedBox(
                                 child: GetBuilder<HotelBytypeController>(
@@ -420,7 +420,17 @@ class itemGrid extends StatelessWidget {
   }
 }
 
-class cardList extends StatelessWidget {
+class cardList extends StatefulWidget {
+  final HotelBytypeController controller;
+  final MessageTowHouse? hotelData;
+  final String typ;
+  cardList(this.hotelData, this.controller, this.typ);
+
+  @override
+  State<cardList> createState() => _cardListState();
+}
+
+class _cardListState extends State<cardList> {
   @override
   var _txtStyleTitle = const TextStyle(
     color: Colors.black87,
@@ -435,20 +445,19 @@ class cardList extends StatelessWidget {
     fontSize: 12.5,
     fontWeight: FontWeight.w600,
   );
-  final HotelBytypeController controller;
-  final MessageTowHouse? hotelData;
-  final String typ;
-  cardList(this.hotelData, this.controller, this.typ);
+  bool isfav = false;
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (typ == 'فندق') {
-          print(hotelData!.sId);
-          sharedPreferences.setString('keyhot', hotelData!.sId.toString());
+        if (widget.typ == 'فندق') {
+          print(widget.hotelData!.sId);
+          sharedPreferences.setString(
+              'keyhot', widget.hotelData!.sId.toString());
           Get.to(hotelDetail2());
         } else {
           Get.delete<GetInfoRoomController>();
-          sharedPreferences.setString('keyroom', hotelData!.sId.toString());
+          sharedPreferences.setString(
+              'keyroom', widget.hotelData!.sId.toString());
           Get.to(HotelDetail());
         }
       },
@@ -473,15 +482,15 @@ class cardList extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10.0),
                     topLeft: Radius.circular(10.0)),
-                image: hotelData?.imgs == null ||
-                        hotelData?.imgs == "" ||
-                        hotelData?.imgs == 'null'
+                image: widget.hotelData?.imgs == null ||
+                        widget.hotelData?.imgs == "" ||
+                        widget.hotelData?.imgs == 'null'
                     ? DecorationImage(
                         image: NetworkImage(
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'))
                     : DecorationImage(
                         image: NetworkImage(
-                          '${MangeAPi.baseurl}/${hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
+                          '${MangeAPi.baseurl}/${widget.hotelData?.imgs!.split(',').first ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dEwOb8aCwl457d-k9xo2cwlAbz2zwH8tXA&usqp=CAU'}',
                         ),
                         fit: BoxFit.cover),
               ),
@@ -491,21 +500,25 @@ class cardList extends StatelessWidget {
                     statusRequest: controller.statusRequest1,
                     widget: Padding(
                       padding: const EdgeInsets.only(top: 10.0, right: 10.0),
-                      child: typ == 'فندق'
+                      child: widget.typ == 'فندق'
                           ? SizedBox()
                           : CircleAvatar(
                               radius: 20.0,
                               backgroundColor: Colors.black12,
                               child: IconButton(
-                                onPressed: () {
-                                  controller.updateFavorit(
-                                    hotelData?.sId.toString() ??
+                                onPressed: () async {
+                                  await controller.updateFavorit(
+                                    widget.hotelData?.sId.toString() ??
                                         '638e12d4387bd697991743a6',
                                   );
+                                  isfav = true;
+                                  controller.upda();
                                 },
                                 icon: Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
+                                  isfav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: isfav ? Colors.red : Colors.white,
                                 ),
                               ),
                             ),
@@ -528,7 +541,7 @@ class cardList extends StatelessWidget {
                         Container(
                             width: 220.0,
                             child: Text(
-                              hotelData?.title ?? 'titel',
+                              widget.hotelData?.title ?? 'titel',
                               style: _txtStyleTitle,
                               overflow: TextOverflow.ellipsis,
                             )),
@@ -536,18 +549,20 @@ class cardList extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             ratingbar(
-                              starRating: hotelData?.averageRating != null &&
-                                      hotelData?.averageRating != "null"
-                                  ? double.parse('${hotelData?.averageRating}')
-                                  : double.parse('${hotelData?.Rating}'),
+                              starRating: widget.hotelData?.averageRating !=
+                                          null &&
+                                      widget.hotelData?.averageRating != "null"
+                                  ? double.parse(
+                                      '${widget.hotelData?.averageRating}')
+                                  : double.parse('${widget.hotelData?.Rating}'),
                               color: Colors.deepPurpleAccent,
                             ),
                             const Padding(padding: EdgeInsets.only(left: 5.0)),
                             Text(
-                              hotelData?.averageRating != null &&
-                                      hotelData?.averageRating != "null"
-                                  ? '(${hotelData?.averageRating})'
-                                  : '(${hotelData?.Rating})',
+                              widget.hotelData?.averageRating != null &&
+                                      widget.hotelData?.averageRating != "null"
+                                  ? '(${widget.hotelData?.averageRating})'
+                                  : '(${widget.hotelData?.Rating})',
                               style: _txtStyleSub,
                             )
                           ],
@@ -564,7 +579,8 @@ class cardList extends StatelessWidget {
                                 color: Colors.black26,
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3.0)),
-                              Text(hotelData?.city ?? '', style: _txtStyleSub)
+                              Text(widget.hotelData?.city ?? '',
+                                  style: _txtStyleSub)
                             ],
                           ),
                         )
@@ -578,9 +594,10 @@ class cardList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          hotelData?.price == null || hotelData?.price == "null"
+                          widget.hotelData?.price == null ||
+                                  widget.hotelData?.price == "null"
                               ? ''
-                              : '\$${hotelData?.price ?? ''}',
+                              : '\$${widget.hotelData?.price ?? ''}',
                           style: const TextStyle(
                               fontSize: 25.0,
                               color: Colors.deepPurpleAccent,
@@ -588,8 +605,8 @@ class cardList extends StatelessWidget {
                               fontFamily: "Gotik"),
                         ),
                         Text(
-                            hotelData?.price == null ||
-                                    hotelData?.price == "null"
+                            widget.hotelData?.price == null ||
+                                    widget.hotelData?.price == "null"
                                 ? ''
                                 : "per night",
                             style: _txtStyleSub.copyWith(fontSize: 11.0))

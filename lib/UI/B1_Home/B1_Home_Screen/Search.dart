@@ -4,6 +4,7 @@ import 'package:hotelbooking/ShardFunction/valid.dart';
 import 'package:hotelbooking/UI/search_screen/search_screen.dart';
 import 'package:hotelbooking/controller/edit_profile_controller.dart';
 import 'package:hotelbooking/data/functions_response/get_by_type.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 
 TextEditingController? searchText = TextEditingController();
@@ -19,8 +20,8 @@ class _searchState extends State<search> {
     iconTheme: const IconThemeData(
       color: Colors.deepPurpleAccent,
     ),
-    title: const Text(
-      "Search",
+    title: Text(
+      LangVarible.search.tr,
       style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 18.0,
@@ -136,9 +137,9 @@ class _searchState extends State<search> {
                 decoration: const BoxDecoration(
                   color: Colors.deepPurpleAccent,
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "Search",
+                    LangVarible.search.tr,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,

@@ -43,7 +43,7 @@ class LoginController extends GetxController {
             sharedPreferences.setString(
                 'isOwner', respon['isOwner'].toString());
             sharedPreferences.setString('step', '2');
-            signInWithEmailAndPassword();
+
             print('Sucss $respon');
           } else {
             statusRequest = StatusRequest.none;
@@ -55,22 +55,6 @@ class LoginController extends GetxController {
         print('catch $e');
       }
       update();
-    }
-  }
-
-  void signInWithEmailAndPassword() async {
-    final box = GetStorage();
-    //  String name1=box.read('name')??"";
-    String email1 = box.read('email') ?? "";
-
-    try {
-      await _auth.signInWithEmailAndPassword(
-          email: emaillog, password: passwordlog);
-      Get.offAll(MainSelection());
-    } catch (e) {
-      print(e.toString());
-      Get.snackbar("Erorr login account", e.toString(),
-          colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 
 class TopBokingWidget extends StatelessWidget {
   const TopBokingWidget({
@@ -21,7 +22,7 @@ class TopBokingWidget extends StatelessWidget {
           statusRequest: controller.statusRequest1,
           widget: Container(
             padding: const EdgeInsets.only(right: 5.0, top: 10.0),
-            height: 230.0,
+            height: 254.0,
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,12 +31,12 @@ class TopBokingWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 12.0),
                   child: Text(
-                    "Bookings".tr,
+                    LangVarible.top_booking.tr,
                     style: _txtStyle,
                   ),
                 ),
                 SizedBox(
-                  height: 201,
+                  height: 217,
                   child: ListView.separated(
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 12, right: 12),

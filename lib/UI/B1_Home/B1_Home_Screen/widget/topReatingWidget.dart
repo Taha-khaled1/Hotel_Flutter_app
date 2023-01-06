@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 
 class TopReatingWidget extends StatelessWidget {
   const TopReatingWidget({
@@ -30,7 +31,7 @@ class TopReatingWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 12.0),
                   child: Text(
-                    "Ratings".tr,
+                    LangVarible.top_rating.tr,
                     style: _txtStyle,
                   ),
                 ),

@@ -12,6 +12,7 @@ import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
 import 'package:hotelbooking/UI/languege_screen/languege_screen.dart';
 import 'package:hotelbooking/langs/ar.dart';
 import 'package:hotelbooking/langs/en.dart';
+import 'package:hotelbooking/splash_screen.dart';
 import 'package:hotelbooking/translation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'funs.dart' as f;

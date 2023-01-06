@@ -5,9 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hotelbooking/ShardFunction/handling.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
-import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
-import 'package:hotelbooking/UI/chat/controller/user_controller.dart';
-import 'package:hotelbooking/UI/chat/services/firestore_user.dart';
 import 'package:hotelbooking/data/functions_response/LoginFunc.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -38,7 +35,6 @@ class SiginUpController extends GetxController {
         if (StatusRequest.success == statusRequest) {
           if (respon['message'].toString() ==
               'Verification email is sent to your gmail account') {
-            createAccountWithEmailAndPassword(context);
             print('Sucss $respon');
           } else {
             statusRequest = StatusRequest.none;
@@ -55,28 +51,6 @@ class SiginUpController extends GetxController {
       }
       update();
     }
-  }
-
-  void createAccountWithEmailAndPassword(BuildContext context) async {
-    final box = GetStorage();
-    //  String name1=box.read('name')??"";
-    String email1 = box.read('email') ?? "";
-
-    await _auth
-        .createUserWithEmailAndPassword(email: email, password: password)
-        .then((user) async {
-      box.write('email', email);
-      box.write('name', name);
-
-      UserModel userModel =
-          UserModel(email, name, user.user!.uid, phone, city, country);
-      await FireStoreUser().addUserToFireStore(
-          UserModel(email, name, user.user!.uid, phone, city, country));
-    });
-    QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        title: 'تم انشاء الحساب بنجاح  يرجي تاكيد الحساب الان');
   }
 
   late FToast fToast;

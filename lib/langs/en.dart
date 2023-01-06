@@ -104,7 +104,6 @@ Map<String, String> en = {
   "top_booking": "Top Booking",
   "find_what_you_want": "Find what you want",
   "types": "Types",
-  "cities": "Cities",
   "recommended_rooms": "Recommended Rooms",
   "main": "Main",
   "notification": "Notifications",

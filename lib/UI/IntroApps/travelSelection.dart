@@ -4,6 +4,7 @@ import 'package:hotelbooking/UI/Bottom_Nav_Bar/bottomNavBar.dart';
 import 'package:hotelbooking/UI/IntroApps/search_map.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/main_slection_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:quickalert/quickalert.dart';
@@ -45,10 +46,10 @@ class _MainSelectionState extends State<MainSelection> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      "Choose your Favorite Destination",
+                      LangVarible.choose_your_favourite_distination.tr,
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 30.0,
@@ -83,9 +84,10 @@ class _MainSelectionState extends State<MainSelection> {
                               controller.addCatogeryaUser();
                             } else {
                               QuickAlert.show(
-                                  context: context,
-                                  type: QuickAlertType.warning,
-                                  title: 'يرجي اختيار قسم');
+                                context: context,
+                                type: QuickAlertType.warning,
+                                title: 'يرجي اختيار قسم',
+                              );
                             }
                           },
                           child: Container(
@@ -99,9 +101,9 @@ class _MainSelectionState extends State<MainSelection> {
                                   Color(0xFF647DEE),
                                   Color(0xFF7F53AC)
                                 ])),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "Next",
+                                LangVarible.next.tr,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: "Sofia",

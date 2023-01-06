@@ -16,6 +16,7 @@ import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/UI/pages/filter.dart';
 import 'package:hotelbooking/controller/getInfoRoom_controller.dart';
 import 'package:hotelbooking/controller/home_controller.dart';
+import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/get_top_reating_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
@@ -283,7 +284,7 @@ class OffersHouseWidget extends StatelessWidget {
             padding: const EdgeInsets.only(
                 left: 20.0, top: 10.0, bottom: 3.0, right: 20.0),
             child: Text(
-              "Offers".tr,
+              LangVarible.Offers.tr,
               style: const TextStyle(
                 fontFamily: "Sofia",
                 color: Colors.black,
