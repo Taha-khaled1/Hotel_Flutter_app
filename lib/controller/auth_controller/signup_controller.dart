@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hotelbooking/ShardFunction/handling.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
+import 'package:hotelbooking/UI/IntroApps/Login.dart';
 import 'package:hotelbooking/data/functions_response/LoginFunc.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -35,6 +36,11 @@ class SiginUpController extends GetxController {
         if (StatusRequest.success == statusRequest) {
           if (respon['message'].toString() ==
               'Verification email is sent to your gmail account') {
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'تم انشاء الحساب بنجاح يرجي تاكيد الاميل الخاص بك');
+            Get.to(Login());
             print('Sucss $respon');
           } else {
             statusRequest = StatusRequest.none;

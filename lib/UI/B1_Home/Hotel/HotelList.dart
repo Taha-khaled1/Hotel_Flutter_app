@@ -511,7 +511,7 @@ class _cardListState extends State<cardList> {
                                     widget.hotelData?.sId.toString() ??
                                         '638e12d4387bd697991743a6',
                                   );
-                                  isfav = true;
+                                  isfav = !isfav;
                                   controller.upda();
                                 },
                                 icon: Icon(

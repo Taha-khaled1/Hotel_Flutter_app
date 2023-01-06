@@ -43,7 +43,7 @@ class LoginController extends GetxController {
             sharedPreferences.setString(
                 'isOwner', respon['isOwner'].toString());
             sharedPreferences.setString('step', '2');
-
+            Get.to(MainSelection());
             print('Sucss $respon');
           } else {
             statusRequest = StatusRequest.none;

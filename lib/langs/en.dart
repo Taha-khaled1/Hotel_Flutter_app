@@ -1,5 +1,5 @@
 Map<String, String> en = {
-  "app_name": "Hotel booking",
+  "app_name": "TravelMate",
   "Theres not data": "Theres not data",
   "Home": "Home page",
   "My_favorites": "My favorites",
