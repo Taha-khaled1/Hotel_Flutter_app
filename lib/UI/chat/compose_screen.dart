@@ -1,14 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/UI/chat/chat2/chat_Room.dart';
 
 import 'chat_screen.dart';
 
 class ComposeScreen extends StatelessWidget {
-  const ComposeScreen({Key? key}) : super(key: key);
+  ComposeScreen({Key? key}) : super(key: key);
+  chatRoomId(
+    String user1,
+    String user2,
+  ) {
+    if (user1[0].toLowerCase().codeUnits[0] >
+        user2.toLowerCase().codeUnits[0]) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
+  }
 
+  Map<String, dynamic> userMap = Map();
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     return Scaffold(
         backgroundColor: Color(0xFF928CEF),
         appBar: AppBar(
@@ -46,15 +61,16 @@ class ComposeScreen extends StatelessWidget {
                             return Container(
                               child: InkWell(
                                 onTap: () {
-                                  Get.to(
-                                    ChatScreen(
-                                      chatRoomId: '', userMap: {},
-                                      //     user: posts["name"],
+                                  String roomId = chatRoomId(
+                                      _auth.currentUser!.displayName!,
+                                      userMap["name"] ?? 'as');
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatRoom(
+                                        chatRoomId: roomId,
+                                        userMap: userMap,
+                                      ),
                                     ),
-                                    // arguments: [
-                                    //     //   docs["name"],
-                                    //       // docs["email"]
-                                    //   ],
                                   );
                                 },
                                 child: Container(
@@ -88,33 +104,33 @@ class ComposeScreen extends StatelessWidget {
                                         top: 50,
                                         left: 15,
                                         child: Card(
-                                            elevation: 0,
-                                            // shadowColor:
-                                            //     Colors.grey.withOpacity(0.5),
-                                            // shape: RoundedRectangleBorder(
-                                            //   borderRadius:
-                                            //       BorderRadius.circular(15.0),
-                                            // ),
-                                            child: CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                radius: 33,
-                                                child: Image.asset(
-                                                  "assets/image/profile/profile.png",
-                                                  fit: BoxFit.cover,
-                                                ))
-                                            // Container(
-                                            //   height: 80,
-                                            //   width: 70,
-                                            //   decoration: BoxDecoration(
-                                            //       borderRadius:
-                                            //           BorderRadius.circular(10.0),
-                                            //       image: DecorationImage(
-                                            //           fit: BoxFit.fill,
-                                            //           image: AssetImage(
-                                            //             "assets/image/profile/profile.png",
-                                            //           ))),
-                                            // ),
-                                            ),
+                                          elevation: 0,
+                                          // shadowColor:
+                                          //     Colors.grey.withOpacity(0.5),
+                                          // shape: RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(15.0),
+                                          // ),
+                                          // child: CircleAvatar(
+                                          //     backgroundColor: Colors.white,
+                                          //     radius: 33,
+                                          //     child: Image.asset(
+                                          //       "assets/image/profile/profile.png",
+                                          //       fit: BoxFit.cover,
+                                          //     ))
+                                          // Container(
+                                          //   height: 80,
+                                          //   width: 70,
+                                          //   decoration: BoxDecoration(
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(10.0),
+                                          //       image: DecorationImage(
+                                          //           fit: BoxFit.fill,
+                                          //           image: AssetImage(
+                                          //             "assets/image/profile/profile.png",
+                                          //           ))),
+                                          // ),
+                                        ),
                                       ),
                                       Positioned(
                                           top: 70,

@@ -15,6 +15,7 @@ class CustomTextfeild extends StatelessWidget {
   final Color? fillColor;
   final bool? isenabledBorder;
   final bool readOnly;
+
   final void Function()? onTap;
   const CustomTextfeild({
     super.key,
@@ -51,6 +52,7 @@ class CustomTextfeild extends StatelessWidget {
         obscureText: obsecuer == null ? false : obsecuer!,
         onSaved: onsaved,
         validator: valid,
+        decoration: InputDecoration(hintText: titel, prefixIcon: Icon(icon)),
       ),
     );
   }

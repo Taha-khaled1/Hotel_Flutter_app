@@ -12,38 +12,32 @@ import 'package:hotelbooking/data/functions_response/LoginFunc.dart';
 import 'package:quickalert/quickalert.dart';
 
 class SiginUpController extends GetxController {
-  late String email, password, name, city, country, phone;
+  late String email, password, name, city, country, phone, repass;
   FirebaseAuth _auth = FirebaseAuth.instance;
   Rxn<User> _user = Rxn<User>();
   String? get user => _user.value?.email;
   final GlobalKey<FormState> formkeysigin = GlobalKey();
 
   StatusRequest statusRequest = StatusRequest.none;
-  SiginUp(
-      {required String email,
-      required String password,
-      required String username,
-      required String country,
-      required String city,
-      required String phone,
-      required String repassword,
-      required BuildContext context}) async {
+  SiginUp({required BuildContext context}) async {
     if (formkeysigin.currentState!.validate()) {
       formkeysigin.currentState!.save();
       statusRequest = StatusRequest.loading;
       update();
       var respon = await SignUpRespons(
-          city: city,
-          country: country,
-          email: email,
-          password: password,
-          phone: phone,
-          repassword: repassword,
-          username: username);
+        city: city,
+        country: country,
+        email: email,
+        password: password,
+        phone: phone,
+        repassword: repass,
+        username: name,
+      );
       statusRequest = handlingData(respon);
       try {
         if (StatusRequest.success == statusRequest) {
-          if (respon['message'].toString() == 'success') {
+          if (respon['message'].toString() ==
+              'Verification email is sent to your gmail account') {
             createAccountWithEmailAndPassword(context);
             print('Sucss $respon');
           } else {
@@ -68,29 +62,21 @@ class SiginUpController extends GetxController {
     //  String name1=box.read('name')??"";
     String email1 = box.read('email') ?? "";
 
-    try {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((user) async {
-        box.write('email', email);
-        box.write('name', name);
+    await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((user) async {
+      box.write('email', email);
+      box.write('name', name);
 
-        UserModel userModel =
-            UserModel(email, name, user.user!.uid, phone, city, country);
-        await FireStoreUser().addUserToFireStore(
-            UserModel(email, name, user.user!.uid, phone, city, country));
-      });
-      QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          title: 'تم انشاء الحساب بنجاح  يرجي تاكيد الحساب الان');
-    } catch (e) {
-      print(e.toString());
-      QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: 'لم يتم انشاء الحساب');
-    }
+      UserModel userModel =
+          UserModel(email, name, user.user!.uid, phone, city, country);
+      await FireStoreUser().addUserToFireStore(
+          UserModel(email, name, user.user!.uid, phone, city, country));
+    });
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'تم انشاء الحساب بنجاح  يرجي تاكيد الحساب الان');
   }
 
   late FToast fToast;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hotelbooking/UI/languege_screen/languege_screen.dart';
 
 import 'UI/IntroApps/OnBoarding.dart';
 
@@ -14,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void _navigator() {
     Navigator.of(context).pushReplacement(PageRouteBuilder(
-        pageBuilder: (_, __, ___) => onBoarding(),
+        pageBuilder: (_, __, ___) => Language(),
         transitionDuration: const Duration(milliseconds: 2000),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(

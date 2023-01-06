@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/editProfile.dart';
+import 'package:hotelbooking/UI/IntroApps/Login.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
+import 'package:hotelbooking/UI/languege_screen/languege_screen.dart';
+import 'package:hotelbooking/langs/ar.dart';
+import 'package:hotelbooking/langs/en.dart';
 import 'package:hotelbooking/translation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'funs.dart' as f;
@@ -16,6 +21,7 @@ import 'classes.dart';
 late SharedPreferences sharedPreferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   sharedPreferences = await SharedPreferences.getInstance();
   HttpOverrides.global = MyHttpOverrides();
 
@@ -32,6 +38,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocaleController controller = Get.put(LocaleController());
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
     //   statusBarColor: Colors.transparent,
     // ));
@@ -48,7 +55,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       home: MainSelection(), //SplashScreen(),
       // home: BottomNavBar(),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, translations: MyTranslation(),
+      locale: controller.language,
       theme: ThemeData(
         brightness: Brightness.light,
         backgroundColor: Colors.white,
@@ -114,8 +122,7 @@ class MyApp extends StatelessWidget {
       ),
 
       // lang _________________________________________________
-      translations: Translation(),
-      locale: Locale(f.appLang()),
+
       // locale: Locale("en"),
       fallbackLocale: Locale("ar"),
       localizationsDelegates: [
@@ -133,4 +140,10 @@ class MyApp extends StatelessWidget {
       // end lang _________________________________________________
     );
   }
+}
+
+class MyTranslation extends Translations {
+  @override
+  // TODO: implement keys
+  Map<String, Map<String, String>> get keys => {"ar": ar, "en": en};
 }

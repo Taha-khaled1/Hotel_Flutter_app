@@ -69,10 +69,10 @@ class ChatScreen extends StatelessWidget {
                               backgroundColor: index.isEven
                                   ? Color.fromARGB(255, 12, 48, 77)
                                   : Colors.grey,
-                              child: Image.asset(
-                                "assets/image/profile/profile.png",
-                                color: Color.fromARGB(255, 255, 255, 255),
-                              ),
+                              // child: Image.asset(
+                              //   "assets/image/profile/profile.png",
+                              //   color: Color.fromARGB(255, 255, 255, 255),
+                              // ),
                             ),
                             SizedBox(
                               width: 5,

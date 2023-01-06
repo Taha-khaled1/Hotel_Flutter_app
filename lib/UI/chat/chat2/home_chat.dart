@@ -11,7 +11,7 @@ class HomeChat2 extends StatefulWidget {
 }
 
 class _HomeChat2State extends State<HomeChat2> {
-  late Map<String, dynamic> userMap;
+  Map<String, dynamic> userMap = Map();
   bool isLoding = false;
   final TextEditingController _search = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -100,7 +100,9 @@ class _HomeChat2State extends State<HomeChat2> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => ChatRoom(
-                                  chatRoomId: roomId, userMap: userMap),
+                                chatRoomId: roomId,
+                                userMap: userMap,
+                              ),
                             ),
                           );
                         },

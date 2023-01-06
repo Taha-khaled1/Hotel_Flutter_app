@@ -21,13 +21,13 @@ Widget chatsComponent() {
                 // arguments: ["Username", " User Id"]
               );
             },
-            leading: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 25,
-                child: Image.asset(
-                  "assets/image/profile/profile.png",
-                  fit: BoxFit.cover,
-                )),
+            // leading: CircleAvatar(
+            //     backgroundColor: Colors.white,
+            //     radius: 25,
+            //     child: Image.asset(
+            //       "assets/image/profile/profile.png",
+            //       fit: BoxFit.cover,
+            //     )),
             title: Text(
               "Mahmoud Test",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

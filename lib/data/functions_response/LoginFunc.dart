@@ -29,7 +29,7 @@ SignUpRespons({
 }) async {
   Curd curd = Curd();
   var respons = await curd.postrequest(
-      MangeAPi.login,
+      'https://hotel-booking-8qw1.onrender.com/api/users/auth/register',
       {
         "username": username,
         "email": email,
@@ -40,5 +40,6 @@ SignUpRespons({
         "phone": phone
       },
       encode: true);
+  print(respons);
   return respons;
 }

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:http/http.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -17,13 +19,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   TextEditingController oldPassController = TextEditingController();
   void Reset(String oldPass, Pass, Confpassword) async {
     try {
-      var url = "http://localhost:3000/api/users/changePassword";
+      var url =
+          "https://hotel-booking-8qw1.onrender.com/api/users/changePassword";
       var rep = await put(Uri.parse(url));
 
       var response = await put(
         Uri.parse(url),
         body: jsonEncode(<String, String>{
-          "userId": "639caf806d411ef5892ea327",
+          "userId": sharedPreferences.getString('id')!,
           "oldPassword": oldPass,
           "newPassword": Pass,
           "rePassword": Confpassword,
@@ -32,6 +35,18 @@ class _ChangePasswordState extends State<ChangePassword> {
       ).then((value) {
         var data = jsonDecode(value.body.toString());
         if (value.statusCode == 200) {
+          if (data['message'] == 'Reset Password successfully') {
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.success,
+                title: 'تم تغير كلمة السر بنجاح');
+          } else {
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'لم يتم تغير كلمة السر');
+          }
+
           print(data['error'] ?? data['message']);
         } else {
           print('failed');
