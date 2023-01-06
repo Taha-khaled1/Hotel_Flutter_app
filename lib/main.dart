@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: MainSelection(), //SplashScreen(),
+      home: SplashScreen(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false, translations: MyTranslation(),
       locale: controller.language,
