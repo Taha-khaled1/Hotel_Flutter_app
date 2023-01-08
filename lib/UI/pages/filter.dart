@@ -156,22 +156,16 @@ class _FilterState extends State<Filter> {
                             "popular",
                             style: TextStyle(fontSize: 16),
                           ),
-                          Wrap(
-                            children: [
-                              if (controller
-                                      .dataforFiltterModel?.features?.length !=
-                                  0)
-                                for (int i = 0;
-                                    i <
-                                        controller.dataforFiltterModel!
-                                            .features!.length;
-                                    i++)
+                          if (controller.futurer != 0)
+                            Wrap(
+                              children: [
+                                for (int i = 0; i < controller.futurer; i++)
                                   CheckCustom(
                                     tit: controller
-                                        .dataforFiltterModel!.features![0],
-                                  )
-                            ],
-                          )
+                                        .dataforFiltterModel!.features![i],
+                                  ),
+                              ],
+                            )
                         ],
                       ),
                     ),

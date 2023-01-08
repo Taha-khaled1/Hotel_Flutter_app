@@ -33,3 +33,11 @@ getUserCatogeryRespon() async {
   );
   return respons;
 }
+
+getRecommendAiRespon() async {
+  Curd curd = Curd();
+  var respons = await curd.getrequest(
+    'https://hotel-booking-8qw1.onrender.com/api/rooms/recommender',
+  );
+  return respons;
+}

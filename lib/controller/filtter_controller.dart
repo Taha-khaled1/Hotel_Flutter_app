@@ -16,6 +16,7 @@ class FiltterController extends GetxController {
   List<String> x = ["مسابح", "wifi"];
   String type = "فندق";
   int distance = 6;
+  int futurer = 0;
   StatusRequest statusRequest = StatusRequest.none;
   getdataFromFiltter() async {
     statusRequest = StatusRequest.loading;
@@ -67,6 +68,7 @@ class FiltterController extends GetxController {
       statusRequest3 = handlingData(response);
       if (StatusRequest.success == statusRequest3) {
         dataforFiltterModel = await DataforFiltterModel.fromJson(response);
+        futurer = dataforFiltterModel!.features!.length;
       } else {
         print('erorr');
       }

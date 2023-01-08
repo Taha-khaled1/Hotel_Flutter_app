@@ -42,6 +42,9 @@ class LoginController extends GetxController {
                 'isAdmin', respon['isAdmin'].toString());
             sharedPreferences.setString(
                 'isOwner', respon['isOwner'].toString());
+            sharedPreferences.setString(
+                'token', respon['access_token'].toString());
+            print(sharedPreferences.getString('token'));
             sharedPreferences.setString('step', '2');
             Get.to(MainSelection());
             print('Sucss $respon');
@@ -52,6 +55,7 @@ class LoginController extends GetxController {
           }
         }
       } catch (e) {
+        statusRequest = StatusRequest.none;
         print('catch $e');
       }
       update();

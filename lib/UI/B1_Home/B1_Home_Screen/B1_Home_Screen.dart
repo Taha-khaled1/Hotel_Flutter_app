@@ -128,38 +128,6 @@ class _HomeState extends State<Home> {
     );
 
     ///  Grid item in bottom of Category
-    var _recommendedRooms = SingleChildScrollView(
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 20.0, top: 40.0, right: 20.0),
-              child: Text("Recommended Rooms", style: _txtStyle),
-            ),
-
-            /// To set GridView item
-            GridView.count(
-              shrinkWrap: true,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              crossAxisSpacing: 0.0,
-              mainAxisSpacing: 0.0,
-              childAspectRatio: 0.795,
-              crossAxisCount: 2,
-              primary: false,
-              children: List.generate(
-                gridItemArray.length,
-                (index) => ItemGrid(gridItemArray[index]),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
 
     return Scaffold(
       appBar: _appBar,
@@ -253,7 +221,7 @@ class _HomeState extends State<Home> {
                     TopBokingWidget(txtStyle: _txtStyle),
                     RecomendedTrevatelWidget(txtStyle: _txtStyle),
                     CitesWidget(txtStyle: _txtStyle),
-                    _recommendedRooms
+                    RecommendedAi(txtStyle: _txtStyle),
                   ],
                 ),
               ),
@@ -261,6 +229,60 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class RecommendedAi extends StatelessWidget {
+  const RecommendedAi({
+    Key? key,
+    required TextStyle txtStyle,
+  })  : _txtStyle = txtStyle,
+        super(key: key);
+
+  final TextStyle _txtStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        return HandlingDataView(
+          statusRequest: controller.statusRequest7,
+          widget: SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, top: 40.0, right: 20.0),
+                    child: Text("Recommended Rooms", style: _txtStyle),
+                  ),
+
+                  /// To set GridView item
+                  GridView.count(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    crossAxisSpacing: 0.0,
+                    mainAxisSpacing: 0.0,
+                    childAspectRatio: 0.795,
+                    crossAxisCount: 2,
+                    primary: false,
+                    children: List.generate(
+                      controller.getRecommendAi?.rooms?.length ?? 0,
+                      (index) =>
+                          ItemGrid(controller.getRecommendAi?.rooms![index]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -555,7 +577,7 @@ class CardType extends StatelessWidget {
 /// ItemGrid in bottom item "Recomended" item
 class ItemGrid extends StatelessWidget {
   /// Get data from HomeGridItem.....dart class
-  GridItem gridItem;
+  Rooms? gridItem;
   ItemGrid(this.gridItem);
 
   Widget build(BuildContext context) {
@@ -565,23 +587,9 @@ class ItemGrid extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          // Navigator.of(context).push(PageRouteBuilder(
-          //     pageBuilder: (_, __, ___) => new hotelDetail2(
-          //           title: gridItem.title,
-          //           id: gridItem.id,
-          //           image: gridItem.img,
-          //           location: gridItem.location,
-          //           price: gridItem.price,
-          //           ratting: gridItem.ratingValue,
-          //         ),
-          //     transitionDuration: const Duration(milliseconds: 600),
-          //     transitionsBuilder:
-          //         (_, Animation<double> animation, __, Widget child) {
-          //       return Opacity(
-          //         opacity: animation.value,
-          //         child: child,
-          //       );
-          //     }));
+          Get.delete<GetInfoRoomController>();
+          sharedPreferences.setString('keyroom', gridItem!.sId.toString());
+          Get.to(HotelDetail());
         },
         child: Container(
           decoration: BoxDecoration(
@@ -612,7 +620,8 @@ class ItemGrid extends StatelessWidget {
                             topLeft: Radius.circular(7.0),
                             topRight: Radius.circular(7.0)),
                         image: DecorationImage(
-                          image: AssetImage(gridItem.img!),
+                          image: NetworkImage(
+                              '${MangeAPi.baseurl}/${gridItem!.imgs!.split(',').first}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -631,7 +640,7 @@ class ItemGrid extends StatelessWidget {
                     child: Container(
                       width: 130.0,
                       child: Text(
-                        gridItem.title!,
+                        gridItem?.title ?? 'tit',
                         style: const TextStyle(
                             letterSpacing: 0.5,
                             color: Colors.black54,
@@ -648,7 +657,7 @@ class ItemGrid extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 0.0),
                         child: Text(
-                          gridItem.price!,
+                          gridItem?.price.toString() ?? 'price',
                           style: const TextStyle(
                               color: Colors.black54,
                               fontFamily: "Gotik",
@@ -676,12 +685,13 @@ class ItemGrid extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             ratingbar(
-                              starRating: gridItem.ratingValue,
+                              starRating:
+                                  gridItem?.averageRating!.toDouble() ?? 2,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: Text(
-                                gridItem.ratingValue.toString(),
+                                gridItem?.averageRating?.toString() ?? '5.0',
                                 style: const TextStyle(
                                     fontFamily: "Sans",
                                     color: Colors.black26,

@@ -15,6 +15,7 @@ class HomeController extends GetxController {
   GetTopReatingModel? getTopReatingModel;
   GetTopReatingModel? getTopBokingModel;
   CitisModel? getCitesModel;
+  RecommendAi? getRecommendAi;
   TypesModel? getTypesModel;
   late StatusRequest statusRequest;
   late StatusRequest statusRequest1;
@@ -22,6 +23,21 @@ class HomeController extends GetxController {
   late StatusRequest statusRequest3;
   GetUserCatogerys? getusercatogerys;
   late StatusRequest statusRequest4;
+  late StatusRequest statusRequest7;
+
+  getRecommedai() async {
+    statusRequest7 = StatusRequest.loading;
+    update();
+    var response = await getRecommendAiRespon();
+    statusRequest7 = handlingData(response);
+    if (StatusRequest.success == statusRequest7) {
+      getRecommendAi = await RecommendAi.fromJson(response);
+      print('RecommendAi');
+    } else {
+      print('erorr');
+    }
+    update();
+  }
 
   getUserCatogerys() async {
     statusRequest4 = StatusRequest.loading;
@@ -113,6 +129,71 @@ class HomeController extends GetxController {
     getCiteisdata();
     getTypesdata();
     getUserCatogerys();
+    getRecommedai();
     super.onInit();
+  }
+}
+
+class RecommendAi {
+  List<Rooms>? rooms;
+
+  RecommendAi({this.rooms});
+
+  RecommendAi.fromJson(Map<String, dynamic> json) {
+    if (json['Rooms'] != null) {
+      rooms = <Rooms>[];
+      json['Rooms'].forEach((v) {
+        rooms!.add(new Rooms.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.rooms != null) {
+      data['Rooms'] = this.rooms!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Rooms {
+  String? sId;
+  String? title;
+  String? type;
+  int? price;
+  String? city;
+  int? averageRating;
+  String? imgs;
+
+  Rooms(
+      {this.sId,
+      this.title,
+      this.type,
+      this.price,
+      this.city,
+      this.averageRating,
+      this.imgs});
+
+  Rooms.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    type = json['type'];
+    price = json['price'];
+    city = json['city'];
+    averageRating = json['averageRating'];
+    imgs = json['imgs'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['type'] = this.type;
+    data['price'] = this.price;
+    data['city'] = this.city;
+    data['averageRating'] = this.averageRating;
+    data['imgs'] = this.imgs;
+    return data;
   }
 }

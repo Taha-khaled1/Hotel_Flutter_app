@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -20,18 +21,44 @@ import 'funs.dart' as f;
 import 'classes.dart';
 
 late SharedPreferences sharedPreferences;
+FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   sharedPreferences = await SharedPreferences.getInstance();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   HttpOverrides.global = MyHttpOverrides();
-
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
   // await Firebase.initializeApp();
   await GetStorage.init();
 
   f.getFCMToken();
-
+  print('object');
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('User granted provisional permission');
+  } else {
+    print('User declined or has not accepted permission');
+  }
   runApp(MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
 }
 
 class MyApp extends StatelessWidget {
@@ -54,7 +81,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: SplashScreen(), //SplashScreen(),
+      home: MainSelection(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false, translations: MyTranslation(),
       locale: controller.language,

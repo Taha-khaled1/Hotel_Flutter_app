@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:hotelbooking/ShardFunction/checkenternet.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -12,24 +13,22 @@ import 'package:path/path.dart';
 
 Map<String, String> myheaders = {'Content-Type': 'application/json'};
 Map<String, String> myheaders2 = {
-  'Cookie':
-      'access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjZlZmYwNDk1NWVjNzNiNTNkYWRiMyIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NzI5MzQzODV9.Eh0AcJ9yBzkXB0I8dMz2eTfkkjrD3fH1HDxKkrXCcFc'
+  'Cookie': 'access_token=${sharedPreferences.getString('token')}'
 };
 
 Map<String, String> myheaders3 = {
   'Content-Type': 'application/json',
-  'Cookie':
-      'access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjZlZmYwNDk1NWVjNzNiNTNkYWRiMyIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NzI5MzQzODV9.Eh0AcJ9yBzkXB0I8dMz2eTfkkjrD3fH1HDxKkrXCcFc'
+  'Cookie': 'access_token=${sharedPreferences.getString('token')}'
 };
 
 class Curd {
   getrequest(String url) async {
     try {
       Response respos = await http.get(Uri.parse(url), headers: myheaders3);
-      print('============');
+      print('======$myheaders3======');
       print(respos.body);
       print(respos.statusCode);
-      print('============');
+      print('=====$myheaders2======');
       if (respos.statusCode == 200) {
         dynamic body = jsonDecode(respos.body);
         print(' body :  $body');
