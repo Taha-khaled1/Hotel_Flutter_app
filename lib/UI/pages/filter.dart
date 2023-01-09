@@ -24,15 +24,7 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   var sliderValue = 1.0;
   SfRangeValues _values = const SfRangeValues(1, 200);
-  bool q = false,
-      w = false,
-      e = false,
-      r = false,
-      t = false,
-      y = false,
-      u = false,
-      i = false,
-      o = false;
+  bool u = false, i = false, o = false;
   String dropdownvalue = 'Item 1';
 
   // List of items in our dropdown menu
@@ -260,6 +252,10 @@ class _FilterState extends State<Filter> {
                             onChanged: (value) async {
                               setState(() {
                                 o = value;
+                                o == true
+                                    ? controller.type = 'فندق'
+                                    : controller.type = '';
+                                print(controller.type);
                               });
                             },
                             visualDensity: VisualDensity.comfortable,
@@ -281,6 +277,10 @@ class _FilterState extends State<Filter> {
                             onChanged: (value) async {
                               setState(() {
                                 u = value;
+                                u == true
+                                    ? controller.type = 'منزل'
+                                    : controller.type = '';
+                                print(controller.type);
                               });
                             },
                             visualDensity: VisualDensity.comfortable,
@@ -343,17 +343,27 @@ class _CheckCustomState extends State<CheckCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: CheckboxListTile(
-        title: Text(widget.tit),
-        value: x,
-        onChanged: (value) {
-          setState(() {
-            x = value!;
-          });
-        },
-      ),
+    return GetBuilder<FiltterController>(
+      builder: (controller) {
+        return SizedBox(
+          height: 50,
+          child: CheckboxListTile(
+            title: Text(widget.tit),
+            value: x,
+            onChanged: (value) {
+              setState(() {
+                x = value!;
+                x == true
+                    ? controller.x.add(widget.tit)
+                    : controller.x.removeWhere(
+                        (element) => element == widget.tit,
+                      );
+                print(controller.x);
+              });
+            },
+          ),
+        );
+      },
     );
   }
 }

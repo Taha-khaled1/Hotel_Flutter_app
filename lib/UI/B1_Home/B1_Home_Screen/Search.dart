@@ -7,7 +7,8 @@ import 'package:hotelbooking/data/functions_response/get_by_type.dart';
 import 'package:hotelbooking/langs/languge_varible.dart';
 import 'package:hotelbooking/main.dart';
 
-TextEditingController? searchText = TextEditingController();
+String? searchText;
+final GlobalKey<FormState> formkeysigin = GlobalKey();
 
 class search extends StatefulWidget {
   @override
@@ -65,44 +66,33 @@ class _searchState extends State<search> {
       child: Column(
         children: <Widget>[
           Container(
-            height: 50.0,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 5.0,
-                      spreadRadius: 0.0)
-                ]),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                child: Theme(
-                  data: ThemeData(hintColor: Colors.transparent),
+              height: 50.0,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 5.0,
+                        spreadRadius: 0.0)
+                  ]),
+              child: Center(
+                child: Form(
+                  key: formkeysigin,
                   child: TextFormField(
-                    controller: searchText,
-                    onChanged: (value) {
-                      searchText!.text = value;
+                    validator: (value) {
+                      validInput(value.toString(), 1, 100, 'text');
+                    },
+                    onSaved: (newValue) {
+                      searchText = newValue!;
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: IconButton(
-                            onPressed: () {
-                              print('object');
-                            },
-                            icon: Icon(
-                              Icons.search,
-                              color: Color(0xFF6991C7),
-                              size: 28.0,
-                            )),
-                        hintText: "Find you want",
-                        hintStyle: txtButton),
+                      prefixIcon:
+                          InkWell(onTap: () {}, child: Icon(Icons.search)),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              )),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Row(
@@ -124,12 +114,15 @@ class _searchState extends State<search> {
             padding: const EdgeInsets.only(top: 15.0),
             child: InkWell(
               onTap: () {
-                if (searchText?.text == null) {
-                  showsnackBar('يرجي ادخال قيمه');
-                } else {
-                  print(
-                      '----------------------------ooooooooooooooooooooooooooooooooooo---------------------------------------');
-                  Get.to(SearchScreen());
+                if (formkeysigin.currentState!.validate()) {
+                  formkeysigin.currentState!.save();
+                  if (searchText == null) {
+                    showsnackBar('يرجي ادخال قيمه');
+                  } else {
+                    print(
+                        '----------------------------ooooooooooooooooooooooooooooooooooo---------------------------------------');
+                    Get.to(SearchScreen());
+                  }
                 }
               },
               child: Container(

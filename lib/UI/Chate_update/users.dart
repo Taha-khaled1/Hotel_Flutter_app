@@ -155,7 +155,6 @@ class CustomSearchHintDelegate extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return List.generate(
-        xc.length, (index) => Text(xc[index].username ?? 'nodata'));
+    return [];
   }
 }

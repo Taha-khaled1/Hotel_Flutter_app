@@ -23,7 +23,7 @@ class SearchController extends GetxController {
 
   @override
   void onInit() {
-    getdataSearch(searchText!.text);
+    getdataSearch(searchText!);
     super.onInit();
   }
 }

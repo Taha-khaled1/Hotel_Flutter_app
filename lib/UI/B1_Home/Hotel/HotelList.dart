@@ -338,6 +338,7 @@ class itemGrid extends StatelessWidget {
                               ),
                               SizedBox(
                                 child: GetBuilder<HotelBytypeController>(
+                                  init: HotelBytypeController(),
                                   builder: (controller) {
                                     return HandlingDataView(
                                       statusRequest: controller.statusRequest1,
@@ -399,7 +400,7 @@ class itemGrid extends StatelessWidget {
                             color: Colors.black38,
                           ),
                           Text(
-                            hotelData?.city ?? '',
+                            hotelData?.city ?? 'sdfdsfdsfsdf',
                             style: const TextStyle(
                                 fontSize: 10.0,
                                 fontWeight: FontWeight.w500,

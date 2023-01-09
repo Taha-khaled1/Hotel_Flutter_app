@@ -1493,7 +1493,7 @@ Widget _relatedPost(
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 0.0),
               child: Text(
-                'peer : ${price!.toString()}',
+                '${price!.toString()}',
                 style: const TextStyle(
                     color: Colors.black54,
                     fontFamily: "Gotik",

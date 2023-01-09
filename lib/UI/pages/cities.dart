@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/UI/B1_Home/Destination/destinationDetail.dart';
+import 'package:hotelbooking/controller/get_from_data_City_controller.dart';
 import 'package:hotelbooking/langs/languge_varible.dart';
+import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/models/cities_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
@@ -34,28 +37,44 @@ class _CitiesState extends State<Cities> {
         shrinkWrap: true,
         padding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
         itemBuilder: (context, int i) {
-          return Container(
-            height: Get.width * 0.6,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: Get.width * 0.95,
-                  height: Get.width * 0.6,
-                  child: Image.network(
-                      "${MangeAPi.baseurl}/${widget.message?[i].imgs!.split(',').first}",
-                      fit: BoxFit.cover),
+          return GestureDetector(
+            onTap: () {
+              Get.delete<GetDataCityController>();
+              sharedPreferences.setString(
+                  'keycity', widget.message![i].sId.toString());
+              Get.to(
+                () => destination(
+                  name: widget.message![i].name,
+                  desc: widget.message![i].desc,
                 ),
-                Container(
-                  width: Get.width * 0.95,
-                  height: Get.width * 0.6,
-                  color: Colors.black.withOpacity(0.2),
-                ),
-                Text(
-                  "${widget.message?[i].name}",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
+                duration: const Duration(milliseconds: 600),
+                transition: Transition.fadeIn,
+                curve: Curves.easeIn,
+              );
+            },
+            child: Container(
+              height: Get.width * 0.6,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: Get.width * 0.95,
+                    height: Get.width * 0.6,
+                    child: Image.network(
+                        "${MangeAPi.baseurl}/${widget.message?[i].imgs!.split(',').first}",
+                        fit: BoxFit.cover),
+                  ),
+                  Container(
+                    width: Get.width * 0.95,
+                    height: Get.width * 0.6,
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                  Text(
+                    "${widget.message?[i].name}",
+                    style: TextStyle(color: Colors.white, fontSize: 40),
+                  ),
+                ],
+              ),
             ),
           );
         },

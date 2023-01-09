@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/controller/data_of_catogery_controller.dart';
 import 'package:hotelbooking/controller/search_controller.dart';
@@ -302,7 +303,11 @@ class itemGrid extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             InkWell(
-              onTap: () {},
+              onTap: () {
+                sharedPreferences.setString(
+                    'keyhot', hotelData!.sId.toString());
+                Get.to(hotelDetail2());
+              },
               child: Container(
                 decoration: BoxDecoration(color: Colors.white, boxShadow: [
                   BoxShadow(

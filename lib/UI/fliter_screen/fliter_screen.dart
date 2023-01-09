@@ -13,6 +13,7 @@ class FilterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<FiltterController>(
+        init: FiltterController(),
         builder: (controller) {
           return HandlingDataView(
             statusRequest: controller.statusRequest,
@@ -26,7 +27,7 @@ class FilterScreen extends StatelessWidget {
                           'assets/images/106964-shake-a-empty-box.json'),
                     ),
                   )
-                : Column(
+                : ListView(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 95.0),

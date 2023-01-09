@@ -13,8 +13,8 @@ class FiltterController extends GetxController {
   String? city;
   int maxprice = 200;
   int minprice = 1;
-  List<String> x = ["مسابح", "wifi"];
-  String type = "فندق";
+  List<String> x = [];
+  String type = '';
   int distance = 6;
   int futurer = 0;
   StatusRequest statusRequest = StatusRequest.none;
