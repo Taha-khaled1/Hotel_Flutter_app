@@ -9,6 +9,8 @@ import 'package:hotelbooking/UI/Bottom_Nav_Bar/bottomNavBar.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
 import 'package:hotelbooking/data/functions_response/LoginFunc.dart';
 import 'package:hotelbooking/main.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class LoginController extends GetxController {
   BuildContext context;
@@ -51,11 +53,20 @@ class LoginController extends GetxController {
           } else {
             statusRequest = StatusRequest.none;
             print('erorr $respon');
-            showToast(respon['message']);
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: respon['message'],
+            );
           }
         }
       } catch (e) {
         statusRequest = StatusRequest.none;
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: respon['message'],
+        );
         print('catch $e');
       }
       update();

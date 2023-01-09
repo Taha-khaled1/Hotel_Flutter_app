@@ -27,34 +27,6 @@ class _noMessageState extends State<noMessage> {
               fontSize: 29.5,
               wordSpacing: 0.1),
         ),
-        actions: <Widget>[
-          InkWell(
-              onTap: () {
-                Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => new inboxAppbar()));
-              },
-              child: Image.asset(
-                "assets/image/icon/box.png",
-                height: 21.0,
-                width: 21.0,
-              )),
-          const SizedBox(
-            width: 20.0,
-          ),
-          InkWell(
-              onTap: () {
-                Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => new notificationAppbar()));
-              },
-              child: Image.asset(
-                "assets/image/icon/notification.png",
-                height: 21.0,
-                width: 21.0,
-              )),
-          const SizedBox(
-            width: 15.0,
-          ),
-        ],
       ),
       body: Stack(
         children: <Widget>[

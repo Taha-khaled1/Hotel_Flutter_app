@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hotelbooking/ShardFunction/valid.dart';
 import 'package:hotelbooking/UI/B2_Message/Chatting/chatting.dart';
+import 'package:hotelbooking/components/customtextfild.dart';
 import 'package:http/http.dart';
+import 'package:quickalert/quickalert.dart';
 
 class callCenter extends StatefulWidget {
   @override
@@ -10,26 +13,37 @@ class callCenter extends StatefulWidget {
 }
 
 class _callCenterState extends State<callCenter> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController subjectController = TextEditingController();
-  TextEditingController msgController = TextEditingController();
+  String? emailController, subjectController, msgController;
 
-  void Send(String email, subject, msg) async {
+  final GlobalKey<FormState> formkeysigin = GlobalKey();
+  void Send() async {
     try {
-      var url = "http://localhost:3000/api/users/sendEmail";
+      var url = "https://hotel-booking-8qw1.onrender.com/api/users/sendEmail";
       var response = await post(
         Uri.parse(url),
         body: jsonEncode(<String, String>{
-          "email": email,
-          "subject": subject,
-          "message": msg,
+          "email": emailController!,
+          "subject": subjectController!,
+          "message": msgController!,
         }),
         headers: <String, String>{'Content-Type': 'application/json'},
       ).then((value) {
         var data = jsonDecode(value.body.toString());
         if (value.statusCode == 200) {
-          print(data['error'] ?? data['message']);
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: 'تم ارسال الرساله بنجاح',
+          );
+          emailController = '';
+          subjectController = '';
+          msgController = '';
         } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'لم يتم ارسال الرساله',
+          );
           print('failed');
         }
       });
@@ -58,132 +72,127 @@ class _callCenterState extends State<callCenter> {
       body: Container(
           color: Colors.white,
           child: Center(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "assets/image/illustration/girlcallcenter.png",
-                height: 80.0,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 14.0),
-                child: Text(
-                  "We're Happy to Help You!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.brown),
+              child: Form(
+            key: formkeysigin,
+            child: ListView(
+              children: <Widget>[
+                Image.asset(
+                  "assets/image/illustration/girlcallcenter.png",
+                  height: 80.0,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.only(start: 12),
-                      child: Text("Email"),
-                    ),
-                    const SizedBox(height: 6),
-                    TextFormField(
-                      controller: emailController,
-                      maxLength: 20,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.email,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 22),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.only(start: 12),
-                      child: Text("Subject"),
-                    ),
-                    const SizedBox(height: 6),
-                    TextFormField(
-                      maxLength: 100,
-                      controller: subjectController,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.topic,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 22),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.only(start: 12),
-                      child: Text("Message"),
-                    ),
-                    const SizedBox(height: 6),
-                    TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 500,
-                      maxLines: 3,
-                      controller: msgController,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(15),
-                        prefixIcon: Icon(
-                          Icons.subject,
-                          size: 20,
-                        ),
-
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderSide:
-                        //   BorderSide(width: 3, color: Colors.black12), //<-- SEE HERE
-                        //   borderRadius: BorderRadius.circular(0.0),
-                        // ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40.0),
-                child: InkWell(
-                  onTap: () {
-                    Send(
-                        emailController.text.toString(),
-                        subjectController.text.toString(),
-                        msgController.text.toString());
-                  },
-                  child: Center(
-                    child: Container(
-                      height: 50.0,
-                      width: 280.0,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF8DA2BF),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(25.0))),
-                      child: const Center(
-                          child: Text(
-                        "Send",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16.0),
-                      )),
+                Align(
+                  alignment: Alignment.center,
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 14.0),
+                    child: Text(
+                      "We're Happy to Help You!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.brown),
                     ),
                   ),
                 ),
-              )
-            ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsetsDirectional.only(start: 12),
+                        child: Text("Email"),
+                      ),
+                      const SizedBox(height: 6),
+                      CustomTextfeild(
+                        icon: Icons.mail,
+                        valid: (p0) {
+                          return validInput(p0.toString(), 4, 100, 'email');
+                        },
+                        onsaved: (p0) {
+                          return emailController = p0!;
+                        },
+                        titel: 'email',
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsetsDirectional.only(start: 12),
+                        child: Text("Subject"),
+                      ),
+                      const SizedBox(height: 6),
+                      CustomTextfeild(
+                        icon: Icons.subject,
+                        valid: (p0) {
+                          return validInput(p0.toString(), 4, 100, 'massge');
+                        },
+                        onsaved: (p0) {
+                          return subjectController = p0!;
+                        },
+                        titel: 'subject',
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsetsDirectional.only(start: 12),
+                        child: Text("Message"),
+                      ),
+                      const SizedBox(height: 6),
+                      CustomTextfeild(
+                        icon: Icons.message,
+                        valid: (p0) {
+                          return validInput(p0.toString(), 4, 100, 'massge');
+                        },
+                        onsaved: (p0) {
+                          return msgController = p0!;
+                        },
+                        titel: 'message',
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: InkWell(
+                    onTap: () async {
+                      if (formkeysigin.currentState!.validate()) {
+                        formkeysigin.currentState!.save();
+                        Send();
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 50.0,
+                        width: 280.0,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFF8DA2BF),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25.0))),
+                        child: const Center(
+                            child: Text(
+                          "Send",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16.0),
+                        )),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ))),
     );
   }

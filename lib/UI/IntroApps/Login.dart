@@ -136,6 +136,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                         titel: LangVarible.email.tr,
                                       ),
                                       CustomTextfeild(
+                                        obsecuer: true,
                                         valid: (p0) {
                                           return validInput(p0.toString(), 8,
                                               100, 'password');

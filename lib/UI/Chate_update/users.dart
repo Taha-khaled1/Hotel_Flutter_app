@@ -4,7 +4,10 @@ import 'package:hotelbooking/ShardFunction/handling.dart';
 import 'package:hotelbooking/ShardFunction/statusrequst.dart';
 import 'package:hotelbooking/UI/Chate_update/Chat_room.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/UI/pages/helps.dart';
 import 'package:hotelbooking/data/functions_response/get_cities.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -39,7 +42,20 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UserScreen'),
+        //  title: Text('UserScreen'),
+        actions: [
+          InkWell(
+              onTap: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchHintDelegate(
+                    xc: helpModel!.message!,
+                    hintText: '',
+                  ),
+                );
+              },
+              child: Icon(Icons.search)),
+        ],
       ),
       body: HandlingDataView(
         statusRequest: statusRequest,
@@ -80,5 +96,66 @@ class _UserScreenState extends State<UserScreen> {
         ),
       ),
     );
+  }
+}
+
+class CustomSearchHintDelegate extends SearchDelegate<String> {
+  CustomSearchHintDelegate({
+    required this.xc,
+    required String hintText,
+  }) : super(
+          searchFieldLabel: hintText,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+  final List<MessageUser> xc;
+  @override
+  Widget buildLeading(BuildContext context) => IconButton(
+        onPressed: () {
+          Get.back();
+        },
+        icon: Icon(Icons.close),
+      );
+
+  // @override
+  // PreferredSizeWidget buildBottom(BuildContext context) {
+  //   return const PreferredSize(
+  //       preferredSize: Size.fromHeight(56.0), child: Text('bottom'));
+  // }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<MessageUser> xsug =
+        xc.where((element) => element.username!.contains(query)).toList();
+    return Align(
+      alignment: Alignment.topRight,
+      child: ListView.builder(
+        itemCount: query == '' ? xc.length : xsug.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            onTap: () {
+              Get.to(ChatPage(
+                peerId: xc[index].sId!,
+                username: xc[index].username!,
+              ));
+            },
+            title: Text(query == ''
+                ? xc[index].username ?? 'nodata'
+                : xsug[index].username ?? 'nodata'),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const Text('النتائج');
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return List.generate(
+        xc.length, (index) => Text(xc[index].username ?? 'nodata'));
   }
 }

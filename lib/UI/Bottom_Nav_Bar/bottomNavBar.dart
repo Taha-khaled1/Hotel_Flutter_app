@@ -25,9 +25,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 1:
         return new noMessage();
         break;
-      case 2:
-        return new trip();
-        break;
       case 3:
         return const FavoriteScreen();
         break;
@@ -64,16 +61,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
             BottomNavigationDotBarItem(
                 icon: const IconData(
                   0xe900,
-                  fontFamily: 'trip',
-                ),
-                onTap: () {
-                  setState(() {
-                    currentIndex = 2;
-                  });
-                }),
-            BottomNavigationDotBarItem(
-                icon: const IconData(
-                  0xe900,
                   fontFamily: 'hearth',
                 ),
                 onTap: () {
@@ -92,4 +79,3 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
-

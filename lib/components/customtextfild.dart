@@ -46,7 +46,6 @@ class CustomTextfeild extends StatelessWidget {
       child: TextFormField(
         onTap: onTap,
         readOnly: readOnly,
-        maxLines: maxLines,
         initialValue: inialvalue,
         textDirection: textDirection,
         obscureText: obsecuer == null ? false : obsecuer!,
