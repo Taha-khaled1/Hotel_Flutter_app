@@ -222,21 +222,23 @@ class _hotelDetail2State extends State<hotelDetail2> {
                         /// Photo
                         PhotoWidget(controller: cont),
                         Container(
-                          height: 210.0,
+                          height: 238.0,
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: cont.infoRoomModel?.hotelRooms!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return relatedPost(
-                                  cont.infoRoomModel?.hotelRooms![index].imgs ??
-                                      '',
-                                  cont.infoRoomModel?.hotelRooms![index].title,
-                                  cont.infoRoomModel?.hotelRooms![index].city,
-                                  cont.infoRoomModel?.hotelRooms![index]
-                                      .averageRating
-                                      .toString(),
-                                  cont.infoRoomModel?.hotelRooms![index].sId);
+                                cont.infoRoomModel?.hotelRooms![index].imgs ??
+                                    '',
+                                cont.infoRoomModel?.hotelRooms![index].title,
+                                cont.infoRoomModel?.hotelRooms![index].city,
+                                cont.infoRoomModel?.hotelRooms![index]
+                                    .averageRating
+                                    .toString(),
+                                cont.infoRoomModel?.hotelRooms![index].sId,
+                                cont.infoRoomModel?.hotelRooms![index].price,
+                              );
                             },
                           ),
                         ),
@@ -575,26 +577,31 @@ Widget _photo(String image, id, BuildContext context) {
                       color: Colors.black54,
                       child: Container(
                         padding: const EdgeInsets.all(30.0),
+                        child: InkWell(
+                          child: Hero(
+                              tag: "hero-flashsale-${id}",
+                              child: Image.network(
+                                '${MangeAPi.baseurl}/${image}',
+                                width: 300.0,
+                                height: 400.0,
+                                alignment: Alignment.center,
+                                fit: BoxFit.contain,
+                              )),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                     );
                   },
                   transitionDuration: const Duration(milliseconds: 500)));
             },
-            child: Container(
-              height: 130.0,
-              width: 130.0,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage('${MangeAPi.baseurl}/${image}'),
-                      fit: BoxFit.cover),
-                  color: Colors.black12,
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 5.0,
-                        color: Colors.black12.withOpacity(0.1),
-                        spreadRadius: 2.0)
-                  ]),
+            child: SizedBox(
+              child: Image.network(
+                '${MangeAPi.baseurl}/${image}',
+                fit: BoxFit.cover,
+                height: 115.0,
+              ),
             ),
           ),
         ),
@@ -694,7 +701,7 @@ class reviewList extends StatelessWidget {
 }
 
 Widget relatedPost(String? image, String? title, String? location,
-    String? ratting, String? id) {
+    String? ratting, String? id, p) {
   return InkWell(
     onTap: () {
       sharedPreferences.setString('keyroom', id.toString());
@@ -707,7 +714,7 @@ Widget relatedPost(String? image, String? title, String? location,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: 110.0,
+            height: 100.0,
             width: 180.0,
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -739,50 +746,64 @@ Widget relatedPost(String? image, String? title, String? location,
           const SizedBox(
             height: 2.0,
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: <Widget>[
+          //     const Icon(
+          //       Icons.location_on,
+          //       size: 18.0,
+          //       color: Colors.black12,
+          //     ),
+          //     Text(
+          //       location ?? 'Loction',
+          //       style: const TextStyle(
+          //           fontFamily: "Sofia",
+          //           fontWeight: FontWeight.w500,
+          //           fontSize: 15.0,
+          //           color: Colors.black26),
+          //     ),
+          //   ],
+          // ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Icon(
-                Icons.location_on,
-                size: 18.0,
-                color: Colors.black12,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 0.0),
+                child: Text(
+                  p!.toString(),
+                  style: const TextStyle(
+                      color: Colors.black54,
+                      fontFamily: "Gotik",
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14.0),
+                ),
               ),
-              Text(
-                location ?? 'Loction',
-                style: const TextStyle(
-                    fontFamily: "Sofia",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15.0,
-                    color: Colors.black26),
+              const Text(
+                "/night",
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontFamily: "Gotik",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 10.0),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Icon(
-                Icons.star,
-                size: 18.0,
-                color: Colors.yellow,
+              ratingbar(
+                starRating: double.parse(ratting!),
               ),
-
               Padding(
-                padding: const EdgeInsets.only(top: 3.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: Text(
-                  ratting ?? '4',
+                  ratting.toString(),
                   style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Sofia",
-                      fontSize: 13.0),
+                      fontFamily: "Sans",
+                      color: Colors.black26,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.0),
                 ),
-              ),
-
-              // Text("(233 Rating)",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Sofia",fontSize: 11.0,color: Colors.black45),),
-              const SizedBox(
-                width: 35.0,
-              ),
+              )
             ],
           ),
         ],

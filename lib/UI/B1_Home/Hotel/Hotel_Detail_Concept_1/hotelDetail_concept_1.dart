@@ -218,7 +218,6 @@ class _ReatingRomWidgetState extends State<ReatingRomWidget> {
                     height: 170,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget
                           .controller.infoRoomModel!.room!.feedbacks!.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -401,8 +400,8 @@ class RelatedRoomsWidget extends StatelessWidget {
                               firstDate: DateTime(2023),
                               lastDate: DateTime(2100),
                               icon: Icon(Icons.event),
-                              dateLabelText: 'Date',
-                              timeLabelText: "Hour",
+                              dateLabelText: '',
+                              timeLabelText: "",
                               selectableDayPredicate: (date) {
                                 // Disable weekend days to select from the calendar
                                 if (date.weekday == 6 || date.weekday == 7) {
@@ -421,41 +420,64 @@ class RelatedRoomsWidget extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if (controller.startData == null ||
-                                    controller.endData == null) {
-                                  showsnackBar(
-                                    'يرجي تحديد تاريخ البدايه والنهايه',
-                                  );
-                                  return;
-                                } else {
-                                  if (controller.infoRoomModel!.room!
-                                      .unavailableDates!.isNotEmpty) {
-                                    for (int i = 0;
-                                        i <
-                                            controller.infoRoomModel!.room!
-                                                .unavailableDates!.length;
-                                        i++) {
-                                      List<String> x = controller.infoRoomModel!
-                                          .room!.unavailableDates![i]
-                                          .split(',');
-                                      if ((controller.startData!.isBefore(
-                                                  DateTime.parse(x[0])) &&
-                                              controller.endData!.isBefore(
-                                                  DateTime.parse(x[1]))) ||
-                                          (controller.startData!.isAfter(
-                                                  DateTime.parse(x[0])) &&
-                                              controller.endData!.isAfter(
-                                                  DateTime.parse(x[1])))) {
-                                      } else {
-                                        controller.isDatatime == false;
-                                        showsnackBar(
-                                          'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
-                                        );
-                                        return;
-                                      }
-                                    }
+                                if (controller.infoRoomModel?.room!.type
+                                        .toString() ==
+                                    'منزل') {
+                                  if (controller.startData == null ||
+                                      controller.endData == null) {
+                                    showsnackBar(
+                                      'يرجي تحديد تاريخ البدايه والنهايه',
+                                    );
+                                    return;
                                   } else {
-                                    print('GOOOOOOOO PaymentWebView');
+                                    if (controller.infoRoomModel!.room!
+                                        .unavailableDates!.isNotEmpty) {
+                                      for (int i = 0;
+                                          i <
+                                              controller.infoRoomModel!.room!
+                                                  .unavailableDates!.length;
+                                          i++) {
+                                        List<String> x = controller
+                                            .infoRoomModel!
+                                            .room!
+                                            .unavailableDates![i]
+                                            .split(',');
+                                        if ((controller.startData!.isBefore(
+                                                    DateTime.parse(x[0])) &&
+                                                controller.endData!.isBefore(
+                                                    DateTime.parse(x[1]))) ||
+                                            (controller.startData!.isAfter(
+                                                    DateTime.parse(x[0])) &&
+                                                controller.endData!.isAfter(
+                                                    DateTime.parse(x[1])))) {
+                                        } else {
+                                          controller.isDatatime == false;
+                                          showsnackBar(
+                                            'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                          );
+                                          return;
+                                        }
+                                      }
+                                    } else {
+                                      print('GOOOOOOOO PaymentWebView');
+                                      sharedPreferences.setString(
+                                          'price',
+                                          controller.infoRoomModel!.room!.price
+                                              .toString());
+                                      sharedPreferences.setString('data',
+                                          '${controller.startData},${controller.endData}');
+                                      sharedPreferences.setString(
+                                        'roomId',
+                                        controller.infoRoomModel!.room!.sId
+                                            .toString(),
+                                      );
+                                      Get.to(PaymentWebView());
+                                      Get.delete<GetInfoRoomController>();
+                                    }
+                                  }
+
+                                  if (controller.isDatatime) {
+                                    print('GOOOOOOOO PaymentWebView  22222 ');
                                     sharedPreferences.setString(
                                         'price',
                                         controller.infoRoomModel!.room!.price
@@ -463,34 +485,220 @@ class RelatedRoomsWidget extends StatelessWidget {
                                     sharedPreferences.setString('data',
                                         '${controller.startData},${controller.endData}');
                                     sharedPreferences.setString(
-                                      'roomId',
-                                      controller.infoRoomModel!.room!.sId
-                                          .toString(),
-                                    );
+                                        'roomId',
+                                        controller.infoRoomModel!.room!.sId
+                                            .toString());
                                     Get.to(PaymentWebView());
                                     Get.delete<GetInfoRoomController>();
+                                  } else {
+                                    showsnackBar(
+                                      'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                    );
+                                    return;
                                   }
-                                }
-
-                                if (controller.isDatatime) {
-                                  print('GOOOOOOOO PaymentWebView  22222 ');
-                                  sharedPreferences.setString(
-                                      'price',
-                                      controller.infoRoomModel!.room!.price
-                                          .toString());
-                                  sharedPreferences.setString('data',
-                                      '${controller.startData},${controller.endData}');
-                                  sharedPreferences.setString(
-                                      'roomId',
-                                      controller.infoRoomModel!.room!.sId
-                                          .toString());
-                                  Get.to(PaymentWebView());
-                                  Get.delete<GetInfoRoomController>();
                                 } else {
-                                  showsnackBar(
-                                    'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                  Get.bottomSheet(
+                                    Container(
+                                      height: 500,
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                'slecte Rooms',
+                                                style: TextStyle(fontSize: 25),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            InfoWidget(
+                                              controller: controller,
+                                              text1:
+                                                  'Averge Rating : ${controller.infoRoomModel?.room!.averageRating.toString() ?? '3'}',
+                                              text2:
+                                                  'Max people : ${controller.infoRoomModel?.room!.maxPeople.toString() ?? '3'}',
+                                              text3:
+                                                  'Price : ${controller.infoRoomModel?.room!.price.toString() ?? ''}',
+                                              text4: controller.infoRoomModel
+                                                      ?.room!.title
+                                                      .toString() ??
+                                                  '',
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            InfoWidget(
+                                              controller: controller,
+                                              text1:
+                                                  'Averge Rating : ${controller.infoRoomModel?.room!.averageRating.toString() ?? '3'}',
+                                              text2:
+                                                  'Max people : ${controller.infoRoomModel?.room!.maxPeople.toString() ?? '3'}',
+                                              text3:
+                                                  'Price : ${controller.infoRoomModel?.room!.price.toString() ?? ''}',
+                                              text4: controller.infoRoomModel
+                                                      ?.room!.title
+                                                      .toString() ??
+                                                  '',
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            InfoWidget(
+                                              controller: controller,
+                                              text1:
+                                                  'Averge Rating : ${controller.infoRoomModel?.room!.averageRating.toString() ?? '3'}',
+                                              text2:
+                                                  'Max people : ${controller.infoRoomModel?.room!.maxPeople.toString() ?? '3'}',
+                                              text3:
+                                                  'Price : ${controller.infoRoomModel?.room!.price.toString() ?? ''}',
+                                              text4: controller.infoRoomModel
+                                                      ?.room!.title
+                                                      .toString() ??
+                                                  '',
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                if (controller.startData ==
+                                                        null ||
+                                                    controller.endData ==
+                                                        null) {
+                                                  showsnackBar(
+                                                    'يرجي تحديد تاريخ البدايه والنهايه',
+                                                  );
+                                                  return;
+                                                } else {
+                                                  if (controller
+                                                      .infoRoomModel!
+                                                      .room!
+                                                      .unavailableDates!
+                                                      .isNotEmpty) {
+                                                    for (int i = 0;
+                                                        i <
+                                                            controller
+                                                                .infoRoomModel!
+                                                                .room!
+                                                                .unavailableDates!
+                                                                .length;
+                                                        i++) {
+                                                      List<String> x = controller
+                                                          .infoRoomModel!
+                                                          .room!
+                                                          .unavailableDates![i]
+                                                          .split(',');
+                                                      if ((controller.startData!.isBefore(
+                                                                  DateTime.parse(
+                                                                      x[0])) &&
+                                                              controller
+                                                                  .endData!
+                                                                  .isBefore(DateTime.parse(
+                                                                      x[1]))) ||
+                                                          (controller.startData!.isAfter(
+                                                                  DateTime.parse(
+                                                                      x[0])) &&
+                                                              controller
+                                                                  .endData!
+                                                                  .isAfter(
+                                                                      DateTime.parse(
+                                                                          x[1])))) {
+                                                      } else {
+                                                        controller.isDatatime ==
+                                                            false;
+                                                        showsnackBar(
+                                                          'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                                        );
+                                                        return;
+                                                      }
+                                                    }
+                                                  } else {
+                                                    print(
+                                                        'GOOOOOOOO PaymentWebView');
+                                                    sharedPreferences.setString(
+                                                        'price',
+                                                        controller
+                                                            .infoRoomModel!
+                                                            .room!
+                                                            .price
+                                                            .toString());
+                                                    sharedPreferences.setString(
+                                                        'data',
+                                                        '${controller.startData},${controller.endData}');
+                                                    sharedPreferences.setString(
+                                                      'roomId',
+                                                      controller.infoRoomModel!
+                                                          .room!.sId
+                                                          .toString(),
+                                                    );
+                                                    Get.to(PaymentWebView());
+                                                    Get.delete<
+                                                        GetInfoRoomController>();
+                                                  }
+                                                }
+
+                                                if (controller.isDatatime) {
+                                                  print(
+                                                      'GOOOOOOOO PaymentWebView  22222 ');
+                                                  sharedPreferences.setString(
+                                                      'price',
+                                                      controller.infoRoomModel!
+                                                          .room!.price
+                                                          .toString());
+                                                  sharedPreferences.setString(
+                                                      'data',
+                                                      '${controller.startData},${controller.endData}');
+                                                  sharedPreferences.setString(
+                                                      'roomId',
+                                                      controller.infoRoomModel!
+                                                          .room!.sId
+                                                          .toString());
+                                                  Get.to(PaymentWebView());
+                                                  Get.delete<
+                                                      GetInfoRoomController>();
+                                                } else {
+                                                  showsnackBar(
+                                                    'معاد الحجز غير متوفر يرجي اخيار تاريخ اخر',
+                                                  );
+                                                  return;
+                                                }
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: 400,
+                                                height: 55,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                child: Text(
+                                                  'booking',
+                                                  // style:
+                                                  //     TextStyle(fontSize: 23),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    backgroundColor: Colors.white,
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.circular(35),
+                                    //   side: BorderSide(
+                                    //     width: 5,
+                                    //     color: Colors.black
+                                    //   )
+                                    // ),
+                                    enableDrag: false,
                                   );
-                                  return;
                                 }
                               },
                               child: Container(
@@ -568,6 +776,106 @@ class RelatedRoomsWidget extends StatelessWidget {
         ),
         const SizedBox(
           height: 30.0,
+        ),
+      ],
+    );
+  }
+}
+
+class InfoWidget extends StatelessWidget {
+  const InfoWidget({
+    Key? key,
+    required this.controller,
+    required this.text1,
+    required this.text2,
+    required this.text3,
+    required this.text4,
+  }) : super(key: key);
+
+  final GetInfoRoomController controller;
+  final String text1, text2, text3, text4;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                text4,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 5),
+              Text(
+                text1,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 5),
+              Text(
+                text2,
+                style: TextStyle(fontSize: 17),
+              ),
+              SizedBox(height: 5),
+              Text(
+                text3,
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+          Expanded(
+            child: SizedBox(),
+          ),
+          for (int i = 0;
+              i < controller.infoRoomModel!.room!.roomNumbers!.length;
+              i++)
+            CheckCustom(
+                text: controller.infoRoomModel!.room!.roomNumbers![i].number),
+        ],
+      ),
+    );
+  }
+}
+
+class CheckCustom extends StatefulWidget {
+  CheckCustom({
+    Key? key,
+    this.text,
+  }) : super(key: key);
+  final text;
+  @override
+  State<CheckCustom> createState() => _CheckCustomState();
+}
+
+class _CheckCustomState extends State<CheckCustom> {
+  bool x = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(widget.text.toString()),
+        GetBuilder<GetInfoRoomController>(
+          builder: (controller) {
+            return SizedBox(
+              height: 40,
+              width: 40,
+              child: Checkbox(
+                value: x,
+                onChanged: (value) {
+                  setState(() {
+                    x = x == true ? false : true;
+                  });
+                  controller.up();
+                  print(value);
+                  print(x);
+                },
+              ),
+            );
+          },
         ),
       ],
     );
@@ -762,15 +1070,12 @@ class DescrptionWidget extends StatelessWidget {
           ),
           children: [
             ListTile(
-              leading: Image.network(controller
-                              .infoRoomModel?.userContactInfo?.img ==
-                          null ||
-                      controller.infoRoomModel?.userContactInfo?.img == ""
-                  ? 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'
-                  : controller.infoRoomModel?.userContactInfo?.img!
-                          .split(',')
-                          .first ??
-                      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'),
+              leading: Image.network(
+                controller.infoRoomModel?.userContactInfo?.img == null ||
+                        controller.infoRoomModel?.userContactInfo?.img == ""
+                    ? 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'
+                    : "${MangeAPi.baseurl}/${controller.infoRoomModel?.userContactInfo?.img!.split(',').first}",
+              ),
               title: Text(
                 controller.infoRoomModel?.userContactInfo?.username ??
                     'username',
@@ -1188,7 +1493,7 @@ Widget _relatedPost(
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 0.0),
               child: Text(
-                price!.toString(),
+                'peer : ${price!.toString()}',
                 style: const TextStyle(
                     color: Colors.black54,
                     fontFamily: "Gotik",

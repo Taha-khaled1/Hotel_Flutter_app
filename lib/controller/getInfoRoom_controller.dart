@@ -26,6 +26,10 @@ class GetInfoRoomController extends GetxController {
     update();
   }
 
+  up() {
+    update();
+  }
+
   @override
   void onInit() {
     getdataTopreating(

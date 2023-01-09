@@ -42,7 +42,7 @@ class Room {
   String? desc;
   String? city;
   int? destanceFromCityCenter;
-  int? averageRating;
+  double? averageRating;
   List<String>? features;
   bool? featured;
   int? bookingNumber;
@@ -50,7 +50,7 @@ class Room {
   List<String>? category;
   int? discount;
   List<Feedbacks>? feedbacks;
-  List<String>? roomNumbers;
+  List<RoomNumbers>? roomNumbers;
   String? imgs;
   Address? address;
 
@@ -84,7 +84,7 @@ class Room {
     desc = json['desc'];
     city = json['city'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
-    averageRating = json['averageRating'];
+    averageRating = double.parse(json['averageRating'].toString());
     features = json['features'].cast<String>();
     featured = json['featured'];
     bookingNumber = json['bookingNumber'];
@@ -97,7 +97,12 @@ class Room {
         feedbacks!.add(new Feedbacks.fromJson(v));
       });
     }
-    roomNumbers = json['roomNumbers'].cast<String>();
+    if (json['roomNumbers'] != null) {
+      roomNumbers = <RoomNumbers>[];
+      json['roomNumbers'].forEach((v) {
+        roomNumbers!.add(new RoomNumbers.fromJson(v));
+      });
+    }
     imgs = json['imgs'];
     address =
         json['address'] != null ? new Address.fromJson(json['address']) : null;
@@ -123,7 +128,9 @@ class Room {
     if (this.feedbacks != null) {
       data['feedbacks'] = this.feedbacks!.map((v) => v.toJson()).toList();
     }
-    data['roomNumbers'] = this.roomNumbers;
+    if (this.roomNumbers != null) {
+      data['roomNumbers'] = this.roomNumbers!.map((v) => v.toJson()).toList();
+    }
     data['imgs'] = this.imgs;
     if (this.address != null) {
       data['address'] = this.address!.toJson();
@@ -160,6 +167,28 @@ class Feedbacks {
   }
 }
 
+class RoomNumbers {
+  int? number;
+  List<String>? unavailableDates;
+  String? sId;
+
+  RoomNumbers({this.number, this.unavailableDates, this.sId});
+
+  RoomNumbers.fromJson(Map<String, dynamic> json) {
+    number = json['number'];
+    unavailableDates = json['unavailableDates'].cast<String>();
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['number'] = this.number;
+    data['unavailableDates'] = this.unavailableDates;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
 class Address {
   String? placeId;
   double? longitude;
@@ -190,7 +219,7 @@ class RelatedRooms {
   String? title;
   int? price;
   String? city;
-  int? averageRating;
+  double? averageRating;
   String? imgs;
 
   RelatedRooms(
@@ -206,7 +235,7 @@ class RelatedRooms {
     title = json['title'];
     price = json['price'];
     city = json['city'];
-    averageRating = json['averageRating'];
+    averageRating = double.parse(json['averageRating'].toString());
     imgs = json['imgs'];
   }
 

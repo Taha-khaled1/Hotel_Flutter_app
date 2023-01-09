@@ -163,7 +163,7 @@ class Rooms {
   String? type;
   int? price;
   String? city;
-  int? averageRating;
+  double? averageRating;
   String? imgs;
 
   Rooms(
@@ -181,7 +181,7 @@ class Rooms {
     type = json['type'];
     price = json['price'];
     city = json['city'];
-    averageRating = json['averageRating'];
+    averageRating = double.parse(json['averageRating'].toString());
     imgs = json['imgs'];
   }
 
