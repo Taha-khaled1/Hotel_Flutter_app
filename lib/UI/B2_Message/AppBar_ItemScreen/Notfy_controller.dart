@@ -36,17 +36,10 @@ class NotfyController extends GetxController {
 
     statusRequest1 = handlingData(response);
     if (StatusRequest.success == statusRequest1) {
-      if (response == 'the feedback added successfully') {
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'تم الاضافه الي قائمة المفضلات بنجاح');
-      } else {
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'يوجد مشكله ما');
-      }
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'تم الاضافه الي قائمة المفضلات بنجاح');
     } else {
       QuickAlert.show(
           context: context, type: QuickAlertType.error, title: 'يوجد مشكله ما');
@@ -88,6 +81,7 @@ class MessageNotfyModel {
   String? sId;
   String? title;
   String? type;
+  String? imgs;
   int? price;
   int? maxPeople;
   String? city;
@@ -96,6 +90,7 @@ class MessageNotfyModel {
   MessageNotfyModel(
       {this.sId,
       this.title,
+      this.imgs,
       this.type,
       this.price,
       this.maxPeople,
@@ -106,6 +101,7 @@ class MessageNotfyModel {
     sId = json['_id'];
     title = json['title'];
     type = json['type'];
+    type = json['imgs'];
     price = json['price'];
     maxPeople = json['maxPeople'];
     city = json['city'];
@@ -117,6 +113,7 @@ class MessageNotfyModel {
     data['_id'] = this.sId;
     data['title'] = this.title;
     data['type'] = this.type;
+    data['imgs'] = this.type;
     data['price'] = this.price;
     data['maxPeople'] = this.maxPeople;
     data['city'] = this.city;

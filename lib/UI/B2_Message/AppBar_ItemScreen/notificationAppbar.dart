@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotelbooking/Library/Ratting_Bar/Ratting_bar.dart';
 import 'package:hotelbooking/Library/Ratting_Bar/Ratting_bar_widget.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/B2_Message/AppBar_ItemScreen/Notfy_controller.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
+import 'package:hotelbooking/components/custombutten.dart';
 import 'package:hotelbooking/main.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 
@@ -20,6 +22,7 @@ class _notificationAppbarState extends State<notificationAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    final NotfyController controller = Get.put(NotfyController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,7 +42,7 @@ class _notificationAppbarState extends State<notificationAppbar> {
         elevation: 0.0,
         backgroundColor: Colors.white,
       ),
-      body: x
+      body: controller.notfyModel?.message!.length != 0
           ? GetBuilder<NotfyController>(
               init: NotfyController(),
               builder: (controller) {
@@ -48,6 +51,7 @@ class _notificationAppbarState extends State<notificationAppbar> {
                   widget: Padding(
                     padding: const EdgeInsets.only(top: 95.0),
                     child: Container(
+                      alignment: Alignment.center,
                       color: Colors.white,
                       child: Container(
                         color: Colors.white,
@@ -64,9 +68,10 @@ class _notificationAppbarState extends State<notificationAppbar> {
               },
             )
           : Container(
+              alignment: Alignment.center,
               color: Colors.white,
-              width: 500.0,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Padding(padding: EdgeInsets.only(top: 120.0)),
@@ -113,26 +118,72 @@ class cardList extends StatelessWidget {
 
   cardList(this.hotelData);
   Widget build(BuildContext context) {
+    final NotfyController controller = Get.put(NotfyController());
     return InkWell(
       onTap: () {
+        String sea = '';
+        double rat = 3.0;
         Get.bottomSheet(
           Container(
               height: 400,
-              color: Colors.greenAccent,
+              color: Colors.white,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'ما رايك في هذ الفندق',
+                    style: TextStyle(fontSize: 21),
+                  ),
                   SizedBox(
                     height: 15,
                   ),
-                  RatingBarIndicator(
-                    rating: 2.75,
-                    itemBuilder: (context, index) => Icon(
+                  RatingBar.builder(
+                    initialRating: rat,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
-                    itemCount: 5,
-                    itemSize: 50.0,
-                    direction: Axis.vertical,
+                    onRatingUpdate: (rating) {
+                      rat = rating;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      width: 400,
+                      child: TextField(
+                        onChanged: (value) {
+                          sea = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'اخبرنا برايك في هذا المنزل'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomButton(
+                    width: 400,
+                    haigh: 60,
+                    color: Colors.teal,
+                    text: 'applay Reating',
+                    press: () {
+                      controller.addFeedback(
+                          hotelData.sId.toString(), context, rat.toInt(), sea);
+                    },
                   ),
                 ],
               )),
@@ -160,13 +211,13 @@ class cardList extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10.0),
                     topLeft: Radius.circular(10.0)),
-                // image: DecorationImage(
-                //     image: NetworkImage(
-                //       hotelData.imgs == null || hotelData. == ""
-                //           ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
-                //           : "${MangeAPi.baseurl}/${hotelData.imgs!.split(',').first}",
-                //     ),
-                //     fit: BoxFit.cover),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      hotelData.imgs == null || hotelData.imgs == ""
+                          ? 'https://akm-img-a-in.tosshub.com/businesstoday/images/story/202204/ezgif-sixteen_nine_161.jpg?size=948:533'
+                          : "${MangeAPi.baseurl}/${hotelData.imgs!.split(',').first}",
+                    ),
+                    fit: BoxFit.cover),
               ),
               alignment: Alignment.topRight,
             ),

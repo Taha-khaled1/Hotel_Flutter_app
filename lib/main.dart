@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: Home(), //MapPage(), //SplashScreen(),
+      home: MainSelection(), //MapPage(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false, translations: MyTranslation(),
       locale: controller.language,

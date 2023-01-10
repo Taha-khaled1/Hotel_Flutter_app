@@ -31,7 +31,7 @@ class FavouritePlaces {
   String? desc;
   String? city;
   int? destanceFromCityCenter;
-  int? averageRating;
+  double? averageRating;
   int? discount;
   String? imgs;
   Address? address;
@@ -59,7 +59,7 @@ class FavouritePlaces {
     desc = json['desc'];
     city = json['city'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
-    averageRating = json['averageRating'];
+    averageRating = double.parse(json['averageRating'].toString());
     discount = json['discount'];
     imgs = json['imgs'];
     address =
