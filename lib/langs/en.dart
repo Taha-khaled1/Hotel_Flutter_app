@@ -113,7 +113,7 @@ Map<String, String> en = {
   "main": "Main",
   "notification": "Notifications",
   "FAQs": "FAQs",
-  "invite_friends": "Invite frienss",
+  "invite_friends": "Invite friends",
   "call_center": "Call center",
   "change_password": "Change password",
   "logout": "Logout",

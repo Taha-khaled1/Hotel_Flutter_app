@@ -179,7 +179,7 @@ class cardList extends StatelessWidget {
                     width: 400,
                     haigh: 60,
                     color: Colors.teal,
-                    text: 'applay Reating',
+                    text: 'apply Rating',
                     press: () {
                       controller.addFeedback(
                           hotelData.sId.toString(), context, rat.toInt(), sea);

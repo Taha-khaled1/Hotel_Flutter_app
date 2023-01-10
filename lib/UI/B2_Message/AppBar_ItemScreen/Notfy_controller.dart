@@ -37,9 +37,10 @@ class NotfyController extends GetxController {
     statusRequest1 = handlingData(response);
     if (StatusRequest.success == statusRequest1) {
       QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          title: 'تم الاضافه الي قائمة المفضلات بنجاح');
+        context: context,
+        type: QuickAlertType.success,
+        title: 'تم اضافة التقيم بنجاح',
+      );
     } else {
       QuickAlert.show(
           context: context, type: QuickAlertType.error, title: 'يوجد مشكله ما');

@@ -141,7 +141,7 @@ class Room {
 
 class Feedbacks {
   String? userId;
-  int? rating;
+  double? rating;
   String? review;
   String? date;
   String? sId;
@@ -150,7 +150,7 @@ class Feedbacks {
 
   Feedbacks.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
-    rating = json['rating'];
+    rating = double.parse(json['rating'].toString());
     review = json['review'];
     date = json['date'];
     sId = json['_id'];

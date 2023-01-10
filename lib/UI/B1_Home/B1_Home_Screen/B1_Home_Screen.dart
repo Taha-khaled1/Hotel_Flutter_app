@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hotelbooking/DataSample/HomeGridRooms.dart';
@@ -11,6 +12,7 @@ import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/widget/topReatingWidget.d
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/hotelDetail_concept_1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/hotelDetail_concept_2.dart';
 import 'package:hotelbooking/UI/B1_Home/House/HouseList.dart';
+import 'package:hotelbooking/UI/B2_Message/AppBar_ItemScreen/notificationAppbar.dart';
 import 'package:hotelbooking/UI/data_of_cato/data_of_cato.dart';
 import 'package:hotelbooking/UI/handlingView/handlingview.dart';
 import 'package:hotelbooking/UI/pages/filter.dart';
@@ -22,6 +24,8 @@ import 'package:hotelbooking/models/get_top_reating_model.dart';
 import 'package:hotelbooking/resourse/mange_link_api.dart';
 import 'Search.dart';
 import 'editProfile.dart';
+
+Stream<RemoteMessage> _stream = FirebaseMessaging.onMessageOpenedApp;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -36,9 +40,23 @@ class _HomeState extends State<Home> {
       color: Colors.black,
       fontWeight: FontWeight.w700,
       fontFamily: 'Gotik');
+  @override
+  void initState() {
+    _stream.listen((RemoteMessage event) async {
+      if (event.data != null) {
+        Get.to(notificationAppbar());
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _stream.listen((RemoteMessage event) async {
+      if (event.data != null) {
+        Get.to(notificationAppbar());
+      }
+    });
     Get.put(HomeController());
     var _appBar = AppBar(
       backgroundColor: Colors.white,

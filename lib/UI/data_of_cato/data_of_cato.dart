@@ -276,7 +276,7 @@ class CardGrid extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       padding: const EdgeInsets.only(top: 0.0, bottom: 0.0),
-      childAspectRatio: mediaQueryData.size.height / 1100,
+      childAspectRatio: 0.6,
       crossAxisSpacing: 0.0,
       mainAxisSpacing: 0.0,
       primary: false,

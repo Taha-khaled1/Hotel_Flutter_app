@@ -24,6 +24,7 @@ import 'classes.dart';
 
 late SharedPreferences sharedPreferences;
 FirebaseMessaging messaging = FirebaseMessaging.instance;
+Stream<RemoteMessage> _stream = FirebaseMessaging.onMessageOpenedApp;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: MainSelection(), //MapPage(), //SplashScreen(),
+      home: Login(), //MapPage(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false, translations: MyTranslation(),
       locale: controller.language,
