@@ -38,7 +38,7 @@ class NearestPlaces {
   String? title;
   int? price;
   String? city;
-  int? averageRating;
+  double? averageRating;
   List<String>? category;
   String? imgs;
 
@@ -56,7 +56,7 @@ class NearestPlaces {
     title = json['title'];
     price = json['price'];
     city = json['city'];
-    averageRating = json['averageRating'];
+    averageRating = double.parse(json['averageRating'].toString());
     category = json['category'].cast<String>();
     imgs = json['imgs'];
   }
@@ -97,7 +97,7 @@ class NearestHotels {
     name = json['name'];
     city = json['city'];
     destanceFromCityCenter = json['destanceFromCityCenter'];
-    rating = json['rating'];
+    rating = double.parse(json['rating'].toString());
     category = json['category'].cast<String>();
     imgs = json['imgs'];
   }

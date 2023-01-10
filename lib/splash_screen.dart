@@ -18,8 +18,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigator() {
     Navigator.of(context).pushReplacement(PageRouteBuilder(
         pageBuilder: (_, __, ___) => Language(),
-        transitionDuration: const Duration(milliseconds: 2000),
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+        transitionDuration: const Duration(
+          milliseconds: 2000,
+        ),
+        transitionsBuilder: (
+          _,
+          Animation<double> animation,
+          __,
+          Widget child,
+        ) {
           return Opacity(
             opacity: animation.value,
             child: child,

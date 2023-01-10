@@ -23,3 +23,13 @@ getDataOfcatoRespon(String cato) async {
   print(respons);
   return respons;
 }
+
+getSearchCityRespon(String inpout) async {
+  Curd curd = Curd();
+
+  var respons = await curd.getrequest(
+    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inpout&types=geocode&key=AIzaSyANd3nsdL7bmOR-8UkZDrTNtjaX63JbjZs',
+  );
+  print(respons);
+  return respons;
+}

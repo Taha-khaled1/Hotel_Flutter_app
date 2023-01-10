@@ -7,14 +7,16 @@ import 'package:hotelbooking/models/cities_model.dart';
 import 'package:hotelbooking/models/models_type.dart';
 
 class FiltterController extends GetxController {
+  int v1 = 0, v2 = 0;
   HouseTypeModels? helpModel;
   String? future;
+  int datalen = 0;
   int count = 0;
   String? city;
-  int maxprice = 200;
+  int maxprice = 400;
   int minprice = 1;
   List<String> x = [];
-  String type = '';
+  List<String> type = [];
   int distance = 6;
   int futurer = 0;
   StatusRequest statusRequest = StatusRequest.none;
@@ -26,7 +28,7 @@ class FiltterController extends GetxController {
       distance: distance,
       maxprice: maxprice,
       minprice: minprice,
-      type: type,
+      type: type.join(',').toString(),
       x: x,
     );
     statusRequest = handlingData(response);
@@ -69,6 +71,10 @@ class FiltterController extends GetxController {
       if (StatusRequest.success == statusRequest3) {
         dataforFiltterModel = await DataforFiltterModel.fromJson(response);
         futurer = dataforFiltterModel!.features!.length;
+        datalen = dataforFiltterModel!.typeOfAccommodation!.length;
+        v1 = dataforFiltterModel!.prices![0];
+        v2 = dataforFiltterModel!.prices![1];
+        ;
       } else {
         print('erorr');
       }

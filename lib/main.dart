@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/B1_Home_Screen.dart';
 import 'package:hotelbooking/UI/B1_Home/B1_Home_Screen/editProfile.dart';
 import 'package:hotelbooking/UI/IntroApps/Login.dart';
+import 'package:hotelbooking/UI/IntroApps/search/Pages/map/map_page.dart';
+import 'package:hotelbooking/UI/IntroApps/search_map.dart';
 import 'package:hotelbooking/UI/IntroApps/travelSelection.dart';
 import 'package:hotelbooking/UI/languege_screen/languege_screen.dart';
 import 'package:hotelbooking/langs/ar.dart';
@@ -81,7 +83,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return GetMaterialApp(
-      home: MainSelection(), //SplashScreen(),
+      home: Home(), //MapPage(), //SplashScreen(),
       // home: BottomNavBar(),
       debugShowCheckedModeBanner: false, translations: MyTranslation(),
       locale: controller.language,

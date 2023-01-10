@@ -165,6 +165,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                         titel: 'password',
                                       ),
                                       CustomTextfeild(
+                                        obsecuer: true,
                                         valid: (p0) {
                                           return validInput(p0.toString(), 8,
                                               100, 'password');

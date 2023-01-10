@@ -40,7 +40,7 @@ class _MainSelectionState extends State<MainSelection> {
             statusRequest: controller.statusRequest,
             widget: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const SizedBox(
@@ -58,21 +58,34 @@ class _MainSelectionState extends State<MainSelection> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 400,
-                    child: Wrap(
-                      children: [
-                        for (int i = 0; i < controller.count; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15, left: 15),
-                            child: itemCard(
-                              mainSlecController: controller,
-                              image: controller.helpModel!.message![i].imgs,
-                              title: controller.helpModel!.message![i].name,
-                            ),
-                          ),
-                      ],
+                  for (int i = 0; i < controller.count; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15, left: 15),
+                      child: itemCard(
+                        mainSlecController: controller,
+                        image: controller.helpModel!.message![i].imgs,
+                        title: controller.helpModel!.message![i].name,
+                      ),
                     ),
+                  // SizedBox(
+                  //   height: 400,
+                  //   child: Wrap(
+                  //     alignment: WrapAlignment.center,
+                  //     children: [
+                  //       for (int i = 0; i < controller.count; i++)
+                  //         Padding(
+                  //           padding: const EdgeInsets.only(right: 15, left: 15),
+                  //           child: itemCard(
+                  //             mainSlecController: controller,
+                  //             image: controller.helpModel!.message![i].imgs,
+                  //             title: controller.helpModel!.message![i].name,
+                  //           ),
+                  //         ),
+                  //     ],
+                  //   ),
+                  // ),
+                  const SizedBox(
+                    height: 30.0,
                   ),
                   GetBuilder<MainSlecController>(
                     builder: (controller) {
@@ -117,9 +130,6 @@ class _MainSelectionState extends State<MainSelection> {
                       );
                     },
                   ),
-                  const SizedBox(
-                    height: 30.0,
-                  )
                 ],
               ),
             ),
@@ -130,9 +140,6 @@ class _MainSelectionState extends State<MainSelection> {
   }
 }
 
-///
-/// Create item card
-///
 class itemCard extends StatefulWidget {
   String? image, title;
   final MainSlecController mainSlecController;
@@ -198,7 +205,7 @@ class _itemCardState extends State<itemCard> {
                 ),
                 child: Center(
                   child: Text(
-                    isSlected ? widget.title! : 'Slected',
+                    isSlected ? widget.title! : 'Selected',
                     style: TextStyle(
                       shadows: [
                         BoxShadow(

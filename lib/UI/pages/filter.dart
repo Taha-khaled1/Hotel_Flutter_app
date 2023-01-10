@@ -23,12 +23,13 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   var sliderValue = 1.0;
-  SfRangeValues _values = const SfRangeValues(1, 200);
+
   bool u = false, i = false, o = false;
   String dropdownvalue = 'Item 1';
 
   // List of items in our dropdown menu
 
+  SfRangeValues _values = const SfRangeValues(1, 400);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +82,7 @@ class _FilterState extends State<Filter> {
                             ),
                             child: SfRangeSlider(
                               min: 1,
-                              max: 200,
+                              max: 400,
                               labelPlacement: LabelPlacement.betweenTicks,
                               edgeLabelPlacement: EdgeLabelPlacement.auto,
                               shouldAlwaysShowTooltip: true,
@@ -223,77 +224,12 @@ class _FilterState extends State<Filter> {
                             child: Text(LangVarible.type_of_accommodation.tr,
                                 style: TextStyle(fontSize: 16)),
                           ),
-                          ListTileSwitch(
-                            contentPadding: const EdgeInsetsDirectional.only(
-                                start: 2, end: 16, top: 8, bottom: 8),
-                            value: i,
-                            // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
-                            onChanged: (value) async {
-                              setState(() {
-                                i = value;
-                                o = value;
-                                u = value;
-                              });
-                            },
-                            visualDensity: VisualDensity.comfortable,
-                            switchType: SwitchType.cupertino,
-                            switchActiveColor: Colors.blue,
-                            title: const Padding(
-                              padding:
-                                  EdgeInsetsDirectional.only(start: 16, end: 0),
-                              child: Text("All"),
+                          for (int i = 0; i < controller.datalen; i++)
+                            CustomList(
+                              controller: controller,
+                              text: controller
+                                  .dataforFiltterModel!.typeOfAccommodation![i],
                             ),
-                          ),
-                          ListTileSwitch(
-                            contentPadding: const EdgeInsetsDirectional.only(
-                                start: 2, end: 16, top: 8, bottom: 8),
-                            value: o,
-                            // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
-                            onChanged: (value) async {
-                              setState(() {
-                                o = value;
-                                o == true
-                                    ? controller.type = 'فندق'
-                                    : controller.type = '';
-                                print(controller.type);
-                              });
-                            },
-                            visualDensity: VisualDensity.comfortable,
-                            switchType: SwitchType.cupertino,
-                            switchActiveColor: Colors.blue,
-                            title: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.only(start: 16, end: 0),
-                              child: Text(controller.dataforFiltterModel
-                                      ?.typeOfAccommodation![1] ??
-                                  'فندق'),
-                            ),
-                          ),
-                          ListTileSwitch(
-                            contentPadding: const EdgeInsetsDirectional.only(
-                                start: 2, end: 16, top: 8, bottom: 8),
-                            value: u,
-                            // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
-                            onChanged: (value) async {
-                              setState(() {
-                                u = value;
-                                u == true
-                                    ? controller.type = 'منزل'
-                                    : controller.type = '';
-                                print(controller.type);
-                              });
-                            },
-                            visualDensity: VisualDensity.comfortable,
-                            switchType: SwitchType.cupertino,
-                            switchActiveColor: Colors.blue,
-                            title: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.only(start: 16, end: 0),
-                              child: Text(controller.dataforFiltterModel
-                                      ?.typeOfAccommodation![0] ??
-                                  'منزل'),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -304,12 +240,8 @@ class _FilterState extends State<Filter> {
                         style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder()),
                         onPressed: () async {
-                          if (i == false && o == false && u == false) {
-                            showsnackBar(' يجب اختيار النوع ');
-                          } else {
-                            Get.to(FilterScreen());
-                            controller.getdataFromFiltter();
-                          }
+                          Get.to(FilterScreen());
+                          controller.getdataFromFiltter();
                         },
                         child: Text(LangVarible.search.tr),
                       ),
@@ -328,6 +260,99 @@ class _FilterState extends State<Filter> {
   }
 }
 
+class CustomList extends StatefulWidget {
+  const CustomList({
+    Key? key,
+    required this.text,
+    required this.controller,
+  }) : super(key: key);
+  final String text;
+  final FiltterController controller;
+  @override
+  State<CustomList> createState() => _CustomListState();
+}
+
+class _CustomListState extends State<CustomList> {
+  bool x = false;
+  @override
+  Widget build(BuildContext context) {
+    return ListTileSwitch(
+      contentPadding: const EdgeInsetsDirectional.only(
+          start: 2, end: 16, top: 8, bottom: 8),
+      value: x,
+      // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
+      onChanged: (value) async {
+        setState(() {
+          x = x == true ? false : true;
+          x == true
+              ? widget.controller.type.add(widget.text)
+              : widget.controller.type.removeWhere(
+                  (element) => element == widget.text,
+                );
+          print(widget.controller.type);
+        });
+      },
+      visualDensity: VisualDensity.comfortable,
+      switchType: SwitchType.cupertino,
+      switchActiveColor: Colors.blue,
+      title: Padding(
+        padding: EdgeInsetsDirectional.only(start: 16, end: 0),
+        child: Text(widget.text.toString()),
+      ),
+    );
+  }
+}
+
+// ListTileSwitch(
+//                         contentPadding: const EdgeInsetsDirectional.only(
+//                             start: 2, end: 16, top: 8, bottom: 8),
+//                         value: o,
+//                         // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
+//                         onChanged: (value) async {
+//                           setState(() {
+//                             o = value;
+// o == true
+//     ? controller.type = 'فندق'
+//     : controller.type = '';
+//                             print(controller.type);
+//                           });
+//                         },
+//                         visualDensity: VisualDensity.comfortable,
+//                         switchType: SwitchType.cupertino,
+//                         switchActiveColor: Colors.blue,
+//                         title: Padding(
+//                           padding:
+//                               EdgeInsetsDirectional.only(start: 16, end: 0),
+//                           child: Text(controller.dataforFiltterModel
+//                                   ?.typeOfAccommodation![1] ??
+//                               'فندق'),
+//                         ),
+//                       ),
+//                       ListTileSwitch(
+//                         contentPadding: const EdgeInsetsDirectional.only(
+//                             start: 2, end: 16, top: 8, bottom: 8),
+//                         value: u,
+//                         // leading: Icon(CupertinoIcons.battery_empty, size: 0,),
+//                         onChanged: (value) async {
+//                           setState(() {
+//                             u = value;
+//                             u == true
+//                                 ? controller.type = 'منزل'
+//                                 : controller.type = '';
+//                             print(controller.type);
+//                           });
+//                         },
+//                         visualDensity: VisualDensity.comfortable,
+//                         switchType: SwitchType.cupertino,
+//                         switchActiveColor: Colors.blue,
+//                         title: Padding(
+//                           padding:
+//                               EdgeInsetsDirectional.only(start: 16, end: 0),
+//                           child: Text(controller.dataforFiltterModel
+//                                   ?.typeOfAccommodation![0] ??
+//                               'منزل'),
+//                         ),
+//                       ),
 class CheckCustom extends StatefulWidget {
   const CheckCustom({
     Key? key,

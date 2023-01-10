@@ -7,6 +7,7 @@ class MangeAPi {
 
   //////////////////////////////////main//////////////////////////////
   static const String topRatingRooms = "$baseurl/api/rooms/topRating";
+  static const String Feedback = "$baseurl/api/rooms/Feedback"; //id
   static const String topBookingRooms = "$baseurl/api/rooms/topBooking";
   static const String getHotelTypes = "$baseurl/api/hotels/getHotelTypes";
   static const String getCities = "$baseurl/api/hotels/getCities";
@@ -28,7 +29,8 @@ class MangeAPi {
   static const String getfavouritePlaces =
       "$baseurl/api/users/getfavouritePlaces"; //id
   static const String getminslection = "$baseurl/api/hotels/getCategories";
-
+  static const String getnotfy =
+      "$baseurl/api/owner/feedbackNotification?userId";
   static const String addminslection = "$baseurl/api/users/addUserCategories";
   static const String getusercato = "$baseurl/api/users/getUserCategories";
   static const String nearestPlaces =

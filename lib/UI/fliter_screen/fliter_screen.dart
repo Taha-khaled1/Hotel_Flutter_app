@@ -29,13 +29,10 @@ class FilterScreen extends StatelessWidget {
                   )
                 : ListView(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 95.0),
-                        child: Container(
-                          color: Colors.white,
-                          child: cardGrid(
-                            message: controller.helpModel?.message!,
-                          ),
+                      Container(
+                        color: Colors.white,
+                        child: cardGrid(
+                          message: controller.helpModel?.message!,
                         ),
                       )
                     ],
@@ -53,19 +50,30 @@ class cardGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 0.0, bottom: 0.0),
-      childAspectRatio: mediaQueryData.size.height / 1100,
-      crossAxisSpacing: 0.0,
-      mainAxisSpacing: 0.0,
-      primary: false,
+    return Wrap(
       children: List.generate(
         /// Get data in flashSaleItem.dart (ListItem folder)
         message?.length ?? 0,
-        (index) => itemGrid(message![index], 'منزل'),
+        (index) => Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: itemGrid(message![index], 'منزل'),
+        ),
       ),
     );
+
+    // return GridView.count(
+    //   crossAxisCount: 1,
+    //   shrinkWrap: true,
+    //   padding: const EdgeInsets.only(top: 0.0, bottom: 0.0),
+    //   childAspectRatio: 0.6,
+    //   crossAxisSpacing: 0.0,
+    //   mainAxisSpacing: 0.0,
+    //   primary: false,
+    // children: List.generate(
+    //   /// Get data in flashSaleItem.dart (ListItem folder)
+    //   message?.length ?? 0,
+    //   (index) => itemGrid(message![index], 'منزل'),
+    // ),
+    // );
   }
 }

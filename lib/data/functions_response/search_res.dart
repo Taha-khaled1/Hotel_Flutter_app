@@ -24,12 +24,12 @@ getFiltterRespon({
   var respons = await curd.postrequest(
     MangeAPi.roomsFilter,
     {
-      "city": city ?? "نابلس",
-      "maxPrice": maxprice ?? 1000,
-      "minPrice": minprice ?? 0,
-      "features": x ?? ["مسابح", "wifi"],
-      "type": type ?? "فندق",
-      "distance": distance ?? 0
+      "city": city,
+      "maxPrice": maxprice,
+      "minPrice": minprice,
+      "features": x,
+      "type": type,
+      "distance": distance,
     },
     encode: true,
   );

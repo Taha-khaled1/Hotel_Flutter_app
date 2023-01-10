@@ -47,34 +47,8 @@ class _reviewDetail1State extends State<reviewDetail1> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Text(
-              "Review",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontFamily: "Popins",
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0, left: 20.0),
-            child: Row(
-              children: <Widget>[
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      ratingbar(
-                        size: 25.0,
-                        starCount: 5,
-                        color: Colors.yellow,
-                      ),
-                      const SizedBox(width: 5.0),
-                      const Text('8 Reviews')
-                    ]),
-              ],
-            ),
+          SizedBox(
+            height: 10,
           ),
           Expanded(
             child: ListView.builder(

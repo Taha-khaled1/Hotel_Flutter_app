@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hotelbooking/Library/SupportingLibrary/Ratting/Rating.dart';
+import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/maped.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/payment_webview.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_1/reviewDetail1.dart';
 import 'package:hotelbooking/UI/B1_Home/Hotel/Hotel_Detail_Concept_2/maps.dart';
@@ -83,8 +84,7 @@ class _HotelDetailState extends State<HotelDetail> {
 
                         /// Location
                         LocationHomeWidget(
-                          markers: _markers,
-                        ),
+                            markers: _markers, controller: controller),
 
                         /// Gallery
                         GalleryWidget(width: _width, controller: controller),
@@ -194,14 +194,14 @@ class _ReatingRomWidgetState extends State<ReatingRomWidget> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            StarRating(
-                              size: 25.0,
-                              starCount: 5,
-                              rating: 5,
-                              color: Colors.yellow,
-                              borderColor: Colors.yellow,
-                              onRatingChanged: (double rating) {},
-                            ),
+                            // StarRating(
+                            //   size: 25.0,
+                            //   starCount: 5,
+                            //   rating: 5,
+                            //   color: Colors.yellow,
+                            //   borderColor: Colors.yellow,
+                            //   onRatingChanged: (double rating) {},
+                            // ),
                             const SizedBox(width: 5.0),
                             Text(
                               "${widget.controller.infoRoomModel?.room!.feedbacks!.length} Reviews",
@@ -980,11 +980,12 @@ class LocationHomeWidget extends StatelessWidget {
   const LocationHomeWidget({
     Key? key,
     required Set<Marker> markers,
+    required this.controller,
   })  : _markers = markers,
         super(key: key);
 
   final Set<Marker> _markers;
-
+  final GetInfoRoomController controller;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -1009,8 +1010,11 @@ class LocationHomeWidget extends StatelessWidget {
               height: 190.0,
               child: GoogleMap(
                 mapType: MapType.normal,
-                initialCameraPosition: const CameraPosition(
-                  target: LatLng(40.7078523, -74.008981),
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                    controller.infoRoomModel!.room!.address!.latitude!,
+                    controller.infoRoomModel!.room!.address!.longitude!,
+                  ),
                   zoom: 13.0,
                 ),
                 markers: _markers,
@@ -1021,9 +1025,19 @@ class LocationHomeWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        PageRouteBuilder(pageBuilder: (_, __, ___) => maps()));
+                  onTap: () async {
+                    // await sharedPreferences.setString(
+                    //           'searcc',
+                    //           modde?.predictions![index].placeId ??
+                    //               'ChIJl1ZCUPbgHBURhD0VvTCpC38');
+                    //       // await getLocationFromPlaceId(
+                    //       //     modde?.predictions![index].placeId ??
+                    //       //         'ChIJl1ZCUPbgHBURhD0VvTCpC38');
+                    sharedPreferences.setDouble('lan',
+                        controller.infoRoomModel!.room!.address!.longitude!);
+                    sharedPreferences.setDouble('lat',
+                        controller.infoRoomModel!.room!.address!.latitude!);
+                    Get.to(MapEdit());
                   },
                   child: Container(
                     height: 35.0,
@@ -1129,33 +1143,48 @@ class IconsAllWidget extends StatelessWidget {
   final GetInfoRoomController controller;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 105.0,
-      width: double.infinity,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: _infoCircle("assets/image/icon/wifi.png", "Free Wifi")),
-            Padding(
-                padding: const EdgeInsets.only(right: 0.0),
-                child: _infoCircle("assets/image/icon/food.png", "Food")),
-            Padding(
-                padding: const EdgeInsets.only(right: 0.0),
-                child: _infoCircle("assets/image/icon/clean.png", "Clean")),
-            Padding(
-                padding: const EdgeInsets.only(right: 0.0),
-                child:
-                    _infoCircle("assets/image/icon/monitor.png", "Television")),
-            Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child:
-                    _infoCircle("assets/image/icon/swimming.png", "Swimming")),
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13),
+      child: Container(
+        height: 105.0,
+        width: double.infinity,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Row(
+            children: <Widget>[
+              if (controller.infoRoomModel!.room!.features!
+                  .contains('Free Wifi'))
+                Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 7),
+                      child: _infoCircle(
+                          "assets/image/icon/wifi.png", "Free Wifi"),
+                    )),
+              if (controller.infoRoomModel!.room!.features!.contains('Buffet'))
+                Padding(
+                    padding: const EdgeInsets.only(right: 0.0),
+                    child: _infoCircle("assets/image/icon/food.png", "Buffet")),
+              if (controller.infoRoomModel!.room!.features!
+                  .contains('Room Service'))
+                Padding(
+                    padding: const EdgeInsets.only(right: 0.0),
+                    child: _infoCircle(
+                        "assets/image/icon/clean.png", "Room Service")),
+              if (controller.infoRoomModel!.room!.features!
+                  .contains('Smart System'))
+                Padding(
+                    padding: const EdgeInsets.only(right: 0.0),
+                    child: _infoCircle(
+                        "assets/image/icon/monitor.png", "Smart System")),
+              if (controller.infoRoomModel!.room!.features!.contains('Pool'))
+                Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child:
+                        _infoCircle("assets/image/icon/swimming.png", "Pool")),
+            ],
+          ),
         ),
       ),
     );
@@ -1292,12 +1321,12 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                                 ),
                                 Text(
                                   ((controller.infoRoomModel!.room!.price! -
-                                              controller.infoRoomModel!.room!
+                                          ((controller.infoRoomModel!.room!
                                                       .discount! /
                                                   100) *
-                                          controller.infoRoomModel!.room!.price!
-                                              .toDouble())
-                                      .toInt()
+                                              controller.infoRoomModel!.room!
+                                                  .price!)))
+                                      .toDouble()
                                       .toString(),
                                   style: const TextStyle(
                                     color: Color(0xFF8F73F2),
@@ -1555,10 +1584,11 @@ Widget _relatedPost(
 
 Widget _infoCircle(String image, title) {
   return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       Container(
+          alignment: Alignment.center,
           height: 45.0,
           width: 45.0,
           decoration: const BoxDecoration(
